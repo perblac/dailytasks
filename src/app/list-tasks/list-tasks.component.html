@@ -1,0 +1,19 @@
+<ion-header>
+  <ion-title>Diario de tareas</ion-title>
+</ion-header>
+<ion-content>
+  <ion-grid>
+    <ion-row>
+      <ion-col size="1">Dia</ion-col>
+      <ion-col size="2">Mes</ion-col>
+      <ion-col size="9">Tarea realizada</ion-col>
+    </ion-row>
+    <ion-row *ngFor="let task of tasksarray">
+      <ion-col size="1">{{task.day}}</ion-col>
+      <ion-col size="2">{{task.month == 3 ? 'Marzo': task.month == 4 ? 'Abril' : 'Mayo'}}</ion-col>
+      <ion-col size="9">{{task.taskcontent}}
+          <ion-icon name="close-circle" style="color: red;cursor: pointer;" (click)="removeTask(task.id)"></ion-icon>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

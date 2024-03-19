@@ -1,0 +1,28 @@
+<ion-header>
+  <ion-title>Create new task</ion-title>
+</ion-header>
+<ion-content>
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <ion-input [(ngModel)]="day" type="number" min="1" max="31" name="day" label="Dia" [value]="day"></ion-input>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-select [(ngModel)]="month" name="month" label="Mes" [value]="month">
+          <ion-select-option value={{3}}>Marzo</ion-select-option>
+          <ion-select-option value={{4}}>Abril</ion-select-option>
+          <ion-select-option value={{5}}>Mayo</ion-select-option>
+        </ion-select>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-input [(ngModel)]="taskcontent" type="text" name="taskcontent" label="Trabajo realizado" placeholder="Especifique las tareas realizadas en este dia" [value]="taskcontent"></ion-input>
+      </ion-col>
+    </ion-row>
+    dia {{day}} mes {{month}} tarea {{taskcontent}}
+  </ion-grid>
+  <ion-button (click)="handleSave()">Guardar</ion-button>
+</ion-content>
