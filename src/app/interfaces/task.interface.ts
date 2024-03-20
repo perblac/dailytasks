@@ -4,4 +4,5 @@ export interface Task {
   // month: number,
   date: string,
   taskcontent: string,
+  hours: number,
 }

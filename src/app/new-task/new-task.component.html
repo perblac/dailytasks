@@ -1,4 +1,4 @@
-<ion-header>
+<ion-header class="ion-padding">
   <ion-toolbar>
     <ion-buttons slot="start">
       <ion-button color="medium" (click)="cancel()">Cancel</ion-button>
@@ -23,6 +23,10 @@
         <ion-input [(ngModel)]="taskcontent" type="text" name="taskcontent" label="Trabajo realizado" placeholder="Especifique las tareas realizadas en este dia" [value]="taskcontent"></ion-input>
       </ion-col>
     </ion-row>
-    {{date}} tarea {{taskcontent}}
+    <ion-row>
+      <ion-col>
+        <ion-input [(ngModel)]="hours" type="number" name="hours" label="Tiempo empleado (horas)" min="0" max="24" placeholder="Indique las horas realizadas" [value]="hours"></ion-input>
+      </ion-col>
+    </ion-row>
   </ion-grid>
 </ion-content>

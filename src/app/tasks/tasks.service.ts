@@ -27,13 +27,33 @@ export class TasksService {
     return this.tasksArray;
   }
 
+  getWeekTasks(week:string[]):Task[]|null {
+    return week.map(dateString => {
+      const dateTask = new Date(dateString);
+      const day = dateTask.getUTCDate();
+      const month = dateTask.getUTCMonth() + 1;
+      const id = `${day}-${month}`;
+      return this.getTaskById(id) ?? {
+        id,
+        date: dateString,
+        taskcontent: '',
+        hours: 0,
+      };
+    });
+  }
+
   removeTask(idTask: string) {
     this.tasksArray = this.tasksArray.filter(task => task.id !== idTask);
     this.saveState();
   }
 
+  getTaskById(idTask:string): Task|null {
+    let task = this.tasksArray.filter(task => task.id === idTask);
+    return task.length > 0 ? task[0] : null;
+  }
+
   existsTask(idTask:string): boolean {
-    return this.tasksArray.filter(task => task.id === idTask).length > 0;
+    return !!this.getTaskById(idTask);
   }
 
   saveState() {

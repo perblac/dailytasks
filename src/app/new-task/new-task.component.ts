@@ -10,6 +10,7 @@ import {AlertController, ModalController} from "@ionic/angular";
 export class NewTaskComponent {
   public date: string = new Date().toISOString();
   public taskcontent: string = '';
+  public hours: number = 0;
 
   public alertButtons = [
     {
@@ -66,6 +67,7 @@ export class NewTaskComponent {
       id: this.getId(),
       date: this.date,
       taskcontent: this.taskcontent,
+      hours: this.hours,
     });
     console.log(this.taskservice.getTasks());
     this.resetFields();
@@ -76,6 +78,7 @@ export class NewTaskComponent {
       id: this.getId(),
       date: this.date,
       taskcontent: this.taskcontent,
+      hours: this.hours,
     });
     console.log(this.taskservice.getTasks());
     this.resetFields();

@@ -3,6 +3,7 @@ import {Task} from "../interfaces/task.interface";
 import {TasksService} from "../tasks/tasks.service";
 import {ModalController} from "@ionic/angular";
 import {NewTaskComponent} from "../new-task/new-task.component";
+import {ExportToPdfComponent} from "../export-to-pdf/export-to-pdf.component";
 
 @Component({
   selector: 'app-list-tasks',
@@ -27,6 +28,12 @@ export class ListTasksComponent{
     await modal.present();
   }
 
+  async openModalExportToPdf() {
+    const modal = await this.modalCtrl.create({
+      component: ExportToPdfComponent,
+    });
+    await modal.present();
+  }
   private updateTasksArray() {
     let list = this.taskservice.getTasks();
     list.sort((a,b)=>(new Date(a.date) > new Date(b.date) ? 1 : -1));
