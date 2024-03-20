@@ -9,11 +9,26 @@
       <ion-col size="9">Tarea realizada</ion-col>
     </ion-row>
     <ion-row *ngFor="let task of tasksarray">
-      <ion-col size="1">{{task.day}}</ion-col>
-      <ion-col size="2">{{task.month == 3 ? 'Marzo': task.month == 4 ? 'Abril' : 'Mayo'}}</ion-col>
+      <ion-col size="1">{{task.date.slice(8,10)}}</ion-col>
+      <ion-col size="2">{{task.date.slice(5,7) == '03' ? 'Marzo': task.date.slice(5,7) == '04' ? 'Abril' : 'Mayo'}}</ion-col>
       <ion-col size="9">{{task.taskcontent}}
           <ion-icon name="close-circle" style="color: red;cursor: pointer;" (click)="removeTask(task.id)"></ion-icon>
       </ion-col>
     </ion-row>
   </ion-grid>
 </ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-buttons slot="primary">
+      <ion-button fill="solid" color="primary" shape="round" (click)="openModalNewTask()">
+        <ion-icon name="pencil"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-buttons slot="secondary">
+      <ion-button fill="solid" color="primary" shape="round">
+        <ion-icon name="receipt"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-footer>

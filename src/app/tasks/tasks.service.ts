@@ -4,7 +4,7 @@ import {Task} from "../interfaces/task.interface";
 @Injectable({
   providedIn: 'root'
 })
-export class TaskService {
+export class TasksService {
 
   private tasksArray: Task[] = JSON.parse(localStorage.getItem('tasks') ?? '[]');
   constructor() {

@@ -1,17 +1,15 @@
-import { Component, OnInit } from '@angular/core';
-import {TaskService} from "../tasks/task.service";
-import {ListTasksComponent} from "../list-tasks/list-tasks.component";
-import {AlertController} from "@ionic/angular";
+import { Component } from '@angular/core';
+import {TasksService} from "../tasks/tasks.service";
+import {AlertController, ModalController} from "@ionic/angular";
 
 @Component({
   selector: 'app-new-task',
   templateUrl: './new-task.component.html',
   styleUrls: ['./new-task.component.scss'],
 })
-export class NewTaskComponent  implements OnInit {
-  public day: number = 1;
-  public month: number = 3;
-  public taskcontent:string = '';
+export class NewTaskComponent {
+  public date: string = new Date().toISOString();
+  public taskcontent: string = '';
 
   public alertButtons = [
     {
@@ -30,11 +28,23 @@ export class NewTaskComponent  implements OnInit {
       }
     },
   ];
-  constructor(private taskservice: TaskService, private alertController: AlertController) {
+  constructor(private taskservice: TasksService, private alertController: AlertController, private modalCtrl: ModalController) {
+  }
+
+  private getId() {
+    const dateTask = new Date(this.date);
+    const day = dateTask.getUTCDate();
+    const month = dateTask.getUTCMonth() + 1;
+    return `${day}-${month}`;
+  }
+
+  private resetFields() {
+    this.date = new Date().toISOString();
+    this.taskcontent = '';
   }
 
   async handleSave() {
-    if (this.taskservice.existsTask(this.day+'-'+this.month)) {
+    if (this.taskservice.existsTask(this.getId())) {
       const alert = await this.alertController.create({
         header: '¡Atención!',
         message: 'Ya existe una entrada para esa fecha. La información se sobreescribirá.',
@@ -42,7 +52,7 @@ export class NewTaskComponent  implements OnInit {
       });
       await alert.present();
     } else {
-      this.addTask();
+      await this.addTask();
       const alert = await this.alertController.create({
         header: 'Correcto',
         message: 'Entrada agregada con éxito.',
@@ -53,22 +63,43 @@ export class NewTaskComponent  implements OnInit {
   }
   addTask() {
     this.taskservice.addTask({
-      id: this.day+'-'+this.month,
-      day: this.day,
-      month: this.month,
+      id: this.getId(),
+      date: this.date,
       taskcontent: this.taskcontent,
     });
     console.log(this.taskservice.getTasks());
+    this.resetFields();
+    return this.modalCtrl.dismiss('', 'confirm');
   }
   updateTask() {
     this.taskservice.updateTask({
-      id: this.day+'-'+this.month,
-      day: this.day,
-      month: this.month,
+      id: this.getId(),
+      date: this.date,
       taskcontent: this.taskcontent,
     });
     console.log(this.taskservice.getTasks());
+    this.resetFields();
+    return this.modalCtrl.dismiss('', 'confirm');
   }
-  ngOnInit() {}
 
+  cancel() {
+    return this.modalCtrl.dismiss(null, 'cancel');
+  }
+
+  availableDays(dateString: string) {
+    const date = new Date(dateString);
+    const utcDay = date.getUTCDate();
+    const utcMonth = date.getUTCMonth();
+    const utcWeekDay = date.getUTCDay();
+    let available = true;
+    if (utcWeekDay == 0 || utcWeekDay == 6) available = false;
+    // festivos de la localidad de Granada
+    if (utcMonth == 4 && (utcDay == 3 || utcDay == 30 || utcDay == 31)) available = false;
+    // semana santa
+    if (utcDay >= 25 && utcDay <= 31 && utcMonth == 2) available = false;
+    // fiesta del trabajo
+    if (utcDay == 1 && utcMonth == 4) available = false;
+
+    return available;
+  }
 }

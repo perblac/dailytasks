@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {Task} from "../interfaces/task.interface";
-import {TaskService} from "../tasks/task.service";
+import {TasksService} from "../tasks/tasks.service";
+import {ModalController} from "@ionic/angular";
+import {NewTaskComponent} from "../new-task/new-task.component";
 
 @Component({
   selector: 'app-list-tasks',
@@ -9,10 +11,25 @@ import {TaskService} from "../tasks/task.service";
 })
 export class ListTasksComponent{
   public tasksarray: Task[] = this.taskservice.getTasks();
-  constructor(private taskservice: TaskService) {
+  constructor(private taskservice: TasksService, private modalCtrl: ModalController) {
+    this.updateTasksArray();
   }
   removeTask(id:string) {
     this.taskservice.removeTask(id);
-    this.tasksarray = this.taskservice.getTasks();
+    this.updateTasksArray();
+  }
+
+  async openModalNewTask() {
+    const modal = await this.modalCtrl.create({
+      component: NewTaskComponent,
+    });
+    modal.onDidDismiss().then(() => this.updateTasksArray());
+    await modal.present();
+  }
+
+  private updateTasksArray() {
+    let list = this.taskservice.getTasks();
+    list.sort((a,b)=>(new Date(a.date) > new Date(b.date) ? 1 : -1));
+    this.tasksarray = list;
   }
 }
