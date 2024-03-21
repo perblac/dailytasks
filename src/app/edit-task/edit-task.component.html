@@ -1,0 +1,41 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button color="medium" (click)="cancel()">Cancel</ion-button>
+    </ion-buttons>
+    <ion-title class="ion-text-center">Edit task</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="confirm()" [strong]="true">Confirm</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-list>
+    <ion-item button="true" id="open-modal-date">
+      <ion-label>Día {{ task.date.slice(8,10) }} de {{ task.date.slice(5,7) === '03' ? 'Marzo': task.date.slice(5,7) === '04' ? 'Abril' : 'Mayo' }}</ion-label>
+      <ion-modal trigger="open-modal-date">
+      <ng-template>
+        <ion-header>
+          <ion-toolbar>
+            <ion-title>Escoja nueva fecha</ion-title>
+            <ion-buttons slot="end">
+              <ion-button (click)="confirmDate()" [strong]="true">Confirm</ion-button>
+            </ion-buttons>
+          </ion-toolbar>
+        </ion-header>
+        <ion-content class="ion-padding">
+          <ion-item>
+            <ion-datetime [showDefaultTitle]="true" presentation="date" min="2024-03-01T00:00:00" max="2024-05-31T00:00:00" [isDateEnabled]="availableDays" [value]="task.date"></ion-datetime>
+          </ion-item>
+        </ion-content>
+      </ng-template>
+    </ion-modal>
+    </ion-item>
+    <ion-item>
+      <ion-input [(ngModel)]="task.taskcontent" type="text" label="Tarea" labelPlacement="stacked"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-input [(ngModel)]="task.hours" type="number" label="Horas" labelPlacement="stacked"></ion-input>
+    </ion-item>
+  </ion-list>
+</ion-content>

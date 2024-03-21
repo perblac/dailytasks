@@ -47,9 +47,9 @@ export class TasksService {
     this.saveState();
   }
 
-  getTaskById(idTask:string): Task|null {
+  getTaskById(idTask:string): Task|undefined {
     let task = this.tasksArray.filter(task => task.id === idTask);
-    return task.length > 0 ? task[0] : null;
+    return task.length > 0 ? task[0] : undefined;
   }
 
   existsTask(idTask:string): boolean {

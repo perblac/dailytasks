@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {ModalController, NavParams} from "@ionic/angular";
 import {FormDataService} from "./form-data.service";
+import {FormControl, FormGroup} from "@angular/forms";
 
 @Component({
   selector: 'app-form',
@@ -15,6 +16,16 @@ export class FormComponent {
   public profesor: string = '';
   public centrotrabajo: string = '';
   public tutor: string = '';
+
+  formDataGroup = new FormGroup({
+    alumno: new FormControl(''),
+    ciclo: new FormControl(''),
+    grado: new FormControl(''),
+    centrodocente: new FormControl(''),
+    profesor: new FormControl(''),
+    centrotrabajo: new FormControl(''),
+    tutor: new FormControl(''),
+  })
 
   constructor(private modalCtrl:ModalController, private formDataService: FormDataService) {
     const { alumno, ciclo, grado, centrodocente, profesor, centrotrabajo, tutor } = this.formDataService.getData();

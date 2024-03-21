@@ -6,6 +6,7 @@ import {NewTaskComponent} from "../new-task/new-task.component";
 import {ExportToPdfComponent} from "../export-to-pdf/export-to-pdf.component";
 import {FormComponent} from "../form/form.component";
 import {FormDataService} from "../form/form-data.service";
+import {EditTaskComponent} from "../edit-task/edit-task.component";
 
 @Component({
   selector: 'app-list-tasks',
@@ -16,6 +17,27 @@ export class ListTasksComponent{
   public tasksarray: Task[] = this.taskservice.getTasks();
   constructor(private taskservice: TasksService, private modalCtrl: ModalController, private formDataService: FormDataService) {
     this.updateTasksArray();
+  }
+
+  async handleClick(id:any) {
+    const copyTask = {...this.taskservice.getTaskById(id)};
+    const modal = await this.modalCtrl.create({
+      component: EditTaskComponent,
+      componentProps: {
+        'task': copyTask
+      }
+    });
+    modal.onWillDismiss().then((res) => {
+      console.log(res);
+      if (res.role === 'confirm') {
+        this.taskservice.updateTask(res.data);
+      } else {
+
+      }
+      this.updateTasksArray();
+    });
+    console.log(id);
+    await modal.present();
   }
   removeTask(id:string) {
     this.taskservice.removeTask(id);

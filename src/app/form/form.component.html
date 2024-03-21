@@ -10,30 +10,32 @@
   </ion-toolbar>
 </ion-header>
 <ion-content>
-  <ion-list>
-    <ion-item>
-      <ion-input [(ngModel)]="alumno" type="text" label="Alumno" labelPlacement="floating" aria-label="Alumno" placeholder="Nombre del alumno..."></ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-input [(ngModel)]="ciclo" type="text" label="Ciclo Formativo" labelPlacement="floating" aria-label="Ciclo formativo" placeholder="Nombre del ciclo ..."></ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-select [(ngModel)]="grado" label="Grado" labelPlacement="floating" aria-label="Grado">
-        <ion-select-option>Medio</ion-select-option>
-        <ion-select-option>Superior</ion-select-option>
-      </ion-select>
-    </ion-item>
-    <ion-item>
-      <ion-input [(ngModel)]="centrodocente" type="text" label="Centro Docente" labelPlacement="floating" aria-label="Centro docente" placeholder="Nombre del centro docente ..."></ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-input [(ngModel)]="profesor" type="text" label="Profesor Responsable Seguimiento" labelPlacement="floating" aria-label="Profesor responsable seguimiento" placeholder="Nombre del profesor ..."></ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-input [(ngModel)]="centrotrabajo" type="text" label="Centro de Trabajo Colaborador" labelPlacement="floating" aria-label="Centro de trabajo colaborador" placeholder="Nombre del centro de trabajo ..."></ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-input [(ngModel)]="tutor" type="text" label="Tutor del Centro de Trabajo" labelPlacement="floating" aria-label="Tutor del centro de trabajo" placeholder="Nombre del tutor ..."></ion-input>
-    </ion-item>
-  </ion-list>
+  <form [formGroup]="formDataGroup">
+    <ion-list>
+      <ion-item class="form-group">
+        <ion-input [(ngModel)]="alumno" class="form-control" formControlName="alumno" type="text" label="Alumno" labelPlacement="floating" aria-label="Alumno" placeholder="Nombre del alumno..."></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-input [(ngModel)]="ciclo" type="text" label="Ciclo Formativo" labelPlacement="floating" aria-label="Ciclo formativo" placeholder="Nombre del ciclo ..."></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-select [(ngModel)]="grado" label="Grado" labelPlacement="floating" aria-label="Grado">
+          <ion-select-option>Medio</ion-select-option>
+          <ion-select-option>Superior</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-input [(ngModel)]="centrodocente" type="text" label="Centro Docente" labelPlacement="floating" aria-label="Centro docente" placeholder="Nombre del centro docente ..."></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-input [(ngModel)]="profesor" type="text" label="Profesor Responsable Seguimiento" labelPlacement="floating" aria-label="Profesor responsable seguimiento" placeholder="Nombre del profesor ..."></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-input [(ngModel)]="centrotrabajo" type="text" label="Centro de Trabajo Colaborador" labelPlacement="floating" aria-label="Centro de trabajo colaborador" placeholder="Nombre del centro de trabajo ..."></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-input [(ngModel)]="tutor" type="text" label="Tutor del Centro de Trabajo" labelPlacement="floating" aria-label="Tutor del centro de trabajo" placeholder="Nombre del tutor ..."></ion-input>
+      </ion-item>
+    </ion-list>
+  </form>
 </ion-content>
