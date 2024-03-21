@@ -9,7 +9,6 @@ export class FormDataService {
 
   getData() {
     this.updateState();
-    console.log('getData:', this.formdata);
     return this.formdata;
   }
   setData(formdata:any) {

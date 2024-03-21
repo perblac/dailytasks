@@ -18,22 +18,20 @@
   <ion-grid>
     <ion-row class="ion-justify-content-center">
       <ion-col size="12">
-        <ion-grid>
-          <ion-row>
-            <ion-col size="1">
-              Día
-            </ion-col>
-            <ion-col size="2">
-              Mes
-            </ion-col>
-            <ion-col size="7">
-              Actividad
-            </ion-col>
-            <ion-col size="1" class="ion-text-nowrap">
-              Tiempo
-            </ion-col>
-          </ion-row>
-        </ion-grid>
+        <ion-item>
+          <ion-col size="1">
+            Día
+          </ion-col>
+          <ion-col size="2">
+            Mes
+          </ion-col>
+          <ion-col size="7">
+            Actividad
+          </ion-col>
+          <ion-col size="1" class="ion-text-nowrap">
+            Tiempo
+          </ion-col>
+        </ion-item>
         <ion-item *ngFor="let task of tasks">
           <ion-col size="1">
             {{ task.date.slice(8,10) }}
@@ -50,6 +48,6 @@
         </ion-item>
       </ion-col>
     </ion-row>
-    <ion-button *ngIf="week.length > 0">Generar pdf</ion-button>
+    <ion-button *ngIf="week.length > 0" (click)="generatePdf()">Generar pdf</ion-button>
   </ion-grid>
 </ion-content>
