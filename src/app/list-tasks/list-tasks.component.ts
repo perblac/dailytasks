@@ -4,6 +4,8 @@ import {TasksService} from "../tasks/tasks.service";
 import {ModalController} from "@ionic/angular";
 import {NewTaskComponent} from "../new-task/new-task.component";
 import {ExportToPdfComponent} from "../export-to-pdf/export-to-pdf.component";
+import {FormComponent} from "../form/form.component";
+import {FormDataService} from "../form/form-data.service";
 
 @Component({
   selector: 'app-list-tasks',
@@ -12,7 +14,7 @@ import {ExportToPdfComponent} from "../export-to-pdf/export-to-pdf.component";
 })
 export class ListTasksComponent{
   public tasksarray: Task[] = this.taskservice.getTasks();
-  constructor(private taskservice: TasksService, private modalCtrl: ModalController) {
+  constructor(private taskservice: TasksService, private modalCtrl: ModalController, private formDataService: FormDataService) {
     this.updateTasksArray();
   }
   removeTask(id:string) {
@@ -34,9 +36,17 @@ export class ListTasksComponent{
     });
     await modal.present();
   }
+
+  async openModalDataForm() {
+    const modal = await this.modalCtrl.create({
+      component: FormComponent,
+    });
+    await modal.present();
+  }
+
   private updateTasksArray() {
     let list = this.taskservice.getTasks();
-    list.sort((a,b)=>(new Date(a.date) > new Date(b.date) ? 1 : -1));
+    list?.sort((a,b)=>(new Date(a.date) > new Date(b.date) ? 1 : -1));
     this.tasksarray = list;
   }
 }

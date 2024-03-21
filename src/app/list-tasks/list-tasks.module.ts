@@ -6,10 +6,11 @@ import {NgForOf, NgIf} from "@angular/common";
 import {NewTaskComponent} from "../new-task/new-task.component";
 import {FormsModule} from "@angular/forms";
 import {ExportToPdfComponent} from "../export-to-pdf/export-to-pdf.component";
+import {FormComponent} from "../form/form.component";
 
 @NgModule({
   imports: [RouterModule.forChild([{path: '', component: ListTasksComponent}]), IonicModule, NgForOf, FormsModule, NgIf],
-  declarations: [ListTasksComponent, NewTaskComponent, ExportToPdfComponent],
+  declarations: [ListTasksComponent, NewTaskComponent, ExportToPdfComponent, FormComponent],
   exports: [ListTasksComponent],
 })
 
