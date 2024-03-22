@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import {TasksService} from "../tasks/tasks.service";
 import {AlertController, ModalController} from "@ionic/angular";
+import {EditTaskComponent} from "../edit-task/edit-task.component";
+import {Task} from "../interfaces/task.interface";
 
 @Component({
   selector: 'app-new-task',
@@ -8,86 +10,89 @@ import {AlertController, ModalController} from "@ionic/angular";
   styleUrls: ['./new-task.component.scss'],
 })
 export class NewTaskComponent {
+  public id: string = this.taskservice.generateId();
   public date: string = new Date().toISOString();
   public taskcontent: string = '';
   public hours: number = 0;
 
-  public alertButtons = [
+  public alertButtonsDateExists = [
     {
       text: 'Cancelar',
       role: 'cancel',
-      handler: () => {
-        console.log('Operación cancelada');
-      }
     },
     {
       text: 'Aceptar',
       role: 'confirm',
-      handler: () => {
-        this.updateTask();
-        console.log('Operación realizada');
-      }
-    },
-  ];
+    }
+  ]
   constructor(private taskservice: TasksService, private alertController: AlertController, private modalCtrl: ModalController) {
   }
 
-  private getId() {
-    const dateTask = new Date(this.date);
-    const day = dateTask.getUTCDate();
-    const month = dateTask.getUTCMonth() + 1;
-    return `${day}-${month}`;
-  }
-
   private resetFields() {
+    this.id = this.taskservice.generateId();
     this.date = new Date().toISOString();
     this.taskcontent = '';
+    this.hours = 0;
   }
 
-  handleSelectDay(event: CustomEvent) {
+  async handleSelectDay(event: CustomEvent) {
     const selectedDate = event.detail.value;
-    console.log(selectedDate);
-  }
-
-  async handleSave() {
-    if (this.taskservice.existsTask(this.getId())) {
-      const alert = await this.alertController.create({
-        header: '¡Atención!',
-        message: 'Ya existe una entrada para esa fecha. La información se sobreescribirá.',
-        buttons: this.alertButtons,
-      });
+    console.log(selectedDate,this.taskservice.getTaskByDate(selectedDate));
+    // check if date already exists
+    const originalTask: Task|undefined = this.taskservice.getTaskByDate(selectedDate);
+    if (originalTask) {
+      const alert = await this.alertController.create(
+        {
+          header: '¡Atención!',
+          message: 'Ya existe una entrada para esa fecha. La información se sobreescribirá.',
+          buttons: this.alertButtonsDateExists,
+        }
+      );
       await alert.present();
+      alert.onWillDismiss().then(async (res)=> {
+        if (res.role === 'confirm') {
+          this.id = originalTask.id;
+          this.date = originalTask.date;
+          this.taskcontent = originalTask.taskcontent;
+          this.hours = originalTask.hours;
+          await this.callEditTask(originalTask);
+        }
+      });
     } else {
-      await this.addTask();
-      const alert = await this.alertController.create({
-        header: 'Correcto',
-        message: 'Entrada agregada con éxito.',
-        buttons: ['OK'],
-      });
-      await alert.present();
+      await this.callEditTask(originalTask);
     }
   }
-  addTask() {
-    this.taskservice.addTask({
-      id: this.getId(),
-      date: this.date,
-      taskcontent: this.taskcontent,
-      hours: this.hours,
+
+  async callEditTask(originalTask: Task|undefined = undefined) {
+    // get top modal id
+    const topModal = await this.modalCtrl.getTop();
+    const modalId = topModal ? topModal.id : null;
+
+    // call EditTaskComponent with our data
+    const modal = await this.modalCtrl.create({
+      component: EditTaskComponent,
+      componentProps: {
+        'task': {
+          id: this.id,
+          date: this.date,
+          taskcontent: this.taskcontent,
+          hours: this.hours,
+        }
+      }
     });
-    console.log(this.taskservice.getTasks());
-    this.resetFields();
-    return this.modalCtrl.dismiss('', 'confirm');
-  }
-  updateTask() {
-    this.taskservice.updateTask({
-      id: this.getId(),
-      date: this.date,
-      taskcontent: this.taskcontent,
-      hours: this.hours,
+    modal.onWillDismiss().then((res) => {
+      if (res.role === 'confirm') {
+        if (!!originalTask) {
+          this.taskservice.updateTask(res.data);
+        } else {
+          this.taskservice.addTask(res.data);
+        }
+        console.log('added task');
+        this.resetFields();
+        this.modalCtrl.dismiss('', 'confirm',modalId!);
+      }
     });
-    console.log(this.taskservice.getTasks());
-    this.resetFields();
-    return this.modalCtrl.dismiss('', 'confirm');
+    await modal.present();
   }
 
   cancel() {

@@ -107,6 +107,7 @@ export class ExportToPdfComponent {
     downloadLink.href = url;
     downloadLink.download = `ficha_del_${firstDay}_al_${lastDay}_de_${month}.pdf`;
     downloadLink.click();
+    // TODO: download in mobile devices
   }
 
   public selectedWeek(event:any) {

@@ -10,32 +10,51 @@
   </ion-toolbar>
 </ion-header>
 <ion-content>
-  <ion-list>
-    <ion-item button="true" id="open-modal-date">
-      <ion-label>Día {{ task.date.slice(8,10) }} de {{ task.date.slice(5,7) === '03' ? 'Marzo': task.date.slice(5,7) === '04' ? 'Abril' : 'Mayo' }}</ion-label>
+  <ion-list class="ion-padding">
+    <ion-item button="true" id="open-modal-date" slot="center">
+      <ion-label class="ion-justify-content-around">
+        <span>
+          Día {{ task.date.slice(8,10) }} de {{ task.date.slice(5,7) === '03' ? 'Marzo': task.date.slice(5,7) === '04' ? 'Abril' : 'Mayo' }}
+        </span>
+        <small>(Pulse aqui para cambiar la fecha)</small>
+      </ion-label>
       <ion-modal trigger="open-modal-date">
       <ng-template>
         <ion-header>
           <ion-toolbar>
-            <ion-title>Escoja nueva fecha</ion-title>
+            <ion-buttons slot="start">
+              <ion-button color="medium" (click)="cancelDate()">Cancel</ion-button>
+            </ion-buttons>
+            <ion-title class="ion-text-center">Escoja nueva fecha</ion-title>
             <ion-buttons slot="end">
               <ion-button (click)="confirmDate()" [strong]="true">Confirm</ion-button>
             </ion-buttons>
           </ion-toolbar>
         </ion-header>
         <ion-content class="ion-padding">
-          <ion-item>
-            <ion-datetime [showDefaultTitle]="true" presentation="date" min="2024-03-01T00:00:00" max="2024-05-31T00:00:00" [isDateEnabled]="availableDays" [value]="task.date"></ion-datetime>
-          </ion-item>
+          <ion-grid class="ion-padding">
+            <ion-row class="ion-justify-content-center">
+              <ion-col size="auto">
+            <ion-datetime [showDefaultTitle]="true" presentation="date" min="2024-03-01T00:00:00" max="2024-05-31T00:00:00" [isDateEnabled]="availableDays" [value]="task.date" (ionChange)="handleChangeDate($event)"></ion-datetime>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
         </ion-content>
       </ng-template>
     </ion-modal>
     </ion-item>
-    <ion-item>
-      <ion-input [(ngModel)]="task.taskcontent" type="text" label="Tarea" labelPlacement="stacked"></ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-input [(ngModel)]="task.hours" type="number" label="Horas" labelPlacement="stacked"></ion-input>
+    <ion-input [(ngModel)]="task.taskcontent" type="text" label="Tarea" labelPlacement="stacked" fill="outline" helperText="Tarea realizada en la fecha" class="ion-margin-vertical"></ion-input>
+    <ion-input [(ngModel)]="task.hours" type="number" label="Horas" labelPlacement="stacked" fill="outline" helperText="Número de horas utilizadas" class="ion-margin-bottom"></ion-input>
+    <ion-item *ngIf="showDelete()">
+      <ion-grid>
+        <ion-row class="ion-justify-content-around">
+          <ion-col size="auto">
+            <ion-button color="danger" shape="round" size="default">Eliminar
+              <ion-icon name="close"></ion-icon>
+            </ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
     </ion-item>
   </ion-list>
 </ion-content>

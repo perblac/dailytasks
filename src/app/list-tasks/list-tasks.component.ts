@@ -31,16 +31,14 @@ export class ListTasksComponent{
       console.log(res);
       if (res.role === 'confirm') {
         this.taskservice.updateTask(res.data);
-      } else {
-
       }
       this.updateTasksArray();
     });
     console.log(id);
     await modal.present();
   }
-  removeTask(id:string) {
-    this.taskservice.removeTask(id);
+  removeTask(date:string) {
+    this.taskservice.removeTask(date);
     this.updateTasksArray();
   }
 
