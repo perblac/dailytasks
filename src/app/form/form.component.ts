@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {ModalController, NavParams} from "@ionic/angular";
-import {FormDataService} from "./form-data.service";
+import {FormDataService} from "../services/form-data.service";
 import {FormControl, FormGroup} from "@angular/forms";
 
 @Component({

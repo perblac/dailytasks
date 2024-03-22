@@ -1,53 +1,77 @@
-<ion-header class="ion-padding ion-text-center"><ion-toolbar>
-  <ion-buttons slot="start">
-    <ion-button color="medium" (click)="cancel()">Cancel</ion-button>
-  </ion-buttons>
-  <ion-title class="ion-text-center">Exportar pdf</ion-title>
-</ion-toolbar>
+<ion-header>
+  <ion-toolbar color="light">
+    <ion-buttons slot="start">
+      <ion-button color="medium" fill="solid" shape="round" (click)="cancel()">Cancelar</ion-button>
+    </ion-buttons>
+    <ion-title class="ion-text-center">Exportar pdf</ion-title>
+  </ion-toolbar>
 </ion-header>
-<ion-content class="ion-padding">
-  <ion-grid class="ion-padding">
+<ion-content>
+  <ion-list *ngIf="week.length > 0">
+    <ion-item color="light" lines="full">
+      <ion-col size="1" class="ion-text-nowrap ion-text-center">Dia</ion-col>
+      <ion-col size="2" class="ion-text-nowrap ion-text-center">Mes</ion-col>
+      <ion-col size="8" pull-xs="1" pull-sm="0" class="ion-text-nowrap ion-text-center">Tarea realizada</ion-col>
+      <ion-col size="1" pull-xs="1" pull-sm="0" class="ion-text-nowrap ion-text-center">Horas</ion-col>
+    </ion-item>
+    <ion-item *ngFor="let task of tasks" lines="full">
+      <ion-col size="1" class="ion-text-nowrap ion-text-center">
+        {{ task.date.slice(8,10) }}
+      </ion-col>
+      <ion-col size="2" class="ion-text-nowrap ion-text-center">
+        {{ task.date.slice(5,7) === '03' ? 'Marzo': task.date.slice(5,7) === '04' ? 'Abril' : 'Mayo' }}
+      </ion-col>
+      <ion-col size="8" class="ion-text-center">
+        {{ task.taskcontent }}
+      </ion-col>
+      <ion-col size="1" class="ion-text-nowrap ion-text-center">
+        {{ task.hours }} h.
+      </ion-col>
+    </ion-item>
+    <ion-button expand="block" color="primary" fill="solid" shape="round" (click)="generatePdf()">Generar pdf de esta semana</ion-button>
+  </ion-list>
+  <ion-grid>
     <ion-row class="ion-justify-content-center">
       <ion-col size="auto">
-        <ion-datetime [showDefaultTitle]="true" presentation="date" min="2024-03-01T00:00:00" max="2024-05-31T00:00:00" [isDateEnabled]="availableDays" (ionChange)="selectedWeek($event)">
+        <ion-datetime locale="es-ES" [showDefaultTitle]="true" presentation="date" min="2024-03-01T00:00:00" max="2024-05-31T00:00:00" [isDateEnabled]="availableDays" (ionChange)="selectedWeek($event)">
           <span slot="title">Escoja semana</span>
         </ion-datetime>
       </ion-col>
     </ion-row>
   </ion-grid>
-  <ion-grid>
+  <ion-grid *ngIf="week.length > 0" >
     <ion-row class="ion-justify-content-center">
       <ion-col size="12">
         <ion-item>
-          <ion-col size="1">
+          <ion-col size="1" class="ion-text-nowrap ion-text-center">
             Día
           </ion-col>
-          <ion-col size="2">
+          <ion-col size="2" class="ion-text-nowrap ion-text-center">
             Mes
           </ion-col>
-          <ion-col size="7">
-            Actividad
+          <ion-col size="8" class="ion-text-nowrap ion-text-center">
+            Tarea realizada
           </ion-col>
-          <ion-col size="1" class="ion-text-nowrap">
-            Tiempo
+          <ion-col size="1" class="ion-text-nowrap ion-text-center">
+            Horas
           </ion-col>
         </ion-item>
         <ion-item *ngFor="let task of tasks">
-          <ion-col size="1">
+          <ion-col size="1" class="ion-text-nowrap ion-text-center">
             {{ task.date.slice(8,10) }}
           </ion-col>
-          <ion-col size="2">
+          <ion-col size="2" class="ion-text-nowrap ion-text-center">
             {{ task.date.slice(5,7) === '03' ? 'Marzo': task.date.slice(5,7) === '04' ? 'Abril' : 'Mayo' }}
           </ion-col>
-          <ion-col size="7">
+          <ion-col size="8">
             {{ task.taskcontent }}
           </ion-col>
-          <ion-col size="1">
+          <ion-col size="1" class="ion-text-nowrap ion-text-center">
             {{ task.hours }} h.
           </ion-col>
         </ion-item>
       </ion-col>
     </ion-row>
-    <ion-button *ngIf="week.length > 0" (click)="generatePdf()">Generar pdf</ion-button>
+    <ion-button expand="block" color="primary" fill="solid" shape="round" (click)="generatePdf()">Generar pdf</ion-button>
   </ion-grid>
 </ion-content>

@@ -1,31 +1,39 @@
-<ion-header class="ion-padding ion-text-center">
-  <ion-title>Diario de tareas</ion-title>
+<ion-header>
+  <ion-toolbar color="light">
+    <ion-title class="ion-text-center">Diario de tareas</ion-title>
+  </ion-toolbar>
 </ion-header>
-<ion-content class="ion-padding">
-  <ion-grid>
-    <ion-item lines="full">
-      <ion-col size="1" class="ion-text-nowrap">Dia</ion-col>
-      <ion-col size="2" class="ion-text-nowrap">Mes</ion-col>
-      <ion-col size="8" class="ion-text-nowrap">Tarea realizada</ion-col>
-      <ion-col size="1" class="ion-text-nowrap">Horas</ion-col>
+<ion-content>
+  <ion-note *ngIf="groupedArray.length === 0">Aún no registró ninguna tarea. Pruebe a añadir una nueva pulsando el icono inferior derecho.</ion-note>
+  <ion-list *ngIf="groupedArray.length > 0">
+    <ion-item color="light" lines="full">
+      <ion-col size="1" class="ion-text-nowrap ion-text-center">Dia</ion-col>
+      <ion-col size="2" class="ion-text-nowrap ion-text-center">Mes</ion-col>
+      <ion-col size="8" pull-xs="1" pull-sm="0" class="ion-text-nowrap ion-text-center">Tarea realizada</ion-col>
+      <ion-col size="1" pull-xs="1" pull-sm="0" class="ion-text-nowrap ion-text-center">Horas</ion-col>
     </ion-item>
-  </ion-grid>
-  <ion-grid>
-    <ion-item button="true" *ngFor="let task of tasksarray" (click)="handleClick(task.id)">
-      <ion-col size="1">{{ task.date.slice(8,10) }}</ion-col>
-      <ion-col size="2" class="ion-text-nowrap">{{ task.date.slice(5,7) === '03' ? 'Marzo': task.date.slice(5,7) === '04' ? 'Abril' : 'Mayo' }}</ion-col>
-      <ion-col size="8">
-        <ion-label class="ion-text-nowrap">
-          {{ task.taskcontent }}
-        </ion-label>
-      </ion-col>
-      <ion-col size="1" class="ion-text-nowrap">{{ task.hours }} h.</ion-col>
-    </ion-item>
-  </ion-grid>
+    <ng-container *ngFor="let week of groupedArray">
+      <ion-item-group>
+        <ion-item-divider>
+          Semana {{ week.weekNumber }}
+        </ion-item-divider>
+        <ion-item button="true" *ngFor="let task of week.items" (click)="handleClick(task.id)" lines="full">
+          <ion-col size="1" class="ion-text-center">{{ task.date.slice(8,10) }}</ion-col>
+          <ion-col size="2" class="ion-text-nowrap ion-text-center">{{ task.date.slice(5,7) === '03' ? 'Marzo': task.date.slice(5,7) === '04' ? 'Abril' : 'Mayo' }}</ion-col>
+          <ion-col size="8">
+            <ion-label class="ion-text-nowrap">
+              {{ task.taskcontent }}
+            </ion-label>
+          </ion-col>
+          <ion-col size="1" class="ion-text-nowrap ion-text-center">{{ task.hours }} h.</ion-col>
+        </ion-item>
+      </ion-item-group>
+    </ng-container>
+  </ion-list>
 </ion-content>
 
-<ion-footer class="ion-padding">
-  <ion-toolbar>
+<ion-footer>
+  <ion-toolbar color="light" mode="ios">
     <ion-buttons slot="primary">
       <ion-button fill="solid" color="primary" shape="round" (click)="openModalNewTask()">
         <ion-icon name="add"></ion-icon>
@@ -40,4 +48,22 @@
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
+
+<!--  <ion-tabs>-->
+<!--    <ion-tab-bar slot="bottom">-->
+<!--      <ion-tab-button (click)="openModalExportToPdf()">-->
+<!--        <ion-icon name="receipt"></ion-icon>-->
+<!--        Exportar pdf-->
+<!--      </ion-tab-button>-->
+<!--      <ion-tab-button (click)="openModalDataForm()">-->
+<!--        <ion-icon name="school"></ion-icon>-->
+<!--        Datos de la práctica-->
+<!--      </ion-tab-button>-->
+<!--      <ion-tab-button (click)="openModalNewTask()">-->
+<!--        <ion-icon name="add-circle"></ion-icon>-->
+<!--        Nueva tarea-->
+<!--      </ion-tab-button>-->
+<!--    </ion-tab-bar>-->
+<!--  </ion-tabs>-->
+
 </ion-footer>

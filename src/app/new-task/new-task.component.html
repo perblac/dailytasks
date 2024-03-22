@@ -1,16 +1,16 @@
 <ion-header>
-  <ion-toolbar>
+  <ion-toolbar color="light">
     <ion-buttons slot="start">
-      <ion-button color="medium" (click)="cancel()">Cancel</ion-button>
+      <ion-button color="medium" fill="solid" shape="round" (click)="cancel()">Volver</ion-button>
     </ion-buttons>
-    <ion-title class="ion-text-center">Create new task</ion-title>
+    <ion-title class="ion-text-center">Añadir tarea</ion-title>
   </ion-toolbar>
 </ion-header>
 <ion-content class="ion-padding">
   <ion-grid class="ion-padding">
     <ion-row class="ion-justify-content-center">
       <ion-col size="auto">
-        <ion-datetime [showDefaultTitle]="true" presentation="date" min="2024-03-01T00:00:00" max="2024-05-31T00:00:00" [isDateEnabled]="availableDays" [(ngModel)]="date" (ionChange)="handleSelectDay($event)">
+        <ion-datetime locale="es-ES" [showDefaultTitle]="true" presentation="date" min="2024-03-01T00:00:00" max="2024-05-31T00:00:00" [isDateEnabled]="availableDays" [(ngModel)]="date" (ionChange)="handleSelectDay($event)">
           <span slot="title">Escoja día</span>
         </ion-datetime>
       </ion-col>

@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import {TasksService} from "../tasks/tasks.service";
+import {TasksService} from "../services/tasks.service";
 import {ModalController, Platform} from "@ionic/angular";
 import {Task} from "../interfaces/task.interface";
-import {FormDataService} from "../form/form-data.service";
+import {FormDataService} from "../services/form-data.service";
 import { PDFDocument } from 'pdf-lib';
 
 const months = [

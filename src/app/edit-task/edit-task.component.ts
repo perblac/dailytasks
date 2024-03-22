@@ -1,5 +1,5 @@
-import {Component, Input, ViewChild} from '@angular/core';
-import {TasksService} from "../tasks/tasks.service";
+import {booleanAttribute, Component, Input, ViewChild} from '@angular/core';
+import {TasksService} from "../services/tasks.service";
 import {AlertController, IonModal, ModalController} from "@ionic/angular";
 import {Task} from "../interfaces/task.interface";
 import { OverlayEventDetail } from '@ionic/core/components';
@@ -120,4 +120,6 @@ export class EditTaskComponent{
     }
     return undefined;
   }
+
+  protected readonly booleanAttribute = booleanAttribute;
 }

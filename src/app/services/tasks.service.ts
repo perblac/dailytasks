@@ -53,7 +53,7 @@ export class TasksService {
     let task = this.tasksArray.filter((task) => task.date.substring(0,10) === date.substring(0,10));
     return task.length > 0 ? task[0] : undefined;
   }
-  
+
   existsTask(date:string): boolean {
     return !!this.getTaskByDate(date);
   }

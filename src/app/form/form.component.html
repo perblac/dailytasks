@@ -1,60 +1,60 @@
 <ion-header>
-  <ion-toolbar>
+  <ion-toolbar color="light">
     <ion-buttons slot="start">
-      <ion-button color="medium" (click)="cancel()">Cancel</ion-button>
+      <ion-button color="medium" fill="solid" shape="round" (click)="cancel()">Cancelar</ion-button>
     </ion-buttons>
-    <ion-title class="ion-text-center">Datos de la ficha</ion-title>
+    <ion-title class="ion-text-center">Datos de la práctica</ion-title>
     <ion-buttons slot="end">
-      <ion-button (click)="confirm()" [strong]="true">Confirm</ion-button>
+      <ion-button color="primary" fill="solid" shape="round" (click)="confirm()" [strong]="true">Confirmar</ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 <ion-content>
   <form [formGroup]="formDataGroup">
-    <ion-list>
-      <ion-item class="form-group">
+    <ion-list class="form-group">
+      <ion-item lines="none">
         <ion-input class=" form-control" formControlName="alumno" type="text" label="Alumno" labelPlacement="floating" aria-label="Alumno" placeholder="Nombre del alumno..."></ion-input>
         <div *ngIf="formDataGroup.get('alumno')?.value === undefined || formDataGroup.get('alumno')?.value === ''" class="ion-text-right">
-          <small class="ion-color-warning">Introduzca el nombre del alumno en prácticas</small>
+          <small style="color: gray">Introduzca el nombre del alumno en prácticas</small>
         </div>
       </ion-item>
-      <ion-item>
+      <ion-item lines="none">
         <ion-input class="form-control" formControlName="ciclo" type="text" label="Ciclo Formativo" labelPlacement="floating" aria-label="Ciclo formativo" placeholder="Nombre del ciclo ..."></ion-input>
         <div *ngIf="formDataGroup.get('ciclo')?.value === undefined || formDataGroup.get('ciclo')?.value === ''" class="ion-text-right">
-          <small class="ion-color-warning">Introduzca el nombre del ciclo que realiza el alumno</small>
+          <small style="color: gray">Introduzca el nombre del ciclo que realiza el alumno</small>
         </div>
       </ion-item>
-      <ion-item>
+      <ion-item lines="none">
         <ion-select [class.empty] = "!formDataGroup.get('grado')?.touched && formDataGroup.get('grado')?.value === undefined" class="form-control" formControlName="grado" label="Grado" labelPlacement="floating" aria-label="Grado">
           <ion-select-option>Medio</ion-select-option>
           <ion-select-option>Superior</ion-select-option>
         </ion-select>
         <div *ngIf="formDataGroup.get('grado')?.value === undefined || formDataGroup.get('grado')?.value === ''" class="ion-text-right">
-          <small class="ion-color-warning">Seleccione el grado del ciclo que realiza el alumno</small>
+          <small style="color: gray">Seleccione el grado del ciclo que realiza el alumno</small>
         </div>
       </ion-item>
-      <ion-item>
+      <ion-item lines="none">
         <ion-input class="form-control" formControlName="centrodocente" type="text" label="Centro Docente" labelPlacement="floating" aria-label="Centro docente" placeholder="Nombre del centro docente ..."></ion-input>
         <div *ngIf="formDataGroup.get('centrodocente')?.value === undefined || formDataGroup.get('centrodocente')?.value === ''" class="ion-text-right">
-          <small class="ion-color-warning">Introduzca el nombre del centro docente al que pertenece el alumno</small>
+          <small style="color: gray">Introduzca el nombre del centro docente al que pertenece el alumno</small>
         </div>
       </ion-item>
-      <ion-item>
+      <ion-item lines="none">
         <ion-input class="form-control" formControlName="profesor" type="text" label="Profesor Responsable Seguimiento" labelPlacement="floating" aria-label="Profesor responsable seguimiento" placeholder="Nombre del profesor ..."></ion-input>
         <div *ngIf="formDataGroup.get('profesor')?.value === undefined || formDataGroup.get('profesor')?.value === ''" class="ion-text-right">
-          <small class="ion-color-warning">Introduzca el nombre del profesor que tutoriza las prácticas del alumno</small>
+          <small style="color: gray">Introduzca el nombre del profesor que tutoriza las prácticas del alumno</small>
         </div>
       </ion-item>
-      <ion-item>
+      <ion-item lines="none">
         <ion-input class="form-control" formControlName="centrotrabajo" type="text" label="Centro de Trabajo Colaborador" labelPlacement="floating" aria-label="Centro de trabajo colaborador" placeholder="Nombre del centro de trabajo ..."></ion-input>
         <div *ngIf="formDataGroup.get('centrotrabajo')?.value === undefined || formDataGroup.get('centrotrabajo')?.value === ''" class="ion-text-right">
-          <small class="ion-color-warning">Introduzca el nombre del centro de trabajo donde realiza las prácticas el alumno</small>
+          <small style="color: gray">Introduzca el nombre del centro de trabajo donde realiza las prácticas el alumno</small>
         </div>
       </ion-item>
-      <ion-item>
+      <ion-item lines="none">
         <ion-input formControlName="tutor" type="text" label="Tutor del Centro de Trabajo" labelPlacement="floating" aria-label="Tutor del centro de trabajo" placeholder="Nombre del tutor ..."></ion-input>
         <div *ngIf="formDataGroup.get('tutor')?.value === undefined || formDataGroup.get('tutor')?.value === ''" class="ion-text-right">
-          <small class="ion-color-warning">Introduzca el nombre del tutor del alumno en el centro de trabajo</small>
+          <small style="color: gray">Introduzca el nombre del tutor del alumno en el centro de trabajo</small>
         </div>
       </ion-item>
     </ion-list>

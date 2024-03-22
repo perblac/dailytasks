@@ -1,60 +1,70 @@
 <ion-header>
-  <ion-toolbar>
+  <ion-toolbar color="light">
     <ion-buttons slot="start">
-      <ion-button color="medium" (click)="cancel()">Cancel</ion-button>
+      <ion-button color="medium" fill="solid" shape="round" (click)="cancel()">Cancelar</ion-button>
     </ion-buttons>
-    <ion-title class="ion-text-center">Edit task</ion-title>
+    <ion-title class="ion-text-center">Editar tarea</ion-title>
     <ion-buttons slot="end">
-      <ion-button (click)="confirm()" [strong]="true">Confirm</ion-button>
+      <ion-button color="primary" fill="solid" shape="round" (click)="confirm()" [strong]="true" [disabled]="taskInput.errors || taskHours.errors">Confirmar</ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
+
 <ion-content>
   <ion-list class="ion-padding">
     <ion-item button="true" id="open-modal-date" slot="center">
-      <ion-label class="ion-justify-content-around">
+      <ion-label class="ion-text-center ion-text-nowrap">
         <span>
           Día {{ task.date.slice(8,10) }} de {{ task.date.slice(5,7) === '03' ? 'Marzo': task.date.slice(5,7) === '04' ? 'Abril' : 'Mayo' }}
         </span>
-        <small>(Pulse aqui para cambiar la fecha)</small>
+        <ion-label color="medium">
+          <small>(Pulse aqui para cambiar la fecha)</small>
+        </ion-label>
       </ion-label>
       <ion-modal trigger="open-modal-date">
-      <ng-template>
-        <ion-header>
-          <ion-toolbar>
-            <ion-buttons slot="start">
-              <ion-button color="medium" (click)="cancelDate()">Cancel</ion-button>
-            </ion-buttons>
-            <ion-title class="ion-text-center">Escoja nueva fecha</ion-title>
-            <ion-buttons slot="end">
-              <ion-button (click)="confirmDate()" [strong]="true">Confirm</ion-button>
-            </ion-buttons>
-          </ion-toolbar>
-        </ion-header>
-        <ion-content class="ion-padding">
-          <ion-grid class="ion-padding">
-            <ion-row class="ion-justify-content-center">
-              <ion-col size="auto">
-            <ion-datetime [showDefaultTitle]="true" presentation="date" min="2024-03-01T00:00:00" max="2024-05-31T00:00:00" [isDateEnabled]="availableDays" [value]="task.date" (ionChange)="handleChangeDate($event)"></ion-datetime>
-              </ion-col>
-            </ion-row>
-          </ion-grid>
-        </ion-content>
-      </ng-template>
-    </ion-modal>
+        <ng-template>
+          <ion-header>
+            <ion-toolbar>
+              <ion-buttons slot="start">
+                <ion-button color="medium" (click)="cancelDate()">Cancel</ion-button>
+              </ion-buttons>
+              <ion-title class="ion-text-center">Escoja nueva fecha</ion-title>
+              <ion-buttons slot="end">
+                <ion-button (click)="confirmDate()" [strong]="true">Confirm</ion-button>
+              </ion-buttons>
+            </ion-toolbar>
+          </ion-header>
+          <ion-content class="ion-padding">
+            <ion-grid class="ion-padding">
+              <ion-row class="ion-justify-content-center">
+                <ion-col size="auto">
+                  <ion-datetime locale="es-ES" [showDefaultTitle]="true" presentation="date" min="2024-03-01T00:00:00" max="2024-05-31T00:00:00" [isDateEnabled]="availableDays" [value]="task.date" (ionChange)="handleChangeDate($event)"></ion-datetime>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </ion-content>
+        </ng-template>
+      </ion-modal>
     </ion-item>
-    <ion-input [(ngModel)]="task.taskcontent" type="text" label="Tarea" labelPlacement="stacked" fill="outline" helperText="Tarea realizada en la fecha" class="ion-margin-vertical"></ion-input>
-    <ion-input [(ngModel)]="task.hours" type="number" label="Horas" labelPlacement="stacked" fill="outline" helperText="Número de horas utilizadas" class="ion-margin-bottom"></ion-input>
-    <ion-item *ngIf="showDelete()">
-      <ion-grid>
-        <ion-row class="ion-justify-content-around">
-          <ion-col size="auto">
-            <ion-button color="danger" shape="round" size="default">Eliminar
-              <ion-icon name="close"></ion-icon>
-            </ion-button>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-    </ion-item>
+    <div *ngIf="taskInput.errors && taskInput.invalid">
+      <small *ngIf="taskInput.errors['required']" style="color: red">Por favor rellene este campo</small>
+    </div>
+    <ion-input [(ngModel)]="task.taskcontent" type="text" label="Tarea" #taskInput="ngModel" required labelPlacement="stacked" fill="outline" helperText="Tarea realizada en la fecha" class="ion-margin-vertical"></ion-input>
+
+    <div *ngIf="taskHours.errors && taskHours.invalid" class="ion-margin-vertical">
+      <small *ngIf="taskHours.invalid" style="color: red">Introduzca un número de horas entre 1 y 24</small>
+    </div>
+    <ion-input [(ngModel)]="task.hours" type="number" label="Horas" #taskHours="ngModel" labelPlacement="stacked" fill="outline" helperText="Número de horas utilizadas" class="ion-margin-bottom" min="1" max="24"></ion-input>
   </ion-list>
 </ion-content>
+
+<ion-footer>
+  <ion-toolbar color="light" mode="ios">
+    <ion-buttons slot="primary">
+      <ion-button *ngIf="showDelete()" fill="solid" color="danger" shape="round">
+        Eliminar
+        <ion-icon name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-footer>
