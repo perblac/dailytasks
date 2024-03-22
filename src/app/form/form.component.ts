@@ -9,14 +9,6 @@ import {FormControl, FormGroup} from "@angular/forms";
   styleUrls: ['./form.component.scss'],
 })
 export class FormComponent {
-  public alumno: string = '';
-  public ciclo: string = '';
-  public grado: string = '';
-  public centrodocente: string = '';
-  public profesor: string = '';
-  public centrotrabajo: string = '';
-  public tutor: string = '';
-
   formDataGroup = new FormGroup({
     alumno: new FormControl(''),
     ciclo: new FormControl(''),
@@ -29,13 +21,13 @@ export class FormComponent {
 
   constructor(private modalCtrl:ModalController, private formDataService: FormDataService) {
     const { alumno, ciclo, grado, centrodocente, profesor, centrotrabajo, tutor } = this.formDataService.getData();
-    this.alumno = alumno;
-    this.ciclo = ciclo;
-    this.grado = grado;
-    this.centrodocente = centrodocente;
-    this.profesor = profesor;
-    this.centrotrabajo = centrotrabajo;
-    this.tutor = tutor;
+    this.formDataGroup.get('alumno')?.setValue(alumno);
+    this.formDataGroup.get('ciclo')?.setValue(ciclo);
+    this.formDataGroup.get('grado')?.setValue(grado);
+    this.formDataGroup.get('centrodocente')?.setValue(centrodocente);
+    this.formDataGroup.get('profesor')?.setValue(profesor);
+    this.formDataGroup.get('centrotrabajo')?.setValue(centrotrabajo);
+    this.formDataGroup.get('tutor')?.setValue(tutor);
   }
 
   cancel() {
@@ -48,14 +40,21 @@ export class FormComponent {
   }
 
   getDataObject() {
+    const alumno = this.formDataGroup.get('alumno')?.value;
+    const ciclo = this.formDataGroup.get('ciclo')?.value;
+    const grado = this.formDataGroup.get('grado')?.value;
+    const centrodocente = this.formDataGroup.get('centrodocente')?.value;
+    const profesor = this.formDataGroup.get('profesor')?.value;
+    const centrotrabajo = this.formDataGroup.get('centrotrabajo')?.value;
+    const tutor = this.formDataGroup.get('tutor')?.value;
     return {
-      alumno: this.alumno,
-      ciclo: this.ciclo,
-      grado: this.grado,
-      centrodocente: this.centrodocente,
-      profesor: this.profesor,
-      centrotrabajo: this.centrotrabajo,
-      tutor: this.tutor,
+      alumno,
+      ciclo,
+      grado,
+      centrodocente,
+      profesor,
+      centrotrabajo,
+      tutor,
     }
   }
 }

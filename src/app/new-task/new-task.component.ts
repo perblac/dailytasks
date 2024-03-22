@@ -44,6 +44,11 @@ export class NewTaskComponent {
     this.taskcontent = '';
   }
 
+  handleSelectDay(event: CustomEvent) {
+    const selectedDate = event.detail.value;
+    console.log(selectedDate);
+  }
+
   async handleSave() {
     if (this.taskservice.existsTask(this.getId())) {
       const alert = await this.alertController.create({
