@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import {Component} from '@angular/core';
 import {TasksService} from "../services/tasks.service";
 import {ModalController, Platform} from "@ionic/angular";
 import {Task} from "../interfaces/task.interface";
 import {FormDataService} from "../services/form-data.service";
-import { PDFDocument } from 'pdf-lib';
+import {PDFDocument} from 'pdf-lib';
+import { FileSharer } from '@byteowls/capacitor-filesharer';
 
 const months = [
   'Enero',
@@ -28,11 +29,27 @@ export class ExportToPdfComponent {
 
   public week: string[] = [];
   public tasks: Task[] = [];
+  private platform: Platform;
   constructor(
+    platform: Platform,
     private tasksService: TasksService,
     private modalCtrl: ModalController,
     private formDataService: FormDataService,
-  ) {}
+  ) {
+    this.platform = platform;
+  }
+
+  async blobToBase64 (blob: Blob) {
+    return new Promise<string>((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => {
+        const base64data = reader.result as string;
+        resolve(base64data.split(',')[1]);
+      };
+      reader.onerror = error => reject(error);
+      reader.readAsDataURL(blob);
+    });
+  };
 
   public async generatePdf() {
     const { alumno, ciclo, grado, centrodocente, profesor, centrotrabajo, tutor } = this.formDataService.getData();
@@ -103,11 +120,26 @@ export class ExportToPdfComponent {
     const blob = new Blob([pdfBytes], { type: 'application/pdf' });
     const url = URL.createObjectURL(blob);
 
-    const downloadLink = document.createElement("a");
-    downloadLink.href = url;
-    downloadLink.download = `ficha_del_${firstDay}_al_${lastDay}_de_${month}.pdf`;
-    downloadLink.click();
-    // TODO: download in mobile devices
+    if (this.platform.is('hybrid')) {
+      // download in mobile devices via share
+      const base64data = await  this.blobToBase64(blob);
+      FileSharer.share({
+        filename: `ficha_del_${firstDay}_al_${lastDay}_de_${month}.pdf`,
+        contentType: "application/pdf",
+        base64Data: base64data,
+      }).then(() => {
+        // do sth
+        console.log('pdf emitido');
+      }).catch(error => {
+        console.error("File sharing failed", error.message);
+      });
+    } else {
+      // download in web via download link
+      const downloadLink = document.createElement("a");
+      downloadLink.href = url;
+      downloadLink.download = `ficha_del_${firstDay}_al_${lastDay}_de_${month}.pdf`;
+      downloadLink.click();
+    }
   }
 
   public selectedWeek(event:any) {
