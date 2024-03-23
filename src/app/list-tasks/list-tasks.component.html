@@ -4,7 +4,23 @@
   </ion-toolbar>
 </ion-header>
 <ion-content>
-  <ion-note *ngIf="groupedArray.length === 0">Aún no registró ninguna tarea. Pruebe a añadir una nueva pulsando el icono inferior derecho.</ion-note>
+  <ion-grid *ngIf="groupedArray.length === 0" class="ion-padding ion-margin ion-text-center">
+    <ion-row>
+      <ion-col size="8" offset="2" class="ion-margin-vertical">
+        Aún no registró ninguna tarea.
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="8" offset="2">
+        Pruebe a añadir una nueva tarea pulsando el icono inferior derecho.
+      </ion-col>
+    </ion-row>
+    <ion-row class="ion-justify-content-center">
+      <ion-col>
+        <ion-icon name="add-circle" size="large" color="primary"></ion-icon>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
   <ion-list *ngIf="groupedArray.length > 0">
     <ion-item color="light" lines="full">
       <ion-col size="1" class="ion-text-nowrap ion-text-center">Dia</ion-col>
@@ -48,22 +64,4 @@
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
-
-<!--  <ion-tabs>-->
-<!--    <ion-tab-bar slot="bottom">-->
-<!--      <ion-tab-button (click)="openModalExportToPdf()">-->
-<!--        <ion-icon name="receipt"></ion-icon>-->
-<!--        Exportar pdf-->
-<!--      </ion-tab-button>-->
-<!--      <ion-tab-button (click)="openModalDataForm()">-->
-<!--        <ion-icon name="school"></ion-icon>-->
-<!--        Datos de la práctica-->
-<!--      </ion-tab-button>-->
-<!--      <ion-tab-button (click)="openModalNewTask()">-->
-<!--        <ion-icon name="add-circle"></ion-icon>-->
-<!--        Nueva tarea-->
-<!--      </ion-tab-button>-->
-<!--    </ion-tab-bar>-->
-<!--  </ion-tabs>-->
-
 </ion-footer>

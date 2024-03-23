@@ -28,6 +28,17 @@ export class EditTaskComponent{
       role: 'confirm',
     }
   ];
+
+  public deleteAlertButtons = [
+    {
+      text: 'Cancelar',
+      role: 'cancel',
+    },
+    {
+      text: 'Sí, Eliminar',
+      role: 'confirm',
+    }
+  ];
   constructor(private tasksService: TasksService, private modalCtrl: ModalController, private taskservice: TasksService, private alertController: AlertController) {
   }
 
@@ -96,6 +107,34 @@ export class EditTaskComponent{
     return this.taskservice.existsTask(this.task.date);
   }
 
+  async handleDelete() {
+    // get top modal id
+    const topModal = await this.modalCtrl.getTop();
+    const modalId = topModal ? topModal.id : null;
+
+    // get day and month
+    const dateToDelete = new Date(this.task.date);
+    const day = dateToDelete.getDate();
+    const monthNumber = dateToDelete.getMonth() + 1;
+    const month = (monthNumber === 3) ? 'Marzo' : (monthNumber === 4) ? 'Abril' : 'Mayo';
+
+    const alert = await this.alertController.create(
+      {
+        header: 'Esta acción es irreversible',
+        message: `¿Está seguro de que desea eliminar la entrada del día ${day} de ${month}?`,
+        subHeader: `Tarea: ${this.task.taskcontent} (${this.task.hours} h.)`,
+        buttons: this.deleteAlertButtons,
+      }
+    );
+    alert.onWillDismiss().then(res => {
+      if (res.role === 'confirm') {
+        this.tasksService.removeTask(this.task.date);
+        this.modalCtrl.dismiss(null, 'delete', modalId!);
+      }
+    });
+    await alert.present();
+  }
+
   availableDays(dateString: string) {
     const date = new Date(dateString);
     const utcDay = date.getUTCDate();
@@ -112,14 +151,4 @@ export class EditTaskComponent{
 
     return available;
   }
-
-  onWillDismiss(event: Event) {
-    const ev = event as CustomEvent<OverlayEventDetail<string>>;
-    if (ev.detail.role === 'confirm') {
-      return this.task;
-    }
-    return undefined;
-  }
-
-  protected readonly booleanAttribute = booleanAttribute;
 }

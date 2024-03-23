@@ -20,7 +20,8 @@ interface WeekGroup {
 })
 export class ListTasksComponent{
   public tasksArray: Task[] = this.tasksService.getTasks();
-  public groupedArray = this.tasksArray.reduce((acc:WeekGroup[], task:Task) => {
+
+  private getGroupedArray = () => this.tasksArray.reduce((acc:WeekGroup[], task:Task) => {
     const weekNumber = this.getWeekNumber(task.date);
     const weekArray = acc.find(week => week.weekNumber === weekNumber);
     if (weekArray) {
@@ -33,6 +34,8 @@ export class ListTasksComponent{
     }
     return acc;
   }, []);
+
+  public groupedArray = this.getGroupedArray();
 
   constructor(private tasksService: TasksService, private modalCtrl: ModalController, private formDataService: FormDataService) {
     this.updateTasksArray();
@@ -65,7 +68,10 @@ export class ListTasksComponent{
     const modal = await this.modalCtrl.create({
       component: NewTaskComponent,
     });
-    modal.onDidDismiss().then(() => this.updateTasksArray());
+    modal.onWillDismiss().then((res) => {
+      console.log(res);
+      this.updateTasksArray();
+    });
     await modal.present();
   }
 
@@ -87,11 +93,11 @@ export class ListTasksComponent{
     let list = this.tasksService.getTasks();
     list?.sort((a,b)=>(new Date(a.date) > new Date(b.date) ? 1 : -1));
     this.tasksArray = list;
+    this.groupedArray = this.getGroupedArray();
   }
 
   private getWeekNumber(date: string):number {
     const taskDate = new Date(date);
-    console.log('origDate:',taskDate);
     taskDate.setHours(0,0,0,0);
     const dayOfWeek = taskDate.getDay() || 7;
     const centerOfWeek = 4;
@@ -103,4 +109,5 @@ export class ListTasksComponent{
     // console.log('week:', weekNumber);
     return weekNumber;
   }
+
 }

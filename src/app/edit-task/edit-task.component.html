@@ -61,7 +61,7 @@
 <ion-footer>
   <ion-toolbar color="light" mode="ios">
     <ion-buttons slot="primary">
-      <ion-button *ngIf="showDelete()" fill="solid" color="danger" shape="round">
+      <ion-button *ngIf="showDelete()" fill="solid" color="danger" shape="round" (click)="handleDelete()">
         Eliminar
         <ion-icon name="close"></ion-icon>
       </ion-button>
