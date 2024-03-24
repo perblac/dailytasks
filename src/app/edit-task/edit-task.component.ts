@@ -3,6 +3,7 @@ import {TasksService} from "../services/tasks.service";
 import {AlertController, IonModal, ModalController} from "@ionic/angular";
 import {Task} from "../interfaces/task.interface";
 import { OverlayEventDetail } from '@ionic/core/components';
+import {MonthService} from "../services/month.service";
 
 @Component({
   selector: 'app-edit-task',
@@ -39,7 +40,13 @@ export class EditTaskComponent{
       role: 'confirm',
     }
   ];
-  constructor(private tasksService: TasksService, private modalCtrl: ModalController, private taskservice: TasksService, private alertController: AlertController) {
+  constructor(
+    private tasksService: TasksService,
+    private modalCtrl: ModalController,
+    private taskservice: TasksService,
+    private alertController: AlertController,
+    public monthService: MonthService,
+  ) {
   }
 
   cancel() {
@@ -116,7 +123,7 @@ export class EditTaskComponent{
     const dateToDelete = new Date(this.task.date);
     const day = dateToDelete.getDate();
     const monthNumber = dateToDelete.getMonth() + 1;
-    const month = (monthNumber === 3) ? 'Marzo' : (monthNumber === 4) ? 'Abril' : 'Mayo';
+    const month = this.monthService.getMonth(1 + monthNumber);
 
     const alert = await this.alertController.create(
       {
@@ -151,4 +158,6 @@ export class EditTaskComponent{
 
     return available;
   }
+
+  protected readonly parseInt = parseInt;
 }

@@ -19,7 +19,7 @@
         {{ task.date.slice(8,10) }}
       </ion-col>
       <ion-col size="2" class="ion-text-nowrap ion-text-center">
-        {{ task.date.slice(5,7) === '03' ? 'Marzo': task.date.slice(5,7) === '04' ? 'Abril' : 'Mayo' }}
+        {{ monthService.getMonth(parseInt(task.date.slice(5,7))) }}
       </ion-col>
       <ion-col size="8" class="ion-text-center">
         {{ task.taskcontent }}
@@ -33,7 +33,7 @@
   <ion-grid>
     <ion-row class="ion-justify-content-center">
       <ion-col size="auto">
-        <ion-datetime locale="es-ES" [showDefaultTitle]="true" presentation="date" min="2024-03-01T00:00:00" max="2024-05-31T00:00:00" [isDateEnabled]="availableDays" (ionChange)="selectedWeek($event)">
+        <ion-datetime locale="es-ES" [firstDayOfWeek]="1" [showDefaultTitle]="true" presentation="date" min="2024-03-01T00:00:00" max="2024-05-31T00:00:00" [isDateEnabled]="availableDays" (ionChange)="selectedWeek($event)">
           <span slot="title">Escoja semana</span>
         </ion-datetime>
       </ion-col>

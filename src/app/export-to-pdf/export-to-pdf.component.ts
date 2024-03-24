@@ -5,21 +5,8 @@ import {Task} from "../interfaces/task.interface";
 import {FormDataService} from "../services/form-data.service";
 import {PDFDocument} from 'pdf-lib';
 import { FileSharer } from '@byteowls/capacitor-filesharer';
+import {MonthService} from "../services/month.service";
 
-const months = [
-  'Enero',
-  'Febrero',
-  'Marzo',
-  'Abril',
-  'Mayo',
-  'Junio',
-  'Julio',
-  'Agosto',
-  'Septiembre',
-  'Octubre',
-  'Noviembre',
-  'Diciembre'
-]
 @Component({
   selector: 'app-export-to-pdf',
   templateUrl: './export-to-pdf.component.html',
@@ -35,6 +22,7 @@ export class ExportToPdfComponent {
     private tasksService: TasksService,
     private modalCtrl: ModalController,
     private formDataService: FormDataService,
+    public monthService: MonthService,
   ) {
     this.platform = platform;
   }
@@ -58,17 +46,15 @@ export class ExportToPdfComponent {
     const lastDate = new Date(this.week[4]);
     const firstDay = firstDate.getDate().toString();
     const lastDay = lastDate.getDate().toString();
-    const firstMonth = months[firstDate.getMonth()];
-    const lastMonth = months[lastDate.getMonth()];
+    const firstMonth = this.monthService.getMonth(1 + firstDate.getMonth());
+    const lastMonth = this.monthService.getMonth(1 + lastDate.getMonth());
     const month = (firstMonth != lastMonth) ? `${firstMonth}/${lastMonth}` : firstMonth;
     const year = firstDate.getFullYear().toString().slice(2,4);
 
     const file = './assets/ficha.pdf'
     const formPdfBytes = await fetch(file).then(res => res.arrayBuffer());
-    console.log('#'+firstDay+'#', firstDay.length);
 
     const pdfDoc = await PDFDocument.load(formPdfBytes);
-
     const form = pdfDoc.getForm();
 
     const dia1 = form.getTextField('dia1');
@@ -97,6 +83,10 @@ export class ExportToPdfComponent {
     const actArr = [actividad0,actividad1,actividad2,actividad3,actividad4];
     const tiemArr = [tiempo0,tiempo1,tiempo2,tiempo3,tiempo4];
 
+    const firmaAlumno = form.getTextField('firma_alumno');
+    const firmaProfe = form.getTextField('firma_profe');
+    const firmaTutor = form.getTextField('firma_tutor');
+
     dia1.setText(firstDay);
     dia2.setText(lastDay);
     mes.setText(month);
@@ -106,6 +96,9 @@ export class ExportToPdfComponent {
     centro_trabajo.setText(centrotrabajo);
     tutorF.setText(tutor);
     alumnoF.setText(alumno);
+    firmaAlumno.setText(alumno);
+    firmaProfe.setText(profesor);
+    firmaTutor.setText(tutor);
     cicloF.setText(ciclo);
     gradoF.setText(grado);
     actArr.forEach((field, index) => {
@@ -176,4 +169,6 @@ export class ExportToPdfComponent {
   cancel() {
     return this.modalCtrl.dismiss(null, 'cancel');
   }
+
+  protected readonly parseInt = parseInt;
 }

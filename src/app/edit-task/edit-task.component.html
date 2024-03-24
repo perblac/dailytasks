@@ -15,7 +15,7 @@
     <ion-item button="true" id="open-modal-date" slot="center">
       <ion-label class="ion-text-center ion-text-nowrap">
         <span>
-          Día {{ task.date.slice(8,10) }} de {{ task.date.slice(5,7) === '03' ? 'Marzo': task.date.slice(5,7) === '04' ? 'Abril' : 'Mayo' }}
+          Día {{ task.date.slice(8,10) }} de {{ monthService.getMonth(parseInt(task.date.slice(5,7))) }}
         </span>
         <ion-label color="medium">
           <small>(Pulse aqui para cambiar la fecha)</small>
@@ -38,7 +38,9 @@
             <ion-grid class="ion-padding">
               <ion-row class="ion-justify-content-center">
                 <ion-col size="auto">
-                  <ion-datetime locale="es-ES" [showDefaultTitle]="true" presentation="date" min="2024-03-01T00:00:00" max="2024-05-31T00:00:00" [isDateEnabled]="availableDays" [value]="task.date" (ionChange)="handleChangeDate($event)"></ion-datetime>
+                  <ion-datetime locale="es-ES" [firstDayOfWeek]="1" [showDefaultTitle]="true" presentation="date" min="2024-03-01T00:00:00" max="2024-05-31T00:00:00" [isDateEnabled]="availableDays" [value]="task.date" (ionChange)="handleChangeDate($event)">
+                    <span slot="title"></span>
+                  </ion-datetime>
                 </ion-col>
               </ion-row>
             </ion-grid>

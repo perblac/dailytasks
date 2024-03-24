@@ -5,8 +5,8 @@ import {ModalController} from "@ionic/angular";
 import {NewTaskComponent} from "../new-task/new-task.component";
 import {ExportToPdfComponent} from "../export-to-pdf/export-to-pdf.component";
 import {FormComponent} from "../form/form.component";
-import {FormDataService} from "../services/form-data.service";
 import {EditTaskComponent} from "../edit-task/edit-task.component";
+import {MonthService} from "../services/month.service";
 
 interface WeekGroup {
   weekNumber?: number,
@@ -19,6 +19,7 @@ interface WeekGroup {
   styleUrls: ['./list-tasks.component.scss'],
 })
 export class ListTasksComponent{
+
   public tasksArray: Task[] = this.tasksService.getTasks();
 
   private getGroupedArray = () => this.tasksArray.reduce((acc:WeekGroup[], task:Task) => {
@@ -37,7 +38,11 @@ export class ListTasksComponent{
 
   public groupedArray = this.getGroupedArray();
 
-  constructor(private tasksService: TasksService, private modalCtrl: ModalController, private formDataService: FormDataService) {
+  constructor(
+    private tasksService: TasksService,
+    private modalCtrl: ModalController,
+    public monthService: MonthService,
+  ) {
     this.updateTasksArray();
   }
 
@@ -110,4 +115,5 @@ export class ListTasksComponent{
     return weekNumber;
   }
 
+  protected readonly parseInt = parseInt;
 }
