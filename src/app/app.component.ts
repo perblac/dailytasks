@@ -1,4 +1,7 @@
-import { Component } from '@angular/core';
+import {Component, Optional} from '@angular/core';
+import {IonRouterOutlet, Platform} from "@ionic/angular";
+import { App } from '@capacitor/app';
+import { Dialog } from '@capacitor/dialog';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +9,26 @@ import { Component } from '@angular/core';
   styleUrls: ['app.component.scss'],
 })
 export class AppComponent {
-  constructor() {}
+  constructor(private platform: Platform,
+              @Optional() private routerOutlet?: IonRouterOutlet) {
+    this.platform.backButton.subscribe(() => {
+      if (!this.routerOutlet?.canGoBack()) {
+        this.showConfirm()
+          .then(res => {
+            if (res) App.exitApp();
+          })
+          .catch(err => console.error(err));
+      }
+    });
+  }
+
+  async showConfirm() {
+    const { value } = await Dialog.confirm({
+      title: 'Confirme salida',
+      message: '¿Está seguro de que quiere cerrar la aplicación?',
+      okButtonTitle: 'Sí, salir',
+      cancelButtonTitle: 'Cancelar',
+    });
+    return value;
+  }
 }
