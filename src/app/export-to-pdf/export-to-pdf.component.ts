@@ -27,6 +27,10 @@ export class ExportToPdfComponent {
     this.platform = platform;
   }
 
+  /**
+   * Converts blob to base64 data for using in file sharing. It takes the data and leaves the descriptor.
+   * @param blob {Blob} Original blob to convert
+   */
   async blobToBase64 (blob: Blob) {
     return new Promise<string>((resolve, reject) => {
       const reader = new FileReader();
@@ -39,9 +43,14 @@ export class ExportToPdfComponent {
     });
   };
 
+  /**
+   * Handles the pdf form filling and file downloading
+   */
   public async generatePdf() {
+    // data from the form
     const { alumno, ciclo, grado, centrodocente, profesor, centrotrabajo, tutor } = this.formDataService.getData();
 
+    // month(s) and year data
     const firstDate = new Date(this.week[0]);
     const lastDate = new Date(this.week[4]);
     const firstDay = firstDate.getDate().toString();
@@ -51,12 +60,14 @@ export class ExportToPdfComponent {
     const month = (firstMonth != lastMonth) ? `${firstMonth}/${lastMonth}` : firstMonth;
     const year = firstDate.getFullYear().toString().slice(2,4);
 
+    // original pdf document
     const file = './assets/ficha.pdf'
     const formPdfBytes = await fetch(file).then(res => res.arrayBuffer());
 
     const pdfDoc = await PDFDocument.load(formPdfBytes);
     const form = pdfDoc.getForm();
 
+    // pdf fields
     const dia1 = form.getTextField('dia1');
     const dia2 = form.getTextField('dia2');
     const mes = form.getTextField('mes');
@@ -87,6 +98,7 @@ export class ExportToPdfComponent {
     const firmaProfe = form.getTextField('firma_profe');
     const firmaTutor = form.getTextField('firma_tutor');
 
+    // setting data into fields
     dia1.setText(firstDay);
     dia2.setText(lastDay);
     mes.setText(month);
@@ -108,11 +120,13 @@ export class ExportToPdfComponent {
       field.setText(`${this.tasks[index].hours} horas`);
     });
 
+    // saving resulting pdf document
     const pdfBytes = await pdfDoc.save();
 
     const blob = new Blob([pdfBytes], { type: 'application/pdf' });
     const url = URL.createObjectURL(blob);
 
+    // downloading
     if (this.platform.is('hybrid')) {
       // download in mobile devices via share
       const base64data = await  this.blobToBase64(blob);
@@ -121,7 +135,6 @@ export class ExportToPdfComponent {
         contentType: "application/pdf",
         base64Data: base64data,
       }).then(() => {
-        // do sth
         console.log('pdf emitido');
       }).catch(error => {
         console.error("File sharing failed", error.message);
@@ -135,6 +148,10 @@ export class ExportToPdfComponent {
     }
   }
 
+  /**
+   * Handles week selection by clicking on a date. Loads tasks from chosen week
+   * @param event Event from the ion-datetime ionChange
+   */
   public selectedWeek(event:any) {
     const dayDate = event.detail.value;
     const dateOfDay = new Date(dayDate);

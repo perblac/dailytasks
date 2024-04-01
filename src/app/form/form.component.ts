@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import {ModalController, NavParams} from "@ionic/angular";
+import { Component } from '@angular/core';
+import {ModalController} from "@ionic/angular";
 import {FormDataService} from "../services/form-data.service";
 import {FormControl, FormGroup} from "@angular/forms";
 
@@ -39,6 +39,9 @@ export class FormComponent {
     return this.modalCtrl.dismiss('', 'confirm');
   }
 
+  /**
+   * Returns an object with the form data
+   */
   getDataObject() {
     const alumno = this.formDataGroup.get('alumno')?.value;
     const ciclo = this.formDataGroup.get('ciclo')?.value;

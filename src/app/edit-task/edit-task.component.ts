@@ -1,8 +1,7 @@
-import {booleanAttribute, Component, Input, ViewChild} from '@angular/core';
+import {Component, Input, ViewChild} from '@angular/core';
 import {TasksService} from "../services/tasks.service";
 import {AlertController, IonModal, ModalController} from "@ionic/angular";
 import {Task} from "../interfaces/task.interface";
-import { OverlayEventDetail } from '@ionic/core/components';
 import {MonthService} from "../services/month.service";
 
 @Component({
@@ -16,7 +15,7 @@ export class EditTaskComponent{
 
   private newId: string = '';
   private newDate: string = '';
-  private newTaskcontent: string = '';
+  private newTaskContent: string = '';
   private newHours: number = 0;
 
   public alertButtons = [
@@ -53,29 +52,33 @@ export class EditTaskComponent{
     return this.modalCtrl.dismiss(null, 'cancel');
   }
 
-  cancelDate() {
-    return this.modalCtrl.dismiss(null, 'cancel');
-  }
-
   confirm() {
     return this.modalCtrl.dismiss(this.task, 'confirm');
   }
 
+  cancelDate() {
+    return this.modalCtrl.dismiss(null, 'cancel');
+  }
+
+  /**
+   * Handles confirmation of a new date
+   */
   confirmDate() {
     if (this.newDate.substring(0,10) === this.task.date.substring(0,10)) {
       // no change in date, so nothing to do
       console.log('same date');
     } else {
       if (this.newId === '') {
-        // only a date change
+        // only a date change (no previous task in this date)
         console.log('date change');
         this.task.date = this.newDate;
       } else {
         // existing task overwrite
+        console.log('task overwrite');
         this.task = {
           id: this.newId,
           date: this.newDate,
-          taskcontent: this.newTaskcontent,
+          taskcontent: this.newTaskContent,
           hours: this.newHours,
         }
       }
@@ -83,6 +86,10 @@ export class EditTaskComponent{
     return this.modal.dismiss('', 'confirm');
   }
 
+  /**
+   * Handles a change of date. Checks if the new date already exists in tasks.
+   * @param event Event from the ion-datetime ionChange
+   */
   async handleChangeDate(event: CustomEvent) {
     const selectedDate = event.detail.value;
     console.log(selectedDate,this.taskservice.getTaskByDate(selectedDate));
@@ -98,10 +105,11 @@ export class EditTaskComponent{
       );
       await alert.present();
       alert.onWillDismiss().then(async (res)=> {
+        // if user confirms, we take the original values as ours
         if (res.role === 'confirm') {
           this.newId = originalTask.id;
           this.newDate = originalTask.date;
-          this.newTaskcontent = originalTask.taskcontent;
+          this.newTaskContent = originalTask.taskcontent;
           this.newHours = originalTask.hours;
         }
       });
@@ -110,10 +118,16 @@ export class EditTaskComponent{
     }
   }
 
+  /**
+   * Determines showing the Delete task button. It only shows if the task exists.
+   */
   showDelete():boolean {
     return this.taskservice.existsTask(this.task.date);
   }
 
+  /**
+   * Deletes currents task after confirmation.
+   */
   async handleDelete() {
     // get top modal id
     const topModal = await this.modalCtrl.getTop();

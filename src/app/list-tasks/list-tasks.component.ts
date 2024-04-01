@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import {Task} from "../interfaces/task.interface";
 import {TasksService} from "../services/tasks.service";
 import {ModalController} from "@ionic/angular";
@@ -22,6 +22,9 @@ export class ListTasksComponent{
 
   public tasksArray: Task[] = this.tasksService.getTasks();
 
+  /**
+   * Returns tasks array grouped by weeks
+   */
   private getGroupedArray = () => this.tasksArray.reduce((acc:WeekGroup[], task:Task) => {
     const weekNumber = this.getWeekNumber(task.date);
     const weekArray = acc.find(week => week.weekNumber === weekNumber);
@@ -46,6 +49,10 @@ export class ListTasksComponent{
     this.updateTasksArray();
   }
 
+  /**
+   * Handles task edition
+   * @param id {string} Id of task to edit
+   */
   async handleClick(id:any) {
     const copyTask = {...this.tasksService.getTaskById(id)};
     const modal = await this.modalCtrl.create({
@@ -64,10 +71,11 @@ export class ListTasksComponent{
     console.log(id);
     await modal.present();
   }
-  removeTask(date:string) {
-    this.tasksService.removeTask(date);
-    this.updateTasksArray();
-  }
+
+  // removeTask(date:string) {
+  //   this.tasksService.removeTask(date);
+  //   this.updateTasksArray();
+  // }
 
   async openModalNewTask() {
     const modal = await this.modalCtrl.create({
@@ -94,6 +102,10 @@ export class ListTasksComponent{
     await modal.present();
   }
 
+  /**
+   * Sorts tasks array by date and groups tasks by week
+   * @private
+   */
   private updateTasksArray() {
     let list = this.tasksService.getTasks();
     list?.sort((a,b)=>(new Date(a.date) > new Date(b.date) ? 1 : -1));
@@ -101,6 +113,11 @@ export class ListTasksComponent{
     this.groupedArray = this.getGroupedArray();
   }
 
+  /**
+   * Method to get week number of the year from a date.
+   * @param date {string} Date to get week number from
+   * @private
+   */
   private getWeekNumber(date: string):number {
     const taskDate = new Date(date);
     taskDate.setHours(0,0,0,0);
@@ -111,7 +128,6 @@ export class ListTasksComponent{
     const millisInDay = 24 * 60 * 60 * 1000;
     const delta = taskDate.getTime() - firstDayOfYearDate.getTime();
     const weekNumber = Math.ceil(((delta / millisInDay) + 1) / 7);
-    // console.log('week:', weekNumber);
     return weekNumber;
   }
 

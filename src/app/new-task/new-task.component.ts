@@ -28,6 +28,10 @@ export class NewTaskComponent {
   constructor(private taskservice: TasksService, private alertController: AlertController, private modalCtrl: ModalController) {
   }
 
+  /**
+   * Reset the form fields
+   * @private
+   */
   private resetFields() {
     this.id = this.taskservice.generateId();
     this.date = new Date().toISOString();
@@ -35,6 +39,11 @@ export class NewTaskComponent {
     this.hours = 0;
   }
 
+  /**
+   * Handle the select day event. If date already exist, alert and optionally edit that date. If not, open modal with
+   * empty values.
+   * @param event Event from the ion-datetime ionChange
+   */
   async handleSelectDay(event: CustomEvent) {
     const selectedDate = event.detail.value;
     console.log(selectedDate,this.taskservice.getTaskByDate(selectedDate));
@@ -50,6 +59,7 @@ export class NewTaskComponent {
       );
       await alert.present();
       alert.onWillDismiss().then(async (res)=> {
+        // if user confirms, we take the original values as ours before opening modal
         if (res.role === 'confirm') {
           this.id = originalTask.id;
           this.date = originalTask.date;
@@ -59,10 +69,14 @@ export class NewTaskComponent {
         }
       });
     } else {
-      await this.callEditTask(originalTask);
+      await this.callEditTask();
     }
   }
 
+  /**
+   * Opens EditTaskComponent as modal, and handles saving or updating according to response.
+   * @param originalTask {Object} If exists, we are updating this task
+   */
   async callEditTask(originalTask: Task|undefined = undefined) {
     // get top modal id
     const topModal = await this.modalCtrl.getTop();
@@ -80,6 +94,7 @@ export class NewTaskComponent {
         }
       }
     });
+    // handle modal dismiss
     modal.onWillDismiss().then((res) => {
       if (res.role === 'confirm') {
         if (!!originalTask) {
@@ -89,12 +104,19 @@ export class NewTaskComponent {
         }
         console.log('added task');
         this.resetFields();
+        // close top modal after saving
         this.modalCtrl.dismiss('', 'confirm',modalId!);
+      }
+      if (res.role === 'cancel') {
+        this.resetFields();
       }
     });
     await modal.present();
   }
 
+  /**
+   * Cancel method for 'Volver' button
+   */
   cancel() {
     return this.modalCtrl.dismiss(null, 'cancel');
   }
