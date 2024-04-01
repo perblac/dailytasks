@@ -122,7 +122,7 @@ export class EditTaskComponent{
     // get day and month
     const dateToDelete = new Date(this.task.date);
     const day = dateToDelete.getDate();
-    const monthNumber = dateToDelete.getMonth() + 1;
+    const monthNumber = dateToDelete.getMonth();
     const month = this.monthService.getMonth(1 + monthNumber);
 
     const alert = await this.alertController.create(
