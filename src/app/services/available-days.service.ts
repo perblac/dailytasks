@@ -6,6 +6,7 @@ import { Injectable } from '@angular/core';
 export class AvailableDaysService {
 
   constructor() { }
+
   availableDays(dateString: string) {
     const date = new Date(dateString);
     const utcDay = date.getUTCDate();

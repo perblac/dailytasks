@@ -6,6 +6,7 @@ import {FormDataService} from "../services/form-data.service";
 import {PDFDocument} from 'pdf-lib';
 import { FileSharer } from '@byteowls/capacitor-filesharer';
 import {MonthService} from "../services/month.service";
+import {AvailableDaysService} from "../services/available-days.service";
 
 @Component({
   selector: 'app-export-to-pdf',
@@ -23,6 +24,7 @@ export class ExportToPdfComponent {
     private modalCtrl: ModalController,
     private formDataService: FormDataService,
     public monthService: MonthService,
+    public availableDaysService: AvailableDaysService,
   ) {
     this.platform = platform;
   }
@@ -164,23 +166,6 @@ export class ExportToPdfComponent {
     }
     this.week = week;
     this.tasks = this.tasksService.getWeekTasks(week) ?? [];
-  }
-
-  availableDays(dateString: string) {
-    const date = new Date(dateString);
-    const utcDay = date.getUTCDate();
-    const utcMonth = date.getUTCMonth();
-    const utcWeekDay = date.getUTCDay();
-    let available = true;
-    if (utcWeekDay == 0 || utcWeekDay == 6) available = false;
-    // festivos de la localidad de Granada
-    if (utcMonth == 4 && (utcDay == 3 || utcDay == 30 || utcDay == 31)) available = false;
-    // semana santa
-    if (utcDay >= 25 && utcDay <= 31 && utcMonth == 2) available = false;
-    // fiesta del trabajo
-    if (utcDay == 1 && utcMonth == 4) available = false;
-
-    return available;
   }
 
   cancel() {

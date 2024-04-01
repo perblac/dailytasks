@@ -3,6 +3,7 @@ import {TasksService} from "../services/tasks.service";
 import {AlertController, ModalController} from "@ionic/angular";
 import {EditTaskComponent} from "../edit-task/edit-task.component";
 import {Task} from "../interfaces/task.interface";
+import {AvailableDaysService} from "../services/available-days.service";
 
 @Component({
   selector: 'app-new-task',
@@ -25,8 +26,12 @@ export class NewTaskComponent {
       role: 'confirm',
     }
   ]
-  constructor(private taskservice: TasksService, private alertController: AlertController, private modalCtrl: ModalController) {
-  }
+  constructor(
+    private taskservice: TasksService,
+    private alertController: AlertController,
+    private modalCtrl: ModalController,
+    public availableDaysService: AvailableDaysService,
+  ) {}
 
   /**
    * Reset the form fields
@@ -114,27 +119,7 @@ export class NewTaskComponent {
     await modal.present();
   }
 
-  /**
-   * Cancel method for 'Volver' button
-   */
   cancel() {
     return this.modalCtrl.dismiss(null, 'cancel');
-  }
-
-  availableDays(dateString: string) {
-    const date = new Date(dateString);
-    const utcDay = date.getUTCDate();
-    const utcMonth = date.getUTCMonth();
-    const utcWeekDay = date.getUTCDay();
-    let available = true;
-    if (utcWeekDay == 0 || utcWeekDay == 6) available = false;
-    // festivos de la localidad de Granada
-    if (utcMonth == 4 && (utcDay == 3 || utcDay == 30 || utcDay == 31)) available = false;
-    // semana santa
-    if (utcDay >= 25 && utcDay <= 31 && utcMonth == 2) available = false;
-    // fiesta del trabajo
-    if (utcDay == 1 && utcMonth == 4) available = false;
-
-    return available;
   }
 }

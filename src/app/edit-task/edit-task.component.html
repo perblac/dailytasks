@@ -38,7 +38,7 @@
             <ion-grid class="ion-padding">
               <ion-row class="ion-justify-content-center">
                 <ion-col size="auto">
-                  <ion-datetime locale="es-ES" [firstDayOfWeek]="1" [showDefaultTitle]="true" presentation="date" min="2024-03-01T00:00:00" max="2024-05-31T00:00:00" [isDateEnabled]="availableDays" [value]="task.date" (ionChange)="handleChangeDate($event)">
+                  <ion-datetime locale="es-ES" [firstDayOfWeek]="1" [showDefaultTitle]="true" presentation="date" min="2024-03-01T00:00:00" max="2024-05-31T00:00:00" [isDateEnabled]="availableDaysService.availableDays" [value]="task.date" (ionChange)="handleChangeDate($event)">
                     <span slot="title"></span>
                   </ion-datetime>
                 </ion-col>
