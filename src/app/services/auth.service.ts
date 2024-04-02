@@ -24,9 +24,13 @@ export class AuthService implements OnDestroy {
   idToken$ = idToken(this.auth);
   idTokenSubscription: Subscription;
 
+  private userUid = '';
+
   constructor() {
     this.userSubscription = this.user$.subscribe((aUser: User | null) => {
       console.log('user subscription:', aUser);
+      this.userUid = aUser?.uid ?? '';
+      console.log(this.userUid);
     });
     this.authStateSubscription = this.authState$.subscribe((aUser: User | null) => {
       console.log('auth subscription', aUser);
@@ -66,6 +70,9 @@ export class AuthService implements OnDestroy {
     }).catch(err => console.log(err));
   }
 
+  getUserUid() {
+    return this.userUid;
+  }
   ngOnDestroy() {
     this.userSubscription.unsubscribe();
     this.authStateSubscription.unsubscribe();

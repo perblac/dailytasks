@@ -23,8 +23,10 @@ interface WeekGroup {
 })
 export class ListTasksComponent implements OnDestroy{
   authStateSubscription: Subscription;
+  dataSubscription: Subscription;
 
-  public tasksArray: Task[] = this.tasksService.getTasks();
+  // public tasksArray: Task[] = this.tasksService.getTasks();
+  public tasksArray: Task[] = [];
 
   /**
    * Returns tasks array grouped by weeks
@@ -55,8 +57,22 @@ export class ListTasksComponent implements OnDestroy{
   ) {
     this.authStateSubscription = this.authService.authState$.subscribe((aUser: User | null) => {
       this.authorized = !!aUser;
-      this.updateTasksArray();
+      if (this.authorized) {
+        this.dataSubscription.unsubscribe();
+        this.dataSubscription = this.tasksService.data$.subscribe((data:any)=> {
+          this.tasksArray = data.tasksArray;
+          console.log(this.tasksArray);
+          this.groupedArray = this.getGroupedArray();
+          this.getGroupedArray();
+          console.log('list data',data);
+        })
+      }
+      // this.updateTasksArray();
     });
+    this.dataSubscription = this.tasksService.data$.subscribe(data => {
+      // this.tasksArray = data?.tasksArray;
+      console.log('list data',data);
+    })
   }
 
   /**
@@ -117,10 +133,10 @@ export class ListTasksComponent implements OnDestroy{
    * @private
    */
   private updateTasksArray() {
-    let list = this.tasksService.getTasks();
-    list?.sort((a,b)=>(new Date(a.date) > new Date(b.date) ? 1 : -1));
-    this.tasksArray = list;
-    this.groupedArray = this.getGroupedArray();
+    // let list = this.tasksService.getTasks();
+    // list?.sort((a,b)=>(new Date(a.date) > new Date(b.date) ? 1 : -1));
+    // this.tasksArray = list;
+    // this.groupedArray = this.getGroupedArray();
   }
 
   /**
@@ -145,5 +161,6 @@ export class ListTasksComponent implements OnDestroy{
 
   ngOnDestroy() {
     this.authStateSubscription.unsubscribe();
+    this.dataSubscription.unsubscribe();
   }
 }

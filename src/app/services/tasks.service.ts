@@ -1,13 +1,48 @@
-import { Injectable } from '@angular/core';
+import {inject, Injectable, OnDestroy} from '@angular/core';
 import { Task } from "../interfaces/task.interface";
+import {Observable, of, Subscription} from "rxjs";
+import {collection, doc, docData, Firestore, setDoc} from "@angular/fire/firestore";
+import {AuthService} from "./auth.service";
+import {DocumentData, DocumentReference} from "@angular/fire/compat/firestore";
+import {User} from "@angular/fire/auth";
 
 @Injectable({
   providedIn: 'root'
 })
-export class TasksService {
-  private tasksArray: Task[] = JSON.parse(localStorage.getItem('tasks') ?? '[]');
+export class TasksService{ // implements OnDestroy{
+  // private tasksArray: Task[] = JSON.parse(localStorage.getItem('tasks') ?? '[]');
+  private tasksArray: Task[] = [];
 
-  constructor() {
+  data$: Observable<DocumentData | DocumentData[] | undefined>;
+  dataSubscription: Subscription;
+  userSubscription: Subscription;
+  firestore: Firestore = inject(Firestore);
+  usersCollection = collection(this.firestore, 'usersData');
+  userDataDocRef: any;
+
+  private logged = false;
+
+  constructor(private authService: AuthService) {
+    this.userSubscription = this.authService.user$.subscribe((aUser: User|null) => {
+      if (aUser) {
+        this.logged = true;
+        this.userDataDocRef = doc(this.usersCollection, this.authService.getUserUid());
+        this.data$ = docData(this.userDataDocRef);
+        this.dataSubscription.unsubscribe();
+        this.dataSubscription = this.data$.subscribe((data:any) => {
+          console.log('data w/user:',data);
+          this.tasksArray = data.tasksArray;
+        });
+      } else {
+        this.logged = false;
+      }
+    })
+    this.data$ = this.logged ? docData(doc(this.usersCollection, this.authService.getUserUid())) : of(undefined);
+    this.userDataDocRef = this.authService.getUserUid() ? doc(this.usersCollection, this.authService.getUserUid()) : undefined;
+    // this.data$ = userData ? docData(userData) : of(undefined);
+    this.dataSubscription = this.data$.subscribe((data) => {
+      console.log('data:',data);
+    })
   }
 
   addTask(task: Task) {
@@ -59,7 +94,8 @@ export class TasksService {
   }
 
   saveState() {
-    localStorage.setItem('tasks', JSON.stringify(this.tasksArray));
+    // localStorage.setItem('tasks', JSON.stringify(this.tasksArray));
+    setDoc(this.userDataDocRef, {tasksArray: this.tasksArray});
   }
 
   generateId(): string {
@@ -69,4 +105,8 @@ export class TasksService {
     idElems.push((Math.random()*1000).toString(24).substring(6));
     return idElems.join('-');
   }
+  //
+  // ngOnDestroy() {
+  //   this.dataSubscription.unsubscribe();
+  // }
 }
