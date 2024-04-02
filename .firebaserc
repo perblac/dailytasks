@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "diariopracticasgrado": {
+      "hosting": {
+        "app": [
+          "diariopracticasgrado"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "diariopracticasgrado"
+  }
+}
