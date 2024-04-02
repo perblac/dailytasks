@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, OnDestroy} from '@angular/core';
 import {Task} from "../interfaces/task.interface";
 import {TasksService} from "../services/tasks.service";
 import {ModalController} from "@ionic/angular";
@@ -7,6 +7,9 @@ import {ExportToPdfComponent} from "../export-to-pdf/export-to-pdf.component";
 import {FormComponent} from "../form/form.component";
 import {EditTaskComponent} from "../edit-task/edit-task.component";
 import {MonthService} from "../services/month.service";
+import {AuthService} from "../services/auth.service";
+import {Subscription} from "rxjs";
+import {User} from "@angular/fire/auth";
 
 interface WeekGroup {
   weekNumber?: number,
@@ -18,7 +21,8 @@ interface WeekGroup {
   templateUrl: './list-tasks.component.html',
   styleUrls: ['./list-tasks.component.scss'],
 })
-export class ListTasksComponent{
+export class ListTasksComponent implements OnDestroy{
+  authStateSubscription: Subscription;
 
   public tasksArray: Task[] = this.tasksService.getTasks();
 
@@ -41,12 +45,18 @@ export class ListTasksComponent{
 
   public groupedArray = this.getGroupedArray();
 
+  public authorized = false;
+
   constructor(
     private tasksService: TasksService,
     private modalCtrl: ModalController,
     public monthService: MonthService,
+    public authService: AuthService,
   ) {
-    this.updateTasksArray();
+    this.authStateSubscription = this.authService.authState$.subscribe((aUser: User | null) => {
+      this.authorized = !!aUser;
+      this.updateTasksArray();
+    });
   }
 
   /**
@@ -132,4 +142,8 @@ export class ListTasksComponent{
   }
 
   protected readonly parseInt = parseInt;
+
+  ngOnDestroy() {
+    this.authStateSubscription.unsubscribe();
+  }
 }

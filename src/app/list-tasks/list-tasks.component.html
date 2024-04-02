@@ -1,9 +1,13 @@
 <ion-header>
   <ion-toolbar color="light">
+    <ion-buttons slot="start">
+      <ion-button *ngIf="!authorized" color="primary" fill="solid" shape="round" (click)="authService.login()">Login</ion-button>
+      <ion-button *ngIf="authorized" color="primary" fill="solid" shape="round" (click)="authService.logout()">Logout</ion-button>
+    </ion-buttons>
     <ion-title class="ion-text-center">Diario de tareas</ion-title>
   </ion-toolbar>
 </ion-header>
-<ion-content>
+<ion-content *ngIf="authorized">
   <ion-grid *ngIf="groupedArray.length === 0" class="ion-padding ion-margin ion-text-center">
     <ion-row>
       <ion-col size="8" offset="2" class="ion-margin-vertical">
@@ -48,7 +52,7 @@
   </ion-list>
 </ion-content>
 
-<ion-footer>
+<ion-footer *ngIf="authorized">
   <ion-toolbar color="light" mode="ios">
     <ion-buttons slot="primary">
       <ion-button fill="solid" color="primary" shape="round" (click)="openModalNewTask()">
