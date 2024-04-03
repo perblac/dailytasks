@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import {TasksService} from "../services/tasks.service";
-import {AlertController, ModalController} from "@ionic/angular";
-import {EditTaskComponent} from "../edit-task/edit-task.component";
-import {Task} from "../interfaces/task.interface";
-import {AvailableDaysService} from "../services/available-days.service";
+import { AlertController, ModalController } from "@ionic/angular";
+import { EditTaskComponent } from "../edit-task/edit-task.component";
+import { Task } from "../interfaces/task.interface";
+import { DataService } from "../services/data.service";
+import { AvailableDaysService } from "../services/available-days.service";
 
 @Component({
   selector: 'app-new-task',
@@ -27,7 +27,7 @@ export class NewTaskComponent {
     }
   ]
   constructor(
-    private taskservice: TasksService,
+    private taskservice: DataService,
     private alertController: AlertController,
     private modalCtrl: ModalController,
     public availableDaysService: AvailableDaysService,

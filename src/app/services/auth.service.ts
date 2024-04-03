@@ -1,4 +1,4 @@
-import {inject, Injectable, OnDestroy} from '@angular/core';
+import { inject, Injectable, OnDestroy } from '@angular/core';
 import {
   Auth,
   getAuth,
@@ -10,7 +10,7 @@ import {
   signInWithPopup,
   signOut,
 } from "@angular/fire/auth";
-import {Subscription} from "rxjs";
+import { Subscription } from "rxjs";
 
 @Injectable({
   providedIn: 'root'
@@ -30,7 +30,7 @@ export class AuthService implements OnDestroy {
     this.userSubscription = this.user$.subscribe((aUser: User | null) => {
       console.log('user subscription:', aUser);
       this.userUid = aUser?.uid ?? '';
-      console.log(this.userUid);
+      console.log('uid:', this.userUid);
     });
     this.authStateSubscription = this.authState$.subscribe((aUser: User | null) => {
       console.log('auth subscription', aUser);
@@ -73,6 +73,7 @@ export class AuthService implements OnDestroy {
   getUserUid() {
     return this.userUid;
   }
+
   ngOnDestroy() {
     this.userSubscription.unsubscribe();
     this.authStateSubscription.unsubscribe();

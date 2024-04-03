@@ -1,12 +1,11 @@
-import {Component} from '@angular/core';
-import {TasksService} from "../services/tasks.service";
-import {ModalController, Platform} from "@ionic/angular";
-import {Task} from "../interfaces/task.interface";
-import {FormDataService} from "../services/form-data.service";
-import {PDFDocument} from 'pdf-lib';
+import { Component } from '@angular/core';
+import { ModalController, Platform } from "@ionic/angular";
 import { FileSharer } from '@byteowls/capacitor-filesharer';
-import {MonthService} from "../services/month.service";
-import {AvailableDaysService} from "../services/available-days.service";
+import { PDFDocument } from 'pdf-lib';
+import { Task } from "../interfaces/task.interface";
+import { DataService } from "../services/data.service";
+import { MonthService } from "../services/month.service";
+import { AvailableDaysService } from "../services/available-days.service";
 
 @Component({
   selector: 'app-export-to-pdf',
@@ -18,11 +17,11 @@ export class ExportToPdfComponent {
   public week: string[] = [];
   public tasks: Task[] = [];
   private platform: Platform;
+
   constructor(
     platform: Platform,
-    private tasksService: TasksService,
+    private dataService: DataService,
     private modalCtrl: ModalController,
-    private formDataService: FormDataService,
     public monthService: MonthService,
     public availableDaysService: AvailableDaysService,
   ) {
@@ -50,7 +49,15 @@ export class ExportToPdfComponent {
    */
   public async generatePdf() {
     // data from the form
-    const { alumno, ciclo, grado, centrodocente, profesor, centrotrabajo, tutor } = this.formDataService.getData();
+    const {
+      alumno,
+      ciclo,
+      grado,
+      centrodocente,
+      profesor,
+      centrotrabajo,
+      tutor
+    } = this.dataService.getFormData();
 
     // month(s) and year data
     const firstDate = new Date(this.week[0]);
@@ -165,7 +172,7 @@ export class ExportToPdfComponent {
       week.push(new Date(firstDay.setDate(firstDay.getDate() + 1)).toISOString())
     }
     this.week = week;
-    this.tasks = this.tasksService.getWeekTasks(week) ?? [];
+    this.tasks = this.dataService.getWeekTasks(week) ?? [];
   }
 
   cancel() {

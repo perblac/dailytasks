@@ -1,17 +1,18 @@
-import {inject, Injectable, OnDestroy} from '@angular/core';
+import { inject, Injectable } from '@angular/core';
+import { User } from "@angular/fire/auth";
+import { collection, doc, docData, Firestore, setDoc } from "@angular/fire/firestore";
+import { DocumentData } from "@angular/fire/compat/firestore";
+import { Observable, of, Subscription } from "rxjs";
 import { Task } from "../interfaces/task.interface";
-import {Observable, of, Subscription} from "rxjs";
-import {collection, doc, docData, Firestore, setDoc} from "@angular/fire/firestore";
-import {AuthService} from "./auth.service";
-import {DocumentData, DocumentReference} from "@angular/fire/compat/firestore";
-import {User} from "@angular/fire/auth";
+import { FormObject } from "../interfaces/form-object.interface";
+import { AuthService } from "./auth.service";
 
 @Injectable({
   providedIn: 'root'
 })
-export class TasksService{ // implements OnDestroy{
-  // private tasksArray: Task[] = JSON.parse(localStorage.getItem('tasks') ?? '[]');
+export class DataService {
   private tasksArray: Task[] = [];
+  private formData: FormObject = {};
 
   data$: Observable<DocumentData | DocumentData[] | undefined>;
   dataSubscription: Subscription;
@@ -26,20 +27,23 @@ export class TasksService{ // implements OnDestroy{
     this.userSubscription = this.authService.user$.subscribe((aUser: User|null) => {
       if (aUser) {
         this.logged = true;
+        // when user is logged, redo data subscription
         this.userDataDocRef = doc(this.usersCollection, this.authService.getUserUid());
         this.data$ = docData(this.userDataDocRef);
         this.dataSubscription.unsubscribe();
         this.dataSubscription = this.data$.subscribe((data:any) => {
           console.log('data w/user:',data);
           this.tasksArray = data.tasksArray;
+          this.formData = data.formData;
         });
       } else {
         this.logged = false;
       }
     })
+    // no data if no user logged
     this.data$ = this.logged ? docData(doc(this.usersCollection, this.authService.getUserUid())) : of(undefined);
-    this.userDataDocRef = this.authService.getUserUid() ? doc(this.usersCollection, this.authService.getUserUid()) : undefined;
-    // this.data$ = userData ? docData(userData) : of(undefined);
+    this.userDataDocRef = this.logged  ? doc(this.usersCollection, this.authService.getUserUid()) : undefined;
+    // temporal data subscription
     this.dataSubscription = this.data$.subscribe((data) => {
       console.log('data:',data);
     })
@@ -58,6 +62,7 @@ export class TasksService{ // implements OnDestroy{
     console.log('update:',this.tasksArray);
     this.saveState();
   }
+
   getTasks(): Task[] {
     return this.tasksArray;
   }
@@ -93,9 +98,20 @@ export class TasksService{ // implements OnDestroy{
     return !!this.getTaskByDate(date);
   }
 
+  getFormData() {
+    return this.formData;
+  }
+
+  setFormData(formdata:any) {
+    this.formData = formdata;
+    this.saveState();
+  }
+
   saveState() {
-    // localStorage.setItem('tasks', JSON.stringify(this.tasksArray));
-    setDoc(this.userDataDocRef, {tasksArray: this.tasksArray});
+    setDoc(this.userDataDocRef, {
+      formData: this.formData,
+      tasksArray: this.tasksArray
+    });
   }
 
   generateId(): string {
@@ -105,8 +121,4 @@ export class TasksService{ // implements OnDestroy{
     idElems.push((Math.random()*1000).toString(24).substring(6));
     return idElems.join('-');
   }
-  //
-  // ngOnDestroy() {
-  //   this.dataSubscription.unsubscribe();
-  // }
 }

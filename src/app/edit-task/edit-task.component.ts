@@ -1,16 +1,16 @@
-import {Component, Input, ViewChild} from '@angular/core';
-import {TasksService} from "../services/tasks.service";
-import {AlertController, IonModal, ModalController} from "@ionic/angular";
-import {Task} from "../interfaces/task.interface";
-import {MonthService} from "../services/month.service";
-import {AvailableDaysService} from "../services/available-days.service";
+import { Component, Input, ViewChild, ChangeDetectorRef, AfterViewInit } from '@angular/core';
+import { AlertController, IonModal, ModalController } from "@ionic/angular";
+import { Task } from "../interfaces/task.interface";
+import { DataService } from "../services/data.service";
+import { MonthService } from "../services/month.service";
+import { AvailableDaysService } from "../services/available-days.service";
 
 @Component({
   selector: 'app-edit-task',
   templateUrl: './edit-task.component.html',
   styleUrls: ['./edit-task.component.scss'],
 })
-export class EditTaskComponent{
+export class EditTaskComponent implements AfterViewInit{
   @ViewChild(IonModal) modal!: IonModal;
   @Input() task!: Task;
 
@@ -29,7 +29,6 @@ export class EditTaskComponent{
       role: 'confirm',
     }
   ];
-
   public deleteAlertButtons = [
     {
       text: 'Cancelar',
@@ -40,10 +39,13 @@ export class EditTaskComponent{
       role: 'confirm',
     }
   ];
+
+  protected readonly parseInt = parseInt;
+
   constructor(
-    private tasksService: TasksService,
+    private cdr: ChangeDetectorRef,
+    private dataService: DataService,
     private modalCtrl: ModalController,
-    private taskservice: TasksService,
     private alertController: AlertController,
     public monthService: MonthService,
     public availableDaysService: AvailableDaysService,
@@ -94,9 +96,9 @@ export class EditTaskComponent{
    */
   async handleChangeDate(event: CustomEvent) {
     const selectedDate = event.detail.value;
-    console.log(selectedDate,this.taskservice.getTaskByDate(selectedDate));
+    console.log(selectedDate,this.dataService.getTaskByDate(selectedDate));
     // check if date already exists
-    const originalTask: Task|undefined = this.taskservice.getTaskByDate(selectedDate);
+    const originalTask: Task|undefined = this.dataService.getTaskByDate(selectedDate);
     if (originalTask) {
       const alert = await this.alertController.create(
         {
@@ -124,7 +126,7 @@ export class EditTaskComponent{
    * Determines showing the Delete task button. It only shows if the task exists.
    */
   showDelete():boolean {
-    return this.taskservice.existsTask(this.task.date);
+    return this.dataService.existsTask(this.task.date);
   }
 
   /**
@@ -151,12 +153,14 @@ export class EditTaskComponent{
     );
     alert.onWillDismiss().then(res => {
       if (res.role === 'confirm') {
-        this.tasksService.removeTask(this.task.date);
+        this.dataService.removeTask(this.task.date);
         this.modalCtrl.dismiss(null, 'delete', modalId!);
       }
     });
     await alert.present();
   }
 
-  protected readonly parseInt = parseInt;
+  ngAfterViewInit() {
+    this.cdr.detectChanges();
+  }
 }

@@ -1,5 +1,5 @@
-import {Component, Optional} from '@angular/core';
-import {IonRouterOutlet, Platform} from "@ionic/angular";
+import { Component, Optional } from '@angular/core';
+import { IonRouterOutlet, Platform } from "@ionic/angular";
 import { App } from '@capacitor/app';
 import { Dialog } from '@capacitor/dialog';
 

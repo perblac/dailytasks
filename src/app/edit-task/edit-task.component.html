@@ -5,7 +5,7 @@
     </ion-buttons>
     <ion-title class="ion-text-center">Editar tarea</ion-title>
     <ion-buttons slot="end">
-      <ion-button color="primary" fill="solid" shape="round" (click)="confirm()" [strong]="true" [disabled]="taskInput.errors || taskHours.errors">Confirmar</ion-button>
+      <ion-button color="primary" fill="solid" shape="round" (click)="confirm()" [strong]="true" [disabled]="taskInput.errors && taskInput.invalid || taskHours.errors && taskHours.invalid">Confirmar</ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
@@ -49,14 +49,14 @@
       </ion-modal>
     </ion-item>
     <div *ngIf="taskInput.errors && taskInput.invalid">
-      <small *ngIf="taskInput.errors['required']" style="color: red">Por favor rellene este campo</small>
+      <small style="color: red">Por favor rellene este campo</small>
     </div>
-    <ion-input [(ngModel)]="task.taskcontent" type="text" label="Tarea" #taskInput="ngModel" required labelPlacement="stacked" fill="outline" helperText="Tarea realizada en la fecha" class="ion-margin-vertical"></ion-input>
+    <ion-input [(ngModel)]="task.taskcontent" type="text" label="Tarea" #taskInput="ngModel" labelPlacement="stacked" fill="outline" helperText="Tarea realizada en la fecha" class="ion-margin-vertical" required></ion-input>
 
     <div *ngIf="taskHours.errors && taskHours.invalid" class="ion-margin-vertical">
-      <small *ngIf="taskHours.invalid" style="color: red">Introduzca un número de horas entre 1 y 24</small>
+      <small style="color: red">Introduzca un número de horas entre 1 y 24</small>
     </div>
-    <ion-input [(ngModel)]="task.hours" type="number" label="Horas" #taskHours="ngModel" labelPlacement="stacked" fill="outline" helperText="Número de horas utilizadas" class="ion-margin-bottom" min="1" max="24"></ion-input>
+    <ion-input [(ngModel)]="task.hours" type="number" label="Horas" #taskHours="ngModel" labelPlacement="stacked" fill="outline" helperText="Número de horas utilizadas" class="ion-margin-bottom" min="1" max="24" pattern="\b\d{1,2}\b" required></ion-input>
   </ion-list>
 </ion-content>
 

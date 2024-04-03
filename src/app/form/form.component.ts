@@ -1,14 +1,17 @@
-import { Component } from '@angular/core';
-import {ModalController} from "@ionic/angular";
-import {FormDataService} from "../services/form-data.service";
-import {FormControl, FormGroup} from "@angular/forms";
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ModalController } from "@ionic/angular";
+import { FormControl, FormGroup } from "@angular/forms";
+import { Subscription } from "rxjs";
+import { DataService } from "../services/data.service";
 
 @Component({
   selector: 'app-form',
   templateUrl: './form.component.html',
   styleUrls: ['./form.component.scss'],
 })
-export class FormComponent {
+export class FormComponent implements OnInit, OnDestroy{
+  dataSubscription: Subscription;
+
   formDataGroup = new FormGroup({
     alumno: new FormControl(''),
     ciclo: new FormControl(''),
@@ -19,15 +22,13 @@ export class FormComponent {
     tutor: new FormControl(''),
   })
 
-  constructor(private modalCtrl:ModalController, private formDataService: FormDataService) {
-    const { alumno, ciclo, grado, centrodocente, profesor, centrotrabajo, tutor } = this.formDataService.getData();
-    this.formDataGroup.get('alumno')?.setValue(alumno);
-    this.formDataGroup.get('ciclo')?.setValue(ciclo);
-    this.formDataGroup.get('grado')?.setValue(grado);
-    this.formDataGroup.get('centrodocente')?.setValue(centrodocente);
-    this.formDataGroup.get('profesor')?.setValue(profesor);
-    this.formDataGroup.get('centrotrabajo')?.setValue(centrotrabajo);
-    this.formDataGroup.get('tutor')?.setValue(tutor);
+  constructor(
+    private modalCtrl:ModalController,
+    private dataService: DataService,
+    ) {
+    this.dataSubscription = this.dataService.data$.subscribe((data) => {
+        this.loadFormData();
+    })
   }
 
   cancel() {
@@ -35,7 +36,7 @@ export class FormComponent {
   }
 
   confirm() {
-    this.formDataService.setData(this.getDataObject());
+    this.dataService.setFormData(this.getDataObject());
     return this.modalCtrl.dismiss('', 'confirm');
   }
 
@@ -59,5 +60,33 @@ export class FormComponent {
       centrotrabajo,
       tutor,
     }
+  }
+
+  loadFormData() {
+    if (this.dataService.getFormData()) {
+      const {
+        alumno,
+        ciclo,
+        grado,
+        centrodocente,
+        profesor,
+        centrotrabajo,
+        tutor
+      } = this.dataService.getFormData();
+      this.formDataGroup.get('alumno')?.setValue(alumno!);
+      this.formDataGroup.get('ciclo')?.setValue(ciclo!);
+      this.formDataGroup.get('grado')?.setValue(grado!);
+      this.formDataGroup.get('centrodocente')?.setValue(centrodocente!);
+      this.formDataGroup.get('profesor')?.setValue(profesor!);
+      this.formDataGroup.get('centrotrabajo')?.setValue(centrotrabajo!);
+      this.formDataGroup.get('tutor')?.setValue(tutor!);
+    }
+  }
+  ngOnInit() {
+    this.loadFormData();
+  }
+
+  ngOnDestroy() {
+    this.dataSubscription.unsubscribe();
   }
 }
