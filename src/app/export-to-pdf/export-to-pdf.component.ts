@@ -62,6 +62,7 @@ export class ExportToPdfComponent {
     // month(s) and year data
     const firstDate = new Date(this.week[0]);
     const lastDate = new Date(this.week[4]);
+    console.log(firstDate,this.week[0],lastDate, this.week[4]);
     const firstDay = firstDate.getDate().toString();
     const lastDay = lastDate.getDate().toString();
     const firstMonth = this.monthService.getMonth(1 + firstDate.getMonth());
@@ -166,12 +167,14 @@ export class ExportToPdfComponent {
     const dateOfDay = new Date(dayDate);
     const weekDay = dateOfDay.getDay();
     dateOfDay.setDate(dateOfDay.getDate() + (2 - weekDay));
+    dateOfDay.setHours(-12);
     let firstDay = dateOfDay;
     let week: string[] = [firstDay.toISOString()];
     for (let i = 1; i <= 4; i++) {
       week.push(new Date(firstDay.setDate(firstDay.getDate() + 1)).toISOString())
     }
     this.week = week;
+    console.log(week, this.week[0], this.week[4]);
     this.tasks = this.dataService.getWeekTasks(week) ?? [];
   }
 
