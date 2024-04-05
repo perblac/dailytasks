@@ -165,7 +165,7 @@ export class ExportToPdfComponent {
     const dayDate = event.detail.value;
     const dateOfDay = new Date(dayDate);
     const weekDay = dateOfDay.getDay();
-    dateOfDay.setDate(dateOfDay.getDate() + (1 - weekDay));
+    dateOfDay.setDate(dateOfDay.getDate() + (2 - weekDay));
     let firstDay = dateOfDay;
     let week: string[] = [firstDay.toISOString()];
     for (let i = 1; i <= 4; i++) {
