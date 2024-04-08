@@ -2,7 +2,7 @@
   <ion-toolbar color="light">
     <ion-buttons slot="start">
       <ion-button *ngIf="!authorized" color="primary" fill="solid" shape="round" (click)="authService.login()">Login</ion-button>
-      <ion-button *ngIf="authorized" color="primary" fill="solid" shape="round" (click)="authService.logout()">Logout</ion-button>
+      <ion-button *ngIf="authorized" color="primary" fill="solid" shape="round" (click)="onClickLogOut()">Logout</ion-button>
     </ion-buttons>
     <ion-title class="ion-text-center">Diario de tareas</ion-title>
   </ion-toolbar>

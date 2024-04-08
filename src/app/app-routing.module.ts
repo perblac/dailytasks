@@ -1,16 +1,28 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import {RegisterComponent} from "./register/register.component";
+import {LoginComponent} from "./login/login.component";
+import {canActivate, redirectUnauthorizedTo} from "@angular/fire/auth-guard";
 
 const routes: Routes = [
-      {
-        path: '',
-        redirectTo: 'list-tasks',
-        pathMatch: 'full'
-      },
-      {
-        path: 'list-tasks',
-        loadChildren: () => import('./list-tasks/list-tasks.module').then(m => m.ListTasksModule)
-      },
+  {
+    path: '',
+    pathMatch: 'full',
+    redirectTo: 'list-tasks',
+  },
+  {
+    path: 'list-tasks',
+    loadChildren: () => import('./list-tasks/list-tasks.module').then(m => m.ListTasksModule),
+    ...canActivate(() => redirectUnauthorizedTo(['/login']))
+  },
+  {
+    path: 'register',
+    component: RegisterComponent
+  },
+  {
+    path: 'login',
+    component: LoginComponent
+  }
 ];
 
 @NgModule({

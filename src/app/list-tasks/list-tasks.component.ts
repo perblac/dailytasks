@@ -1,6 +1,6 @@
 import { Component, OnDestroy } from '@angular/core';
 import { ModalController } from "@ionic/angular";
-import { User } from "@angular/fire/auth";
+import {getAuth, getRedirectResult, GoogleAuthProvider, User} from "@angular/fire/auth";
 import { Subscription } from "rxjs";
 import { FormComponent } from "../form/form.component";
 import { NewTaskComponent } from "../new-task/new-task.component";
@@ -10,6 +10,8 @@ import { Task } from "../interfaces/task.interface";
 import { DataService } from "../services/data.service";
 import { AuthService } from "../services/auth.service";
 import { MonthService } from "../services/month.service";
+import {UserService} from "../services/user.service";
+import {Router} from "@angular/router";
 
 interface WeekGroup {
   weekNumber?: number,
@@ -37,6 +39,8 @@ export class ListTasksComponent implements OnDestroy{
     private modalCtrl: ModalController,
     public monthService: MonthService,
     public authService: AuthService,
+    private userService: UserService,
+    private router: Router,
   ) {
     this.authStateSubscription = this.authService.authState$.subscribe((aUser: User | null) => {
       this.authorized = !!aUser;
@@ -50,7 +54,7 @@ export class ListTasksComponent implements OnDestroy{
     });
     this.dataSubscription = this.dataService.data$.subscribe(data => {
       console.log('list data',data);
-    })
+    });
   }
 
   /**
@@ -146,6 +150,14 @@ export class ListTasksComponent implements OnDestroy{
       }
       return acc;
     }, []);
+  }
+
+  onClickLogOut() {
+    this.userService.logout()
+      .then(() => {
+        this.router.navigate(['/login']);
+      })
+      .catch(err => console.log(err));
   }
 
   ngOnDestroy() {
