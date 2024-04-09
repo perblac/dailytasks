@@ -4,4 +4,6 @@
     <string name="title_activity_main">DailyTasks</string>
     <string name="package_name">io.ionic.starter</string>
     <string name="custom_url_scheme">io.ionic.starter</string>
+
+<!--    <string name="server_client_id">334552631074-h1bvl8bkuqg9vfoft5adtuvqge7m3ife.apps.googleusercontent.com</string>-->
 </resources>

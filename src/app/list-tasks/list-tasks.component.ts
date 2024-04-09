@@ -1,5 +1,5 @@
 import { Component, OnDestroy } from '@angular/core';
-import { ModalController } from "@ionic/angular";
+import {ModalController, Platform} from "@ionic/angular";
 import { User } from "@angular/fire/auth";
 import { Router } from "@angular/router";
 import { Subscription } from "rxjs";
@@ -41,6 +41,7 @@ export class ListTasksComponent implements OnDestroy{
     public authService: AuthService,
     private userService: UserService,
     private router: Router,
+    private platform: Platform,
   ) {
     this.authStateSubscription = this.authService.authState$.subscribe((aUser: User | null) => {
       this.authorized = !!aUser;
@@ -153,11 +154,19 @@ export class ListTasksComponent implements OnDestroy{
   }
 
   onClickLogOut() {
-    this.userService.logout()
-      .then(() => {
-        this.router.navigate(['/login']);
-      })
-      .catch(err => console.log(err));
+    if (this.platform.is('hybrid')) {
+      this.userService.logoutMobile()
+        .then(() => {
+          this.router.navigate(['/login']);
+        })
+        .catch(err => console.log(err));
+    } else {
+      this.userService.logout()
+        .then(() => {
+          this.router.navigate(['/login']);
+        })
+        .catch(err => console.log(err));
+    }
   }
 
   onClickNavigateToLogin() {

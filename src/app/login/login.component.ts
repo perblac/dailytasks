@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
 import { UserService } from "../services/user.service";
+import {Platform} from "@ionic/angular";
 
 @Component({
   selector: 'app-login',
@@ -13,6 +14,7 @@ export class LoginComponent {
   constructor(
     private userService: UserService,
     private router: Router,
+    private platform: Platform,
   ) {
     this.formLogIn = new FormGroup({
       email: new FormControl('', [
@@ -43,12 +45,21 @@ export class LoginComponent {
   }
 
   onClickLoginWithGoogle() {
-    this.userService.loginWithGoogle()
-      .then(res => {
-        console.log(res);
-        this.router.navigate(['/']);
-      })
-      .catch(err => console.log(err));
+    if (this.platform.is('hybrid')) {
+      this.userService.loginWithGoogleMobile()
+        .then(res => {
+          console.log('res:',res);
+          this.router.navigate(['/']);
+        })
+        .catch(err => console.log(err));
+    } else {
+      this.userService.loginWithGoogle()
+        .then(res => {
+          console.log('res:',res);
+          this.router.navigate(['/']);
+        })
+        .catch(err => console.log(err));
+    }
   }
 
   ionViewWillEnter() {

@@ -32,6 +32,7 @@
     "@capacitor/ios": "5.7.3",
     "@capacitor/keyboard": "5.0.8",
     "@capacitor/status-bar": "5.0.7",
+    "@codetrix-studio/capacitor-google-auth": "^3.4.0-rc.0",
     "@ionic/angular": "^7.0.0",
     "ionicons": "^7.0.0",
     "pdf-lib": "^1.17.1",
