@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar color="light">
     <ion-buttons slot="start">
-      <ion-button *ngIf="!authorized" color="primary" fill="solid" shape="round" (click)="authService.login()">Login</ion-button>
+      <ion-button *ngIf="!authorized" color="primary" fill="solid" shape="round" (click)="onClickNavigateToLogin()">Login</ion-button>
       <ion-button *ngIf="authorized" color="primary" fill="solid" shape="round" (click)="onClickLogOut()">Logout</ion-button>
     </ion-buttons>
     <ion-title class="ion-text-center">Diario de tareas</ion-title>
@@ -21,7 +21,9 @@
     </ion-row>
     <ion-row class="ion-justify-content-center">
       <ion-col>
-        <ion-icon name="add-circle" size="large" color="primary"></ion-icon>
+        <ion-button fill="solid" color="primary" shape="circle" (click)="openModalNewTask()">
+          <ion-icon slot="icon-only" name="add"></ion-icon>
+        </ion-button>
       </ion-col>
     </ion-row>
   </ion-grid>
