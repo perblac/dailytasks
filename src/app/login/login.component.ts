@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {UserService} from "../services/user.service";
-import {Router} from "@angular/router";
+import { FormControl, FormGroup, Validators } from "@angular/forms";
+import { Router } from "@angular/router";
+import { UserService } from "../services/user.service";
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
 })
-export class LoginComponent  implements OnInit {
+export class LoginComponent {
   formLogIn: FormGroup;
   constructor(
     private userService: UserService,
@@ -25,8 +25,6 @@ export class LoginComponent  implements OnInit {
       ]),
     })
   }
-
-  ngOnInit() {}
 
   onSubmit() {
     this.userService.login(this.formLogIn.value)

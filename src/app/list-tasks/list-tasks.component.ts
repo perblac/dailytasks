@@ -1,6 +1,7 @@
 import { Component, OnDestroy } from '@angular/core';
 import { ModalController } from "@ionic/angular";
-import {getAuth, getRedirectResult, GoogleAuthProvider, User} from "@angular/fire/auth";
+import { User } from "@angular/fire/auth";
+import { Router } from "@angular/router";
 import { Subscription } from "rxjs";
 import { FormComponent } from "../form/form.component";
 import { NewTaskComponent } from "../new-task/new-task.component";
@@ -9,9 +10,8 @@ import { ExportToPdfComponent } from "../export-to-pdf/export-to-pdf.component";
 import { Task } from "../interfaces/task.interface";
 import { DataService } from "../services/data.service";
 import { AuthService } from "../services/auth.service";
+import { UserService } from "../services/user.service";
 import { MonthService } from "../services/month.service";
-import {UserService} from "../services/user.service";
-import {Router} from "@angular/router";
 
 interface WeekGroup {
   weekNumber?: number,
@@ -158,6 +158,10 @@ export class ListTasksComponent implements OnDestroy{
         this.router.navigate(['/login']);
       })
       .catch(err => console.log(err));
+  }
+
+  onClickNavigateToLogin() {
+    this.router.navigate(['/login']);
   }
 
   ngOnDestroy() {
