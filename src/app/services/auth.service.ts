@@ -6,9 +6,6 @@ import {
   user,
   authState,
   idToken,
-  GoogleAuthProvider,
-  signInWithPopup,
-  signOut, signInWithRedirect, getRedirectResult,
 } from "@angular/fire/auth";
 import { Subscription } from "rxjs";
 
@@ -20,9 +17,7 @@ export class AuthService implements OnDestroy {
   user$ = user(getAuth());
   userSubscription: Subscription;
   authState$ = authState(this.auth);
-  authStateSubscription: Subscription;
   idToken$ = idToken(this.auth);
-  idTokenSubscription: Subscription;
 
   private userUid = '';
 
@@ -32,45 +27,6 @@ export class AuthService implements OnDestroy {
       this.userUid = aUser?.uid ?? '';
       console.log('uid:', this.userUid);
     });
-    this.authStateSubscription = this.authState$.subscribe((aUser: User | null) => {
-      console.log('auth subscription', aUser);
-    });
-    this.idTokenSubscription = this.idToken$.subscribe((token: string | null) => {
-      console.log('token subscription', token);
-    });
-  }
-
-  async login() {
-    const provider = new GoogleAuthProvider();
-    provider.setCustomParameters({ prompt: 'select_account' });
-    // signInWithPopup(this.auth, provider)
-    //   .then((result) => {
-    //     // This gives you a Google Access Token. You can use it to access the Google API.
-    //     const credential = GoogleAuthProvider.credentialFromResult(result);
-    //     const token = credential?.accessToken;
-    //     // The signed-in user info.
-    //     const user = result.user;
-    //     // IdP data available using getAdditionalUserInfo(result)
-    //     // ...
-    //   }).catch((error) => {
-    //     // Handle Errors here.
-    //     const errorCode = error.code;
-    //     const errorMessage = error.message;
-    //     // The email of the user's account used.
-    //     const email = error.customData.email;
-    //     // The AuthCredential type that was used.
-    //     const credential = GoogleAuthProvider.credentialFromError(error);
-    //     console.log('Code:',errorCode,'msg:',errorMessage,'user email:',email,'credential',credential);
-    //   });
-    await signInWithRedirect(this.auth, provider);
-    const result = await getRedirectResult(this.auth);
-    console.log('result:', result, 'auth:', this.auth);
-  }
-
-  logout() {
-    signOut(this.auth).then(()=> {
-      console.log('signOut');
-    }).catch(err => console.log(err));
   }
 
   getUserUid() {
@@ -79,7 +35,5 @@ export class AuthService implements OnDestroy {
 
   ngOnDestroy() {
     this.userSubscription.unsubscribe();
-    this.authStateSubscription.unsubscribe();
-    this.idTokenSubscription.unsubscribe();
   }
 }
