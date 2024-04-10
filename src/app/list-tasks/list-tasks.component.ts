@@ -32,6 +32,8 @@ export class ListTasksComponent implements OnDestroy{
 
   public authorized = false;
 
+  private sortList = 1;
+
   protected readonly parseInt = parseInt;
 
   constructor(
@@ -112,9 +114,14 @@ export class ListTasksComponent implements OnDestroy{
    */
   private updateTasksArray() {
     let list = this.dataService.getTasks();
-    list?.sort((a,b)=>(new Date(a.date) > new Date(b.date) ? 1 : -1));
+    list?.sort((a,b)=>(new Date(a.date) > new Date(b.date) ? 1 * this.sortList : -1 * this.sortList));
     this.tasksArray = list;
     this.setGroupedArray();
+  }
+
+  public toggleDateOrder() {
+    this.sortList = -1 * this.sortList;
+    this.updateTasksArray();
   }
 
   /**
