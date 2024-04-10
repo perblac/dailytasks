@@ -1,17 +1,17 @@
-import { Component, OnDestroy } from '@angular/core';
+import {Subscription} from "rxjs";
+import {Router} from "@angular/router";
+import {User} from "@angular/fire/auth";
+import {Component, OnDestroy} from '@angular/core';
 import {ModalController, Platform} from "@ionic/angular";
-import { User } from "@angular/fire/auth";
-import { Router } from "@angular/router";
-import { Subscription } from "rxjs";
-import { FormComponent } from "../form/form.component";
-import { NewTaskComponent } from "../new-task/new-task.component";
-import { EditTaskComponent } from "../edit-task/edit-task.component";
-import { ExportToPdfComponent } from "../export-to-pdf/export-to-pdf.component";
-import { Task } from "../interfaces/task.interface";
-import { DataService } from "../services/data.service";
-import { AuthService } from "../services/auth.service";
-import { UserService } from "../services/user.service";
-import { MonthService } from "../services/month.service";
+import {FormComponent} from "../form/form.component";
+import {NewTaskComponent} from "../new-task/new-task.component";
+import {EditTaskComponent} from "../edit-task/edit-task.component";
+import {ExportToPdfComponent} from "../export-to-pdf/export-to-pdf.component";
+import {Task} from "../../interfaces/task.interface";
+import {DataService} from "../../services/data.service";
+import {AuthService} from "../../services/auth.service";
+import {UserService} from "../../services/user.service";
+import {MonthService} from "../../services/month.service";
 
 interface WeekGroup {
   weekNumber?: number,
@@ -23,12 +23,12 @@ interface WeekGroup {
   templateUrl: './list-tasks.component.html',
   styleUrls: ['./list-tasks.component.scss'],
 })
-export class ListTasksComponent implements OnDestroy{
+export class ListTasksComponent implements OnDestroy {
   authStateSubscription: Subscription;
   dataSubscription: Subscription;
 
   public tasksArray: Task[] = [];
-  public groupedArray:WeekGroup[] = [];
+  public groupedArray: WeekGroup[] = [];
 
   public authorized = false;
 
@@ -49,22 +49,22 @@ export class ListTasksComponent implements OnDestroy{
       this.authorized = !!aUser;
       if (this.authorized) {
         this.dataSubscription.unsubscribe();
-        this.dataSubscription = this.dataService.data$.subscribe(()=> {
+        this.dataSubscription = this.dataService.data$.subscribe(() => {
           // this.tasksArray = data.tasksArray;
           this.updateTasksArray();
         })
       }
     });
     this.dataSubscription = this.dataService.data$.subscribe(data => {
-      console.log('list data',data);
+      console.log('list data', data);
     });
   }
 
   /**
    * Handles task edition
-   * @param id {string} Id of task to edit
+   * @param id string with id of task to edit
    */
-  async handleClick(id:any) {
+  async handleClick(id: any) {
     const copyTask = {...this.dataService.getTaskById(id)};
     const modal = await this.modalCtrl.create({
       component: EditTaskComponent,
@@ -83,6 +83,9 @@ export class ListTasksComponent implements OnDestroy{
     await modal.present();
   }
 
+  /**
+   * Opens new task modal and updates task list after dismiss
+   */
   async openModalNewTask() {
     const modal = await this.modalCtrl.create({
       component: NewTaskComponent,
@@ -94,6 +97,9 @@ export class ListTasksComponent implements OnDestroy{
     await modal.present();
   }
 
+  /**
+   * Opens export to pdf modal
+   */
   async openModalExportToPdf() {
     const modal = await this.modalCtrl.create({
       component: ExportToPdfComponent,
@@ -101,6 +107,9 @@ export class ListTasksComponent implements OnDestroy{
     await modal.present();
   }
 
+  /**
+   * Opens form modal
+   */
   async openModalDataForm() {
     const modal = await this.modalCtrl.create({
       component: FormComponent,
@@ -114,28 +123,31 @@ export class ListTasksComponent implements OnDestroy{
    */
   private updateTasksArray() {
     let list = this.dataService.getTasks();
-    list?.sort((a,b)=>(new Date(a.date) > new Date(b.date) ? 1 * this.sortList : -1 * this.sortList));
+    list?.sort((a, b) => (new Date(a.date) > new Date(b.date) ? this.sortList : -1 * this.sortList));
     this.tasksArray = list;
     this.setGroupedArray();
   }
 
+  /**
+   * Changes sorting order
+   */
   public toggleDateOrder() {
     this.sortList = -1 * this.sortList;
     this.updateTasksArray();
   }
 
   /**
-   * Method to get week number of the year from a date.
-   * @param date {string} Date to get week number from
+   * Method to get week number of the year from a date
+   * @param date string with date to get week number from
    * @private
    */
-  private getWeekNumber(date: string):number {
+  private getWeekNumber(date: string): number {
     const taskDate = new Date(date);
-    taskDate.setHours(0,0,0,0);
+    taskDate.setHours(0, 0, 0, 0);
     const dayOfWeek = taskDate.getDay() || 7;
     const centerOfWeek = 4;
     taskDate.setDate(taskDate.getDate() + centerOfWeek - dayOfWeek);
-    const firstDayOfYearDate = new Date(taskDate.getFullYear(), 0 , 1);
+    const firstDayOfYearDate = new Date(taskDate.getFullYear(), 0, 1);
     const millisInDay = 24 * 60 * 60 * 1000;
     const delta = taskDate.getTime() - firstDayOfYearDate.getTime();
     return Math.ceil(((delta / millisInDay) + 1) / 7);
@@ -144,7 +156,7 @@ export class ListTasksComponent implements OnDestroy{
   /**
    * Groups tasks array by weeks
    */
-  setGroupedArray () {
+  setGroupedArray() {
     this.groupedArray = this.tasksArray.slice().reduce((acc: WeekGroup[], task: Task) => {
       const weekNumber = this.getWeekNumber(task.date);
       const weekArray = acc.find(week => week.weekNumber === weekNumber);
@@ -160,6 +172,9 @@ export class ListTasksComponent implements OnDestroy{
     }, []);
   }
 
+  /**
+   * Handles logout and redirects to login page
+   */
   onClickLogOut() {
     if (this.platform.is('hybrid')) {
       this.userService.logoutMobile()

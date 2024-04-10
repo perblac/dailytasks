@@ -10,9 +10,13 @@ import {ListTasksComponent} from "./list-tasks.component";
 import {NewTaskComponent} from "../new-task/new-task.component";
 
 @NgModule({
-  imports: [RouterModule.forChild([{path: '', component: ListTasksComponent}]), IonicModule, NgForOf, FormsModule, NgIf, ReactiveFormsModule],
+  imports: [RouterModule.forChild([{
+    path: '',
+    component: ListTasksComponent
+  }]), IonicModule, NgForOf, FormsModule, NgIf, ReactiveFormsModule],
   declarations: [ListTasksComponent, NewTaskComponent, EditTaskComponent, ExportToPdfComponent, FormComponent],
   exports: [ListTasksComponent],
 })
 
-export class  ListTasksModule {}
+export class ListTasksModule {
+}

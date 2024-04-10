@@ -1,16 +1,16 @@
-import { Component, Input, ViewChild, ChangeDetectorRef, AfterViewInit } from '@angular/core';
-import { AlertController, IonModal, ModalController } from "@ionic/angular";
-import { Task } from "../interfaces/task.interface";
-import { DataService } from "../services/data.service";
-import { MonthService } from "../services/month.service";
-import { AvailableDaysService } from "../services/available-days.service";
+import {AlertController, IonModal, ModalController} from "@ionic/angular";
+import {Component, Input, ViewChild, ChangeDetectorRef, AfterViewInit} from '@angular/core';
+import {Task} from "../../interfaces/task.interface";
+import {DataService} from "../../services/data.service";
+import {MonthService} from "../../services/month.service";
+import {AvailableDaysService} from "../../services/available-days.service";
 
 @Component({
   selector: 'app-edit-task',
   templateUrl: './edit-task.component.html',
   styleUrls: ['./edit-task.component.scss'],
 })
-export class EditTaskComponent implements AfterViewInit{
+export class EditTaskComponent implements AfterViewInit {
   @ViewChild(IonModal) modal!: IonModal;
   @Input() task!: Task;
 
@@ -68,7 +68,7 @@ export class EditTaskComponent implements AfterViewInit{
    * Handles confirmation of a new date
    */
   confirmDate() {
-    if (this.newDate.substring(0,10) === this.task.date.substring(0,10)) {
+    if (this.newDate.substring(0, 10) === this.task.date.substring(0, 10)) {
       // no change in date, so nothing to do
       console.log('same date');
     } else {
@@ -96,9 +96,9 @@ export class EditTaskComponent implements AfterViewInit{
    */
   async handleChangeDate(event: CustomEvent) {
     const selectedDate = event.detail.value;
-    console.log(selectedDate,this.dataService.getTaskByDate(selectedDate));
+    console.log(selectedDate, this.dataService.getTaskByDate(selectedDate));
     // check if date already exists
-    const originalTask: Task|undefined = this.dataService.getTaskByDate(selectedDate);
+    const originalTask: Task | undefined = this.dataService.getTaskByDate(selectedDate);
     if (originalTask) {
       const alert = await this.alertController.create(
         {
@@ -108,7 +108,7 @@ export class EditTaskComponent implements AfterViewInit{
         }
       );
       await alert.present();
-      alert.onWillDismiss().then(async (res)=> {
+      alert.onWillDismiss().then(async (res) => {
         // if user confirms, we take the original values as ours
         if (res.role === 'confirm') {
           this.newId = originalTask.id;
@@ -125,8 +125,8 @@ export class EditTaskComponent implements AfterViewInit{
   /**
    * Determines showing the Delete task button. It only shows if the task exists.
    */
-  showDelete():boolean {
-    return this.dataService.existsTask(this.task.date);
+  showDelete(): boolean {
+    return !!this.dataService.getTaskByDate(this.task.date);
   }
 
   /**

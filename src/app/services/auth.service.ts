@@ -1,4 +1,4 @@
-import { inject, Injectable, OnDestroy } from '@angular/core';
+import {inject, Injectable, OnDestroy} from '@angular/core';
 import {
   Auth,
   getAuth,
@@ -7,7 +7,7 @@ import {
   authState,
   idToken,
 } from "@angular/fire/auth";
-import { Subscription } from "rxjs";
+import {Subscription} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
@@ -29,6 +29,9 @@ export class AuthService implements OnDestroy {
     });
   }
 
+  /**
+   * Returns current user uid
+   */
   getUserUid() {
     return this.userUid;
   }

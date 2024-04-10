@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 
 @Injectable({
   providedIn: 'root'
@@ -19,8 +19,14 @@ export class MonthService {
     'Noviembre',
     'Diciembre'
   ]
-  constructor() { }
 
+  constructor() {
+  }
+
+  /**
+   * Returns the month name corresponding to the number
+   * @param index number of the month, between 1 and 12
+   */
   getMonth(index: number): string {
     // Months from Date.getMonth() start at 0, but in a
     // date string they start at 1. We use this second case

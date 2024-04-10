@@ -1,15 +1,15 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ModalController } from "@ionic/angular";
-import { FormControl, FormGroup } from "@angular/forms";
-import { Subscription } from "rxjs";
-import { DataService } from "../services/data.service";
+import {Subscription} from "rxjs";
+import {ModalController} from "@ionic/angular";
+import {FormControl, FormGroup} from "@angular/forms";
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {DataService} from "../../services/data.service";
 
 @Component({
   selector: 'app-form',
   templateUrl: './form.component.html',
   styleUrls: ['./form.component.scss'],
 })
-export class FormComponent implements OnInit, OnDestroy{
+export class FormComponent implements OnInit, OnDestroy {
   dataSubscription: Subscription;
 
   formDataGroup = new FormGroup({
@@ -23,11 +23,11 @@ export class FormComponent implements OnInit, OnDestroy{
   })
 
   constructor(
-    private modalCtrl:ModalController,
+    private modalCtrl: ModalController,
     private dataService: DataService,
-    ) {
+  ) {
     this.dataSubscription = this.dataService.data$.subscribe((data) => {
-        this.loadFormData();
+      this.loadFormData();
     })
   }
 
@@ -62,6 +62,9 @@ export class FormComponent implements OnInit, OnDestroy{
     }
   }
 
+  /**
+   * Loads form data values
+   */
   loadFormData() {
     if (this.dataService.getFormData()) {
       const {
@@ -82,6 +85,7 @@ export class FormComponent implements OnInit, OnDestroy{
       this.formDataGroup.get('tutor')?.setValue(tutor!);
     }
   }
+
   ngOnInit() {
     this.loadFormData();
   }

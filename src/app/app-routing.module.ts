@@ -1,8 +1,8 @@
-import { NgModule } from '@angular/core';
-import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
-import {RegisterComponent} from "./register/register.component";
-import {LoginComponent} from "./login/login.component";
+import {NgModule} from '@angular/core';
 import {canActivate, redirectUnauthorizedTo} from "@angular/fire/auth-guard";
+import {PreloadAllModules, RouterModule, Routes} from '@angular/router';
+import {LoginComponent} from "./components/login/login.component";
+import {RegisterComponent} from "./components/register/register.component";
 
 const routes: Routes = [
   {
@@ -12,7 +12,7 @@ const routes: Routes = [
   },
   {
     path: 'list-tasks',
-    loadChildren: () => import('./list-tasks/list-tasks.module').then(m => m.ListTasksModule),
+    loadChildren: () => import('./components/list-tasks/list-tasks.module').then(m => m.ListTasksModule),
     ...canActivate(() => redirectUnauthorizedTo(['/login']))
   },
   {
@@ -27,8 +27,9 @@ const routes: Routes = [
 
 @NgModule({
   imports: [
-    RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules })
+    RouterModule.forRoot(routes, {preloadingStrategy: PreloadAllModules})
   ],
   exports: [RouterModule]
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {
+}

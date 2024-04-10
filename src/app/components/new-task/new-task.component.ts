@@ -1,9 +1,9 @@
-import { Component } from '@angular/core';
-import { AlertController, ModalController } from "@ionic/angular";
-import { EditTaskComponent } from "../edit-task/edit-task.component";
-import { Task } from "../interfaces/task.interface";
-import { DataService } from "../services/data.service";
-import { AvailableDaysService } from "../services/available-days.service";
+import {Component} from '@angular/core';
+import {AlertController, ModalController} from "@ionic/angular";
+import {EditTaskComponent} from "../edit-task/edit-task.component";
+import {Task} from "../../interfaces/task.interface";
+import {DataService} from "../../services/data.service";
+import {AvailableDaysService} from "../../services/available-days.service";
 
 @Component({
   selector: 'app-new-task',
@@ -26,12 +26,14 @@ export class NewTaskComponent {
       role: 'confirm',
     }
   ]
+
   constructor(
     private taskservice: DataService,
     private alertController: AlertController,
     private modalCtrl: ModalController,
     public availableDaysService: AvailableDaysService,
-  ) {}
+  ) {
+  }
 
   /**
    * Reset the form fields
@@ -51,9 +53,9 @@ export class NewTaskComponent {
    */
   async handleSelectDay(event: CustomEvent) {
     const selectedDate = event.detail.value;
-    console.log(selectedDate,this.taskservice.getTaskByDate(selectedDate));
+    console.log(selectedDate, this.taskservice.getTaskByDate(selectedDate));
     // check if date already exists
-    const originalTask: Task|undefined = this.taskservice.getTaskByDate(selectedDate);
+    const originalTask: Task | undefined = this.taskservice.getTaskByDate(selectedDate);
     if (originalTask) {
       const alert = await this.alertController.create(
         {
@@ -63,7 +65,7 @@ export class NewTaskComponent {
         }
       );
       await alert.present();
-      alert.onWillDismiss().then(async (res)=> {
+      alert.onWillDismiss().then(async (res) => {
         // if user confirms, we take the original values as ours before opening modal
         if (res.role === 'confirm') {
           this.id = originalTask.id;
@@ -80,9 +82,9 @@ export class NewTaskComponent {
 
   /**
    * Opens EditTaskComponent as modal, and handles saving or updating according to response.
-   * @param originalTask {Object} If exists, we are updating this task
+   * @param originalTask optional input Task object. If exists, we are updating this task
    */
-  async callEditTask(originalTask: Task|undefined = undefined) {
+  async callEditTask(originalTask: Task | undefined = undefined) {
     // get top modal id
     const topModal = await this.modalCtrl.getTop();
     const modalId = topModal ? topModal.id : null;
@@ -99,6 +101,7 @@ export class NewTaskComponent {
         }
       }
     });
+
     // handle modal dismiss
     modal.onWillDismiss().then((res) => {
       if (res.role === 'confirm') {
@@ -110,7 +113,7 @@ export class NewTaskComponent {
         console.log('added task');
         this.resetFields();
         // close top modal after saving
-        this.modalCtrl.dismiss('', 'confirm',modalId!);
+        this.modalCtrl.dismiss('', 'confirm', modalId!);
       }
       if (res.role === 'cancel') {
         this.resetFields();

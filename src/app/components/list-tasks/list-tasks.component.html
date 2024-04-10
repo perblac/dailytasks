@@ -1,12 +1,16 @@
 <ion-header>
   <ion-toolbar color="light">
     <ion-buttons slot="start">
-      <ion-button *ngIf="!authorized" color="primary" fill="solid" shape="round" (click)="onClickNavigateToLogin()">Login</ion-button>
-      <ion-button *ngIf="authorized" color="primary" fill="solid" shape="round" (click)="onClickLogOut()">Logout</ion-button>
+      <ion-button *ngIf="!authorized" color="primary" fill="solid" shape="round" (click)="onClickNavigateToLogin()">
+        Login
+      </ion-button>
+      <ion-button *ngIf="authorized" color="primary" fill="solid" shape="round" (click)="onClickLogOut()">Logout
+      </ion-button>
     </ion-buttons>
     <ion-title class="ion-text-center">Diario de tareas</ion-title>
   </ion-toolbar>
 </ion-header>
+
 <ion-content *ngIf="authorized">
   <ion-grid *ngIf="groupedArray.length === 0" class="ion-padding ion-margin ion-text-center">
     <ion-row>
@@ -40,8 +44,9 @@
           Semana {{ week.weekNumber }}
         </ion-item-divider>
         <ion-item button="true" *ngFor="let task of week.items" (click)="handleClick(task.id)" lines="full">
-          <ion-col size="1" class="ion-text-nowrap ion-text-center">{{ task.date.slice(8,10) }}</ion-col>
-          <ion-col size="2" class="ion-text-nowrap ion-text-center">{{ this.monthService.getMonth(parseInt(task.date.slice(5,7))) }}</ion-col>
+          <ion-col size="1" class="ion-text-nowrap ion-text-center">{{ task.date.slice(8, 10) }}</ion-col>
+          <ion-col size="2"
+                   class="ion-text-nowrap ion-text-center">{{ this.monthService.getMonth(parseInt(task.date.slice(5, 7))) }}</ion-col>
           <ion-col size="8">
             <ion-label class="ion-text-nowrap">
               {{ task.taskcontent }}

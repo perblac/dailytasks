@@ -1,8 +1,8 @@
-import { Component } from '@angular/core';
-import { FormControl, FormGroup, Validators } from "@angular/forms";
-import { Router } from "@angular/router";
-import { UserService } from "../services/user.service";
+import {Router} from "@angular/router";
 import {Platform} from "@ionic/angular";
+import {Component} from '@angular/core';
+import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {UserService} from "../../services/user.service";
 
 @Component({
   selector: 'app-login',
@@ -11,6 +11,7 @@ import {Platform} from "@ionic/angular";
 })
 export class LoginComponent {
   formLogIn: FormGroup;
+
   constructor(
     private userService: UserService,
     private router: Router,
@@ -28,9 +29,12 @@ export class LoginComponent {
     })
   }
 
+  /**
+   * Tries to log in a user with email & password
+   */
   onSubmit() {
     this.userService.login(this.formLogIn.value)
-      .then( res => {
+      .then(res => {
         console.log(res.user);
         this.router.navigate(['/']);
       })
@@ -44,18 +48,21 @@ export class LoginComponent {
     this.router.navigate(['/register']);
   }
 
+  /**
+   * Opens login with Google
+   */
   onClickLoginWithGoogle() {
     if (this.platform.is('hybrid')) {
       this.userService.loginWithGoogleMobile()
         .then(res => {
-          console.log('res:',res);
+          console.log('res:', res);
           this.router.navigate(['/']);
         })
         .catch(err => console.log(err));
     } else {
       this.userService.loginWithGoogle()
         .then(res => {
-          console.log('res:',res);
+          console.log('res:', res);
           this.router.navigate(['/']);
         })
         .catch(err => console.log(err));

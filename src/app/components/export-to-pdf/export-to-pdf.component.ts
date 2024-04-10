@@ -1,11 +1,11 @@
-import { Component } from '@angular/core';
-import { ModalController, Platform } from "@ionic/angular";
-import { FileSharer } from '@byteowls/capacitor-filesharer';
-import { PDFDocument } from 'pdf-lib';
-import { Task } from "../interfaces/task.interface";
-import { DataService } from "../services/data.service";
-import { MonthService } from "../services/month.service";
-import { AvailableDaysService } from "../services/available-days.service";
+import {PDFDocument} from 'pdf-lib';
+import {Component} from '@angular/core';
+import {ModalController, Platform} from "@ionic/angular";
+import {FileSharer} from '@byteowls/capacitor-filesharer';
+import {Task} from "../../interfaces/task.interface";
+import {DataService} from "../../services/data.service";
+import {MonthService} from "../../services/month.service";
+import {AvailableDaysService} from "../../services/available-days.service";
 
 @Component({
   selector: 'app-export-to-pdf',
@@ -24,13 +24,14 @@ export class ExportToPdfComponent {
     private modalCtrl: ModalController,
     public monthService: MonthService,
     public availableDaysService: AvailableDaysService,
-  ) { }
+  ) {
+  }
 
   /**
-   * Converts blob to base64 data for using in file sharing. It takes the data and leaves the descriptor.
-   * @param blob {Blob} Original blob to convert
+   * Converts blob to base64 data for using in file sharing. It takes the data and leaves out the descriptor.
+   * @param blob Original blob to convert
    */
-  async blobToBase64 (blob: Blob) {
+  async blobToBase64(blob: Blob) {
     return new Promise<string>((resolve, reject) => {
       const reader = new FileReader();
       reader.onload = () => {
@@ -65,7 +66,7 @@ export class ExportToPdfComponent {
     const firstMonth = this.monthService.getMonth(1 + firstDate.getMonth());
     const lastMonth = this.monthService.getMonth(1 + lastDate.getMonth());
     const month = (firstMonth != lastMonth) ? `${firstMonth}/${lastMonth}` : firstMonth;
-    const year = firstDate.getFullYear().toString().slice(2,4);
+    const year = firstDate.getFullYear().toString().slice(2, 4);
 
     // original pdf document
     const file = './assets/ficha.pdf'
@@ -98,8 +99,8 @@ export class ExportToPdfComponent {
     const tiempo3 = form.getTextField('tiempo.3');
     const tiempo4 = form.getTextField('tiempo.4');
 
-    const actArr = [actividad0,actividad1,actividad2,actividad3,actividad4];
-    const tiemArr = [tiempo0,tiempo1,tiempo2,tiempo3,tiempo4];
+    const actArr = [actividad0, actividad1, actividad2, actividad3, actividad4];
+    const tiemArr = [tiempo0, tiempo1, tiempo2, tiempo3, tiempo4];
 
     const firmaAlumno = form.getTextField('firma_alumno');
     const firmaProfe = form.getTextField('firma_profe');
@@ -123,20 +124,20 @@ export class ExportToPdfComponent {
     actArr.forEach((field, index) => {
       field.setText(this.tasks[index].taskcontent);
     });
-    tiemArr.forEach((field,index) => {
+    tiemArr.forEach((field, index) => {
       field.setText(`${this.tasks[index].hours} horas`);
     });
 
     // saving resulting pdf document
     const pdfBytes = await pdfDoc.save();
 
-    const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+    const blob = new Blob([pdfBytes], {type: 'application/pdf'});
     const url = URL.createObjectURL(blob);
 
     // downloading
     if (this.platform.is('hybrid')) {
       // download in mobile devices via share
-      const base64data = await  this.blobToBase64(blob);
+      const base64data = await this.blobToBase64(blob);
       FileSharer.share({
         filename: `ficha_del_${firstDay}_al_${lastDay}_de_${month}.pdf`,
         contentType: "application/pdf",
@@ -159,11 +160,11 @@ export class ExportToPdfComponent {
    * Handles week selection by clicking on a date. Loads tasks from chosen week
    * @param event Event from the ion-datetime ionChange
    */
-  public selectedWeek(event:any) {
+  public selectedWeek(event: any) {
     const dateOfDay = new Date(event.detail.value);
     const weekDay = dateOfDay.getDay();
     dateOfDay.setDate(dateOfDay.getDate() + (1 - weekDay));
-    dateOfDay.setUTCHours(12,0,0);
+    dateOfDay.setUTCHours(12, 0, 0);
     let firstDay = dateOfDay;
     let week: string[] = [firstDay.toISOString()];
     for (let i = 1; i <= 4; i++) {

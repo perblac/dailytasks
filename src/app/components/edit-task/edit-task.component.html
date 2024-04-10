@@ -5,7 +5,9 @@
     </ion-buttons>
     <ion-title class="ion-text-center">Editar tarea</ion-title>
     <ion-buttons slot="end">
-      <ion-button color="primary" fill="solid" shape="round" (click)="confirm()" [strong]="true" [disabled]="taskInput.errors && taskInput.invalid || taskHours.errors && taskHours.invalid">Confirmar</ion-button>
+      <ion-button color="primary" fill="solid" shape="round" (click)="confirm()" [strong]="true"
+                  [disabled]="taskInput.errors && taskInput.invalid || taskHours.errors && taskHours.invalid">Confirmar
+      </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
@@ -15,7 +17,7 @@
     <ion-item button="true" id="open-modal-date" slot="center">
       <ion-label class="ion-text-center ion-text-nowrap">
         <span>
-          Día {{ task.date.slice(8,10) }} de {{ monthService.getMonth(parseInt(task.date.slice(5,7))) }}
+          Día {{ task.date.slice(8, 10) }} de {{ monthService.getMonth(parseInt(task.date.slice(5, 7))) }}
         </span>
         <ion-label color="medium">
           <small>(Pulse aqui para cambiar la fecha)</small>
@@ -38,7 +40,10 @@
             <ion-grid class="ion-padding">
               <ion-row class="ion-justify-content-center">
                 <ion-col size="auto">
-                  <ion-datetime locale="es-ES" [firstDayOfWeek]="1" [showDefaultTitle]="true" presentation="date" min="2024-03-01T00:00:00" max="2024-05-31T00:00:00" [isDateEnabled]="availableDaysService.availableDays" [value]="task.date" (ionChange)="handleChangeDate($event)">
+                  <ion-datetime locale="es-ES" [firstDayOfWeek]="1" [showDefaultTitle]="true" presentation="date"
+                                min="2024-03-01T00:00:00" max="2024-05-31T00:00:00"
+                                [isDateEnabled]="availableDaysService.availableDays" [value]="task.date"
+                                (ionChange)="handleChangeDate($event)">
                     <span slot="title"></span>
                   </ion-datetime>
                 </ion-col>
@@ -51,12 +56,15 @@
     <div *ngIf="taskInput.errors && taskInput.invalid">
       <small style="color: red">Por favor rellene este campo</small>
     </div>
-    <ion-input [(ngModel)]="task.taskcontent" type="text" label="Tarea" #taskInput="ngModel" labelPlacement="stacked" fill="outline" helperText="Tarea realizada en la fecha" class="ion-margin-vertical" required></ion-input>
+    <ion-input [(ngModel)]="task.taskcontent" type="text" label="Tarea" #taskInput="ngModel" labelPlacement="stacked"
+               fill="outline" helperText="Tarea realizada en la fecha" class="ion-margin-vertical" required></ion-input>
 
     <div *ngIf="taskHours.errors && taskHours.invalid" class="ion-margin-vertical">
       <small style="color: red">Introduzca un número de horas entre 1 y 24</small>
     </div>
-    <ion-input [(ngModel)]="task.hours" type="number" label="Horas" #taskHours="ngModel" labelPlacement="stacked" fill="outline" helperText="Número de horas utilizadas" class="ion-margin-bottom" min="1" max="24" pattern="\b\d{1,2}\b" required></ion-input>
+    <ion-input [(ngModel)]="task.hours" type="number" label="Horas" #taskHours="ngModel" labelPlacement="stacked"
+               fill="outline" helperText="Número de horas utilizadas" class="ion-margin-bottom" min="1" max="24"
+               pattern="\b\d{1,2}\b" required></ion-input>
   </ion-list>
 </ion-content>
 

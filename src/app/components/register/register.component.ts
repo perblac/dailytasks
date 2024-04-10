@@ -1,33 +1,34 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
-import { Router } from "@angular/router";
-import { UserService} from "../services/user.service";
+import {Router} from "@angular/router";
+import {Component} from '@angular/core';
+import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
+import {UserService} from "../../services/user.service";
 
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss'],
 })
-export class RegisterComponent implements OnInit {
+export class RegisterComponent {
 
   formSignIn: FormGroup;
 
   error_messages = {
     'email': [
-      { type: 'required', message: 'A valid email is required.'},
-      { type: 'pattern', message: 'A valid email is required.'},
+      {type: 'required', message: 'A valid email is required.'},
+      {type: 'pattern', message: 'A valid email is required.'},
     ],
     'password': [
-      { type: 'required', message: 'A password is required.'},
-      { type: 'minlength', message: 'Password too short. Minimum 6 characters.'},
-      { type: 'maxlength', message: 'Password too long. Maximum 30 characters.'},
+      {type: 'required', message: 'A password is required.'},
+      {type: 'minlength', message: 'Password too short. Minimum 6 characters.'},
+      {type: 'maxlength', message: 'Password too long. Maximum 30 characters.'},
     ],
     'password2': [
-      { type: 'required', message: 'Repeating the password is required.'},
-      { type: 'minlength', message: 'Password too short. Minimum 6 characters.'},
-      { type: 'maxlength', message: 'Password too long. Maximum 30 characters.'},
+      {type: 'required', message: 'Repeating the password is required.'},
+      {type: 'minlength', message: 'Password too short. Minimum 6 characters.'},
+      {type: 'maxlength', message: 'Password too long. Maximum 30 characters.'},
     ]
   }
+
   constructor(
     private userService: UserService,
     private router: Router,
@@ -52,10 +53,9 @@ export class RegisterComponent implements OnInit {
     })
   }
 
-  ngOnInit() {
-
-  }
-
+  /**
+   * Registers a new user. If successful, redirects to login page
+   */
   onSubmit() {
     this.userService.register(this.formSignIn.value)
       .then(res => {
@@ -68,9 +68,13 @@ export class RegisterComponent implements OnInit {
       });
   }
 
+  /**
+   * Validator for password matching in formGroup
+   * @param formGroup FormGroup with fields password & password2 to check for matching
+   */
   passwordsMatch(formGroup: FormGroup) {
-    const { value: password } = formGroup.get('password')!;
-    const { value: password2 } = formGroup.get('password2')!;
-    return password2 === password ? null : { passwordNotMatch: true }
+    const {value: password} = formGroup.get('password')!;
+    const {value: password2} = formGroup.get('password2')!;
+    return password2 === password ? null : {passwordNotMatch: true}
   }
 }

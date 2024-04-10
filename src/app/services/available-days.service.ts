@@ -1,12 +1,17 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AvailableDaysService {
 
-  constructor() { }
+  constructor() {
+  }
 
+  /**
+   * Returns availability of a given date, for use in datetime inputs.
+   * @param dateString string with date to check
+   */
   availableDays(dateString: string) {
     const date = new Date(dateString);
     const utcDay = date.getUTCDate();
