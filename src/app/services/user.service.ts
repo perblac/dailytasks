@@ -9,6 +9,7 @@ import {
   GoogleAuthProvider,
 } from "@angular/fire/auth";
 import {GoogleAuth} from "@codetrix-studio/capacitor-google-auth";
+import {Capacitor} from "@capacitor/core";
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +19,11 @@ export class UserService {
   constructor(
     private auth: Auth
   ) {
-    GoogleAuth.initialize();
+    const platform = Capacitor.getPlatform();
+    const clientId = (platform === 'android') ?
+      "334552631074-p1ek35mnsjaa3ptq524od78rnq0vqhe5.apps.googleusercontent.com" :
+      "334552631074-26thlrv58vbo6gmt26b8lkqgbmghi520.apps.googleusercontent.com" ;
+    GoogleAuth.initialize({clientId});
   }
 
   /**

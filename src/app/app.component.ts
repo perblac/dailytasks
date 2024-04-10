@@ -1,7 +1,7 @@
 import {App} from '@capacitor/app';
 import {Dialog} from '@capacitor/dialog';
 import {Component, Optional} from '@angular/core';
-import {IonRouterOutlet, Platform} from "@ionic/angular";
+import {IonRouterOutlet, Platform} from "@ionic/angular"
 
 @Component({
   selector: 'app-root',
@@ -9,8 +9,10 @@ import {IonRouterOutlet, Platform} from "@ionic/angular";
   styleUrls: ['app.component.scss'],
 })
 export class AppComponent {
-  constructor(private platform: Platform,
-              @Optional() private routerOutlet?: IonRouterOutlet) {
+  constructor(
+    private platform: Platform,
+    @Optional() private routerOutlet?: IonRouterOutlet
+  ) {
     this.platform.backButton.subscribe(() => {
       if (!this.routerOutlet?.canGoBack()) {
         this.showConfirm()
