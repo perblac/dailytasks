@@ -7,7 +7,11 @@
       <ion-button *ngIf="authorized" color="primary" fill="solid" shape="round" (click)="onClickLogOut()">Logout
       </ion-button>
     </ion-buttons>
-    <ion-title class="ion-text-center">Diario de tareas</ion-title>
+    <ion-title class="ion-text-center">
+      <div class="ion-text-wrap">
+        Diario de tareas
+      </div>
+    </ion-title>
   </ion-toolbar>
   <ion-item button="true" (click)="toggleDateOrder()" color="light" lines="full">
     <ion-col size="1" class="ion-text-nowrap ion-text-center">Día</ion-col>
