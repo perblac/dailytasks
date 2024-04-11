@@ -76,13 +76,13 @@ export class FormComponent implements OnInit, OnDestroy {
         centrotrabajo,
         tutor
       } = this.dataService.getFormData();
-      this.formDataGroup.get('alumno')?.setValue(alumno!);
-      this.formDataGroup.get('ciclo')?.setValue(ciclo!);
-      this.formDataGroup.get('grado')?.setValue(grado!);
-      this.formDataGroup.get('centrodocente')?.setValue(centrodocente!);
-      this.formDataGroup.get('profesor')?.setValue(profesor!);
-      this.formDataGroup.get('centrotrabajo')?.setValue(centrotrabajo!);
-      this.formDataGroup.get('tutor')?.setValue(tutor!);
+      this.formDataGroup.get('alumno')?.setValue(alumno ?? '');
+      this.formDataGroup.get('ciclo')?.setValue(ciclo ?? '');
+      this.formDataGroup.get('grado')?.setValue(grado ?? '');
+      this.formDataGroup.get('centrodocente')?.setValue(centrodocente ?? '');
+      this.formDataGroup.get('profesor')?.setValue(profesor ?? '');
+      this.formDataGroup.get('centrotrabajo')?.setValue(centrotrabajo ?? '');
+      this.formDataGroup.get('tutor')?.setValue(tutor ?? '');
     }
   }
 
