@@ -148,10 +148,17 @@ export class DataService {
     this.saveState();
   }
 
+  /**
+   * Returns the options object
+   */
   getOptions() {
     return this.options;
   }
 
+  /**
+   * Sets user options, and saves
+   * @param options object with user options
+   */
   setOptions(options: any) {
     this.options = options;
     this.saveState();
