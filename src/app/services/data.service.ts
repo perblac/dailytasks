@@ -13,6 +13,8 @@ import {AuthService} from "./auth.service";
 export class DataService {
   private tasksArray: Task[] = [];
   private formData: FormObject = {};
+  private options: any;
+  private defaultOptions = { sortList: 1 }
 
   data$: Observable<DocumentData | DocumentData[] | undefined>;
   dataSubscription: Subscription;
@@ -28,24 +30,33 @@ export class DataService {
       if (aUser) {
         this.logged = true;
         // when user is logged, redo data subscription
+        this.dataSubscription.unsubscribe();
         this.userDataDocRef = doc(this.usersCollection, this.authService.getUserUid());
         this.data$ = docData(this.userDataDocRef);
-        this.dataSubscription.unsubscribe();
         this.dataSubscription = this.data$.subscribe((data: any) => {
           console.log('data w/user:', data);
-          this.tasksArray = data.tasksArray;
-          this.formData = data.formData;
+          if (data) {
+            this.tasksArray = data.tasksArray;
+            this.formData = data.formData;
+            this.options = data.options;
+          } else {
+            this.tasksArray = [];
+            this.formData = {};
+            this.options = this.defaultOptions;
+          }
         });
       } else {
         this.logged = false;
+        this.options = this.defaultOptions;
       }
+      console.log('docRef:', this.userDataDocRef);
     })
     // no data if no user logged
     this.data$ = this.logged ? docData(doc(this.usersCollection, this.authService.getUserUid())) : of(undefined);
     this.userDataDocRef = this.logged ? doc(this.usersCollection, this.authService.getUserUid()) : undefined;
-    // temporal data subscription
+    // initialize data subscription
     this.dataSubscription = this.data$.subscribe((data) => {
-      console.log('data:', data);
+      console.log('initialize data:', data);
     })
   }
 
@@ -137,13 +148,23 @@ export class DataService {
     this.saveState();
   }
 
+  getOptions() {
+    return this.options;
+  }
+
+  setOptions(options: any) {
+    this.options = options;
+    this.saveState();
+  }
+
   /**
    * Saves current data state to db
    */
   saveState() {
     setDoc(this.userDataDocRef, {
       formData: this.formData,
-      tasksArray: this.tasksArray
+      tasksArray: this.tasksArray,
+      options: this.options,
     });
   }
 

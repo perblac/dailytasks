@@ -48,11 +48,12 @@ export class ListTasksComponent implements OnDestroy {
     this.authStateSubscription = this.authService.authState$.subscribe((aUser: User | null) => {
       this.authorized = !!aUser;
       if (this.authorized) {
+        this.sortList = this.dataService.getOptions()?.sortList ?? 1;
+        console.log('data:',this.dataService.getOptions()?.sortList,'sortList:', this.sortList);
         this.dataSubscription.unsubscribe();
         this.dataSubscription = this.dataService.data$.subscribe(() => {
-          // this.tasksArray = data.tasksArray;
           this.updateTasksArray();
-        })
+        });
       }
     });
     this.dataSubscription = this.dataService.data$.subscribe(data => {
@@ -133,6 +134,7 @@ export class ListTasksComponent implements OnDestroy {
    */
   public toggleDateOrder() {
     this.sortList = -1 * this.sortList;
+    this.dataService.setOptions({sortList: this.sortList});
     this.updateTasksArray();
   }
 

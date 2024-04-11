@@ -40,7 +40,7 @@ export class LoginComponent {
       })
       .catch(err => {
         if (err.code === 'auth/invalid-credential') alert('incorrect email/password');
-        console.log(err);
+        console.log('Error en login:',err);
       });
   }
 

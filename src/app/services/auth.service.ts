@@ -14,7 +14,7 @@ import {Subscription} from "rxjs";
 })
 export class AuthService implements OnDestroy {
   private auth: Auth = inject(Auth);
-  user$ = user(getAuth());
+  user$ = user(this.auth);
   userSubscription: Subscription;
   authState$ = authState(this.auth);
   idToken$ = idToken(this.auth);
