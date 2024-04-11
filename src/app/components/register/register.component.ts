@@ -77,4 +77,8 @@ export class RegisterComponent {
     const {value: password2} = formGroup.get('password2')!;
     return password2 === password ? null : {passwordNotMatch: true}
   }
+
+  handleCancel() {
+    this.router.navigate(['/login']);
+  }
 }

@@ -58,6 +58,11 @@
           <ion-button type="submit" expand="block" [disabled]="!formSignIn.valid">Register</ion-button>
         </ion-col>
       </ion-row>
+      <ion-row>
+        <ion-col sizeSm="6" offsetSm="3" sizeLg="4" offsetLg="4">
+          <ion-button expand="block" (click)="handleCancel()">Cancel</ion-button>
+        </ion-col>
+      </ion-row>
     </form>
   </ion-grid>
 </ion-content>
