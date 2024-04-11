@@ -48,7 +48,9 @@ export class UserService {
    * Login using Google in web
    */
   loginWithGoogle() {
-    return signInWithPopup(this.auth, new GoogleAuthProvider());
+    const provider = new GoogleAuthProvider();
+    provider.setCustomParameters({ prompt: 'select_account' });
+    return signInWithPopup(this.auth, provider);
   }
 
   /**
