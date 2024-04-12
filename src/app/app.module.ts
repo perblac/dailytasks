@@ -13,6 +13,8 @@ import {environment} from "../environments/environment";
 import {LoginComponent} from "./components/login/login.component";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {RegisterComponent} from "./components/register/register.component";
+import {HttpClientModule} from '@angular/common/http';
+import {TranslocoRootModule} from './transloco-root.module';
 
 @NgModule({
   declarations: [
@@ -29,6 +31,8 @@ import {RegisterComponent} from "./components/register/register.component";
     provideFirestore(() => getFirestore()),
     FormsModule,
     ReactiveFormsModule,
+    HttpClientModule,
+    TranslocoRootModule,
   ],
   providers: [{provide: RouteReuseStrategy, useClass: IonicRouteStrategy}],
   bootstrap: [

@@ -34,6 +34,7 @@
     "@capacitor/status-bar": "5.0.7",
     "@codetrix-studio/capacitor-google-auth": "^3.4.0-rc.0",
     "@ionic/angular": "^7.0.0",
+    "@jsverse/transloco": "^7.1.0",
     "ionicons": "^7.0.0",
     "pdf-lib": "^1.17.1",
     "rxjs": "~7.8.0",

@@ -1,0 +1,12 @@
+{
+  "login": {
+    "title": "Log In",
+    "loginButton": "Login",
+    "or": "or",
+    "loginGoogleButton": "Login with Google",
+    "registerButton": "Register",
+    "emailPlaceholder": "email",
+    "passwordPlaceholder": "password",
+    "failMessage": "incorrect email/password"
+  }
+}

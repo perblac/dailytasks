@@ -3,6 +3,7 @@ import {Platform} from "@ionic/angular";
 import {Component} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {UserService} from "../../services/user.service";
+import {TranslocoService} from "@jsverse/transloco";
 
 @Component({
   selector: 'app-login',
@@ -12,10 +13,13 @@ import {UserService} from "../../services/user.service";
 export class LoginComponent {
   formLogIn: FormGroup;
 
+  selectedLang = 'en';
+
   constructor(
     private userService: UserService,
     private router: Router,
     private platform: Platform,
+    private translocoService: TranslocoService,
   ) {
     this.formLogIn = new FormGroup({
       email: new FormControl('', [
@@ -67,6 +71,11 @@ export class LoginComponent {
         })
         .catch(err => console.log(err));
     }
+  }
+
+  toggleLang() {
+    this.translocoService.setActiveLang(this.selectedLang);
+    console.log('lang:', this.translocoService.getActiveLang());
   }
 
   ionViewWillEnter() {
