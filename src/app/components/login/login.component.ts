@@ -3,7 +3,7 @@ import {Platform} from "@ionic/angular";
 import {Component} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {UserService} from "../../services/user.service";
-import {TranslocoService} from "@jsverse/transloco";
+import {getBrowserLang, TranslocoService} from "@jsverse/transloco";
 
 @Component({
   selector: 'app-login',
@@ -31,6 +31,11 @@ export class LoginComponent {
         Validators.minLength(6)
       ]),
     });
+    let defaultLang = getBrowserLang() || 'en';
+    console.log('browser lang:', getBrowserLang());
+    defaultLang =  (['en','es','fr','de','ru'].includes(defaultLang)) ? defaultLang : 'en';
+    this.translocoService.setActiveLang(defaultLang);
+    this.selectedLang = defaultLang;
   }
 
   /**
@@ -43,7 +48,7 @@ export class LoginComponent {
         this.router.navigate(['/']);
       })
       .catch(err => {
-        if (err.code === 'auth/invalid-credential') alert('incorrect email/password');
+        if (err.code === 'auth/invalid-credential') alert(this.translocoService.translate('login.failMessage'));
         console.log('Error en login:',err);
       });
   }

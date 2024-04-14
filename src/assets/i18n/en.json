@@ -1,12 +1,50 @@
 {
+  "emailPlaceholder": "email",
+  "passwordPlaceholder": "password",
+  "password2Placeholder": "confirm password",
   "login": {
     "title": "Log In",
     "loginButton": "Login",
     "or": "or",
     "loginGoogleButton": "Login with Google",
     "registerButton": "Register",
-    "emailPlaceholder": "email",
-    "passwordPlaceholder": "password",
     "failMessage": "incorrect email/password"
+  },
+  "register": {
+    "title": "Register",
+    "errorMatch": "Passwords must match",
+    "errorValidMail": "A valid email is required",
+    "errorPassRequired": "A password is required",
+    "errorPass2Required": "Repeating the password is required",
+    "errorPassShort": "Password too short. Minimum 6 characters",
+    "errorPassLong": "Password too long. Maximum 30 characters",
+    "errorEmailInUse": "Email already registered",
+    "registerButton": "Register",
+    "cancelButton": "Cancel"
+  },
+  "list": {
+    "title": "Task diary",
+    "logoutButton": "logout",
+    "day": "Day",
+    "month": "Month",
+    "task": "Task performed",
+    "hours": "Hours",
+    "week": "Week",
+    "noTasks": "No tasks have been registered yet.",
+    "advice": "You can add a new task by clicking the bottom right icon."
+  },
+  "month": {
+    "jan": "January",
+    "feb": "February",
+    "mar": "March",
+    "apr": "April",
+    "may": "May",
+    "jun": "June",
+    "jul": "July",
+    "aug": "August",
+    "sep": "September",
+    "oct": "October",
+    "nov": "November",
+    "dec": "December"
   }
 }

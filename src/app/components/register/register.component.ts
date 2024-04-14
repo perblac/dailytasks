@@ -2,6 +2,7 @@ import {Router} from "@angular/router";
 import {Component} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {UserService} from "../../services/user.service";
+import {TranslocoService} from "@jsverse/transloco";
 
 @Component({
   selector: 'app-register',
@@ -11,28 +12,12 @@ import {UserService} from "../../services/user.service";
 export class RegisterComponent {
 
   formSignIn: FormGroup;
-
-  error_messages = {
-    'email': [
-      {type: 'required', message: 'A valid email is required.'},
-      {type: 'pattern', message: 'A valid email is required.'},
-    ],
-    'password': [
-      {type: 'required', message: 'A password is required.'},
-      {type: 'minlength', message: 'Password too short. Minimum 6 characters.'},
-      {type: 'maxlength', message: 'Password too long. Maximum 30 characters.'},
-    ],
-    'password2': [
-      {type: 'required', message: 'Repeating the password is required.'},
-      {type: 'minlength', message: 'Password too short. Minimum 6 characters.'},
-      {type: 'maxlength', message: 'Password too long. Maximum 30 characters.'},
-    ]
-  }
-
+  error_messages;
   constructor(
     private userService: UserService,
     private router: Router,
     public formBuilder: FormBuilder,
+    private translocoService: TranslocoService,
   ) {
     this.formSignIn = this.formBuilder.group({
       email: new FormControl('', [
@@ -50,7 +35,24 @@ export class RegisterComponent {
       ]),
     }, {
       validators: this.passwordsMatch.bind(this)
-    })
+    });
+
+    this.error_messages = {
+      'email': [
+        {type: 'required', message: this.translocoService.translate('register.errorValidMail')},
+        {type: 'pattern', message: this.translocoService.translate('register.errorValidMail')},
+      ],
+      'password': [
+        {type: 'required', message: this.translocoService.translate('register.errorPassRequired')},
+        {type: 'minlength', message: this.translocoService.translate('register.errorPassShort')},
+        {type: 'maxlength', message: this.translocoService.translate('register.errorPassLong')},
+      ],
+      'password2': [
+        {type: 'required', message: this.translocoService.translate('register.errorPass2Required')},
+        {type: 'minlength', message: this.translocoService.translate('register.errorPassShort')},
+        {type: 'maxlength', message: this.translocoService.translate('register.errorPassLong')},
+      ]
+    }
   }
 
   /**
@@ -63,8 +65,8 @@ export class RegisterComponent {
         this.router.navigate(['/login']);
       })
       .catch(err => {
-        if (err.code === 'auth/email-already-in-use') alert('Email already registered');
-        console.log(err)
+        if (err.code === 'auth/email-already-in-use') alert(this.translocoService.translate('register.errorEmailInUse'));
+        console.log(err);
       });
   }
 

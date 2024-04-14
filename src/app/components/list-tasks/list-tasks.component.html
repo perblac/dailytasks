@@ -1,32 +1,33 @@
-<ion-header>
+<ion-header *transloco="let t">
   <ion-toolbar color="light">
     <ion-buttons slot="start">
       <ion-button *ngIf="!authorized" color="primary" fill="solid" shape="round" (click)="onClickNavigateToLogin()">
-        Login
+        {{ t('login.loginButton') }}
       </ion-button>
-      <ion-button *ngIf="authorized" color="primary" fill="solid" shape="round" (click)="onClickLogOut()">Logout
+      <ion-button *ngIf="authorized" color="primary" fill="solid" shape="round" (click)="onClickLogOut()">
+        {{ t('list.logoutButton') }}
       </ion-button>
     </ion-buttons>
-    <ion-title class="ion-text-center">Diario de tareas</ion-title>
+    <ion-title class="ion-text-center">{{ t('list.title') }}</ion-title>
   </ion-toolbar>
   <ion-item button="true" (click)="toggleDateOrder()" color="light" lines="full">
-    <ion-col size="1" class="ion-text-nowrap ion-text-center">Día</ion-col>
-    <ion-col size="2" class="ion-text-nowrap ion-text-center">Mes</ion-col>
-    <ion-col size="8" pull-xs="1" pull-sm="0" class="ion-text-nowrap ion-text-center">Tarea realizada</ion-col>
-    <ion-col size="1" pull-xs="1" pull-sm="0" class="ion-text-nowrap ion-text-center">Horas</ion-col>
+    <ion-col size="1" class="ion-text-nowrap ion-text-center">{{ t('list.day') }}</ion-col>
+    <ion-col size="2" class="ion-text-nowrap ion-text-center">{{ t('list.month') }}</ion-col>
+    <ion-col size="8" pull-xs="1" pull-sm="0" class="ion-text-nowrap ion-text-center">{{ t('list.task') }}</ion-col>
+    <ion-col size="1" pull-xs="1" pull-sm="0" class="ion-text-nowrap ion-text-center">{{ t('list.hours') }}</ion-col>
   </ion-item>
 </ion-header>
 
 <ion-content *ngIf="authorized">
   <ion-grid *ngIf="groupedArray.length === 0" class="ion-padding ion-margin ion-text-center">
-    <ion-row>
+    <ion-row *transloco="let t">
       <ion-col size="8" offset="2" class="ion-margin-vertical">
-        Aún no registró ninguna tarea.
+        {{ t('list.noTasks') }}
       </ion-col>
     </ion-row>
-    <ion-row>
+    <ion-row *transloco="let t">
       <ion-col size="8" offset="2">
-        Pruebe a añadir una nueva tarea pulsando el icono inferior derecho.
+        {{ t('list.advice') }}
       </ion-col>
     </ion-row>
     <ion-row class="ion-justify-content-center">
@@ -39,14 +40,14 @@
   </ion-grid>
   <ion-list *ngIf="groupedArray.length > 0">
     <ng-container *ngFor="let week of groupedArray">
-      <ion-item-group>
+      <ion-item-group *transloco="let t">
         <ion-item-divider>
-          Semana {{ week.weekNumber }}
+          {{ t('list.week') }} {{ week.weekNumber }}
         </ion-item-divider>
         <ion-item button="true" *ngFor="let task of week.items" (click)="handleClick(task.id)" lines="full">
           <ion-col size="1" class="ion-text-nowrap ion-text-center">{{ task.date.slice(8, 10) }}</ion-col>
           <ion-col size="2"
-                   class="ion-text-nowrap ion-text-center">{{ this.monthService.getMonth(parseInt(task.date.slice(5, 7))) }}</ion-col>
+                   class="ion-text-nowrap ion-text-center">{{ this.monthService.getMonth(parseInt(task.date.slice(5, 7)), this.selectedLang) }}</ion-col>
           <ion-col size="8">
             <ion-label class="ion-text-nowrap">
               {{ task.taskcontent }}
@@ -72,6 +73,9 @@
       </ion-button>
       <ion-button fill="solid" color="primary" shape="round" (click)="openModalDataForm()">
         <ion-icon name="school"></ion-icon>
+      </ion-button>
+      <ion-button fill="solid" color="primary" shape="round" (click)="openModalOptions()">
+        <ion-icon name="options"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
