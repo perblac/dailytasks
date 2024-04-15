@@ -33,6 +33,25 @@
     "noTasks": "Aún no registró ninguna tarea.",
     "advice": "Puede añadir una nueva tarea pulsando el icono inferior derecho."
   },
+  "options": {
+    "title": "Opciones",
+    "closeButton": "Cerrar",
+    "darkMode": "Modo oscuro",
+    "language": "Idioma",
+    "languagePlaceholder": "Seleccionar idioma",
+    "order": "Lista en orden temporal inverso"
+  },
+  "newTask": {
+    "title": "Añadir tarea",
+    "backButton": "Volver",
+    "datetimeTitle": "Escoja día"
+  },
+  "editTask": {
+    "title": "Editar tarea",
+    "cancelButton": "Cancelar",
+    "confirmButton": "Confirmar",
+    "dateLabel": "Dia {{day}} de {{month}}"
+  },
   "month": {
     "jan": "Enero",
     "feb": "Febrero",

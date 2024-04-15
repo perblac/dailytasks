@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnInit, ViewChild} from '@angular/core';
 import {ModalController} from "@ionic/angular";
 import {TranslocoService} from "@jsverse/transloco";
 
@@ -34,14 +34,21 @@ export class OptionsComponent implements OnInit {
     document.body.classList.toggle('dark', this.darkMode);
   }
 
-  changeLang() {
+  changeLang(event: any) {
+    console.log(event);
+    this.selectedLang = event.detail.value;
     this.translocoService.setActiveLang(this.selectedLang);
+    console.log('lang:',this.selectedLang);
   }
 
   changeSortOrder() {
     this.sortList = this.toggleSortList ? -1 : 1;
   }
 
+  handleButton(lang:string) {
+    this.translocoService.setActiveLang(lang);
+    this.selectedLang = lang;
+  }
   ngOnInit() {
     this.darkMode = this.options.darkMode;
     this.selectedLang = this.options.selectedLang;

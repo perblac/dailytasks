@@ -11,7 +11,7 @@ import {AvailableDaysService} from "../../services/available-days.service";
   styleUrls: ['./new-task.component.scss'],
 })
 export class NewTaskComponent {
-  public id: string = this.taskservice.generateId();
+  public id: string = this.dataService.generateId();
   public date: string = new Date().toISOString();
   public taskcontent: string = '';
   public hours: number = 0;
@@ -28,7 +28,7 @@ export class NewTaskComponent {
   ]
 
   constructor(
-    private taskservice: DataService,
+    private dataService: DataService,
     private alertController: AlertController,
     private modalCtrl: ModalController,
     public availableDaysService: AvailableDaysService,
@@ -40,7 +40,7 @@ export class NewTaskComponent {
    * @private
    */
   private resetFields() {
-    this.id = this.taskservice.generateId();
+    this.id = this.dataService.generateId();
     this.date = new Date().toISOString();
     this.taskcontent = '';
     this.hours = 0;
@@ -53,9 +53,9 @@ export class NewTaskComponent {
    */
   async handleSelectDay(event: CustomEvent) {
     const selectedDate = event.detail.value;
-    console.log(selectedDate, this.taskservice.getTaskByDate(selectedDate));
+    console.log(selectedDate, this.dataService.getTaskByDate(selectedDate));
     // check if date already exists
-    const originalTask: Task | undefined = this.taskservice.getTaskByDate(selectedDate);
+    const originalTask: Task | undefined = this.dataService.getTaskByDate(selectedDate);
     if (originalTask) {
       const alert = await this.alertController.create(
         {
@@ -105,10 +105,11 @@ export class NewTaskComponent {
     // handle modal dismiss
     modal.onWillDismiss().then((res) => {
       if (res.role === 'confirm') {
-        if (!!originalTask) {
-          this.taskservice.updateTask(res.data);
+        // if (!!originalTask) {
+        if (this.dataService.getTaskById(res.data.id)) {
+          this.dataService.updateTask(res.data);
         } else {
-          this.taskservice.addTask(res.data);
+          this.dataService.addTask(res.data);
         }
         console.log('added task');
         this.resetFields();

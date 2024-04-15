@@ -136,6 +136,13 @@ export class ListTasksComponent implements OnDestroy {
    * Opens options modal
    */
   async openModalOptions() {
+  // async openModalOptions(event: any) {
+  //   console.log(event);
+  //   this.translocoService.setActiveLang('es');
+  //   this.selectedLang = event.detail.value;
+  //   this.translocoService.setActiveLang(this.selectedLang);
+  //   console.log('lang:',this.selectedLang);
+
     const options = {
       sortList: this.sortList,
       selectedLang: this.selectedLang,

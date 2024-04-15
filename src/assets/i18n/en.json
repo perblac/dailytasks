@@ -33,6 +33,19 @@
     "noTasks": "No tasks have been registered yet.",
     "advice": "You can add a new task by clicking the bottom right icon."
   },
+  "options": {
+    "title": "Options",
+    "closeButton": "Close",
+    "darkMode": "Dark Mode",
+    "language": "Language",
+    "languagePlaceholder": "Select language",
+    "order": "List in reverse temporal order"
+  },
+  "newTask": {
+    "title": "Add task",
+    "backButton": "Back",
+    "datetimeTitle": "Choose day"
+  },
   "month": {
     "jan": "January",
     "feb": "February",

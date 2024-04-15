@@ -1,12 +1,12 @@
-<ion-header>
+<ion-header *transloco="let t">
   <ion-toolbar color="light">
     <ion-buttons slot="start">
-      <ion-button color="medium" fill="solid" shape="round" (click)="cancel()">Volver</ion-button>
+      <ion-button color="medium" fill="solid" shape="round" (click)="cancel()">{{ t('newTask.backButton') }}</ion-button>
     </ion-buttons>
-    <ion-title class="ion-text-center">Añadir tarea</ion-title>
+    <ion-title class="ion-text-center">{{ t('newTask.title') }}</ion-title>
   </ion-toolbar>
 </ion-header>
-<ion-content class="ion-padding">
+<ion-content class="ion-padding" *transloco="let t">
   <ion-grid class="ion-padding">
     <ion-row class="ion-justify-content-center">
       <ion-col size="auto">
@@ -14,7 +14,7 @@
                       min="2024-03-01T00:00:00" max="2024-05-31T00:00:00"
                       [isDateEnabled]="availableDaysService.availableDays" [(ngModel)]="date"
                       (ionChange)="handleSelectDay($event)">
-          <span slot="title">Escoja día</span>
+          <span slot="title">{{ t('newTask.datetimeTitle') }}</span>
         </ion-datetime>
       </ion-col>
     </ion-row>

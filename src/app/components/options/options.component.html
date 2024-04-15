@@ -1,18 +1,18 @@
 <ion-header *transloco="let t">
   <ion-toolbar color="light">
     <ion-buttons slot="start">
-      <ion-button color="primary" fill="solid" shape="round" (click)="dismiss()">Cerrar</ion-button>
+      <ion-button color="primary" fill="solid" shape="round" (click)="dismiss()">{{ t('options.closeButton') }}</ion-button>
     </ion-buttons>
-    <ion-title class="ion-text-center">Opciones</ion-title>
+    <ion-title class="ion-text-center">{{ t('options.title') }}</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content *transloco="let t">
   <ion-grid>
     <ion-row>
       <ion-col>
         <ion-item>
-          Modo oscuro
+          {{ t('options.darkMode') }}
           <ion-toggle [(ngModel)]="darkMode" (ionChange)="changeMode()"></ion-toggle>
         </ion-item>
       </ion-col>
@@ -20,21 +20,27 @@
     <ion-row>
       <ion-col>
         <ion-item>
-          Idioma
-          <ion-select [(ngModel)]="selectedLang" (ionChange)="changeLang()" placeholder="Seleccionar idioma">
-            <ion-select-option value="en"><ion-img src="assets/imgs/en.png" alt="english"></ion-img> English</ion-select-option>
-            <ion-select-option value="es"><ion-img src="assets/imgs/es.png" alt="español"></ion-img> Español</ion-select-option>
-            <ion-select-option value="fr"><ion-img src="assets/imgs/fr.png" alt="français"></ion-img> Français</ion-select-option>
-            <ion-select-option value="de"><ion-img src="assets/imgs/de.png" alt="deutsch"></ion-img> Deutsch</ion-select-option>
-            <ion-select-option value="ru"><ion-img src="assets/imgs/ru.png" alt="русский"></ion-img> Pусский</ion-select-option>
-          </ion-select>
+          {{ t('options.language') }}
+<!--          <ion-select [value]="selectedLang" (ionChange)="changeLang($event)" interface="popover">-->
+<!--            <ion-select-option value="en"><ion-img src="assets/imgs/en.png" alt="english"></ion-img> English</ion-select-option>-->
+<!--            <ion-select-option value="es"><ion-img src="assets/imgs/es.png" alt="español"></ion-img> Español</ion-select-option>-->
+<!--            <ion-select-option value="fr"><ion-img src="assets/imgs/fr.png" alt="français"></ion-img> Français</ion-select-option>-->
+<!--            <ion-select-option value="de"><ion-img src="assets/imgs/de.png" alt="deutsch"></ion-img> Deutsch</ion-select-option>-->
+<!--            <ion-select-option value="ru"><ion-img src="assets/imgs/ru.png" alt="русский"></ion-img> Pусский</ion-select-option>-->
+<!--          </ion-select>-->
+          {{selectedLang}}
+          <ion-button (click)="handleButton('es')">Esp</ion-button>
+          <ion-button (click)="handleButton('en')">Eng</ion-button>
+          <ion-button (click)="handleButton('fr')">Fra</ion-button>
+          <ion-button (click)="handleButton('de')">Deu</ion-button>
+          <ion-button (click)="handleButton('ru')">Rus</ion-button>
         </ion-item>
       </ion-col>
     </ion-row>
     <ion-row>
       <ion-col>
         <ion-item>
-          <ion-toggle [(ngModel)]="toggleSortList" (ionChange)="changeSortOrder()">Lista en orden temporal inverso</ion-toggle>
+          <ion-toggle [(ngModel)]="toggleSortList" (ionChange)="changeSortOrder()">{{ t('options.order') }}</ion-toggle>
         </ion-item>
       </ion-col>
     </ion-row>

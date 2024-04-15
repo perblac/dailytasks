@@ -1,12 +1,12 @@
 <ion-header>
   <ion-toolbar color="light">
     <ion-buttons slot="start">
-      <ion-button color="medium" fill="solid" shape="round" (click)="cancel()">Cancelar</ion-button>
+      <ion-button color="medium" fill="solid" shape="round" (click)="cancel()">{{ 'editTask.cancelButton' | transloco }}</ion-button>
     </ion-buttons>
-    <ion-title class="ion-text-center">Editar tarea</ion-title>
+    <ion-title class="ion-text-center">{{ 'editTask.title' | transloco }}</ion-title>
     <ion-buttons slot="end">
       <ion-button color="primary" fill="solid" shape="round" (click)="confirm()" [strong]="true"
-                  [disabled]="taskInput.errors && taskInput.invalid || taskHours.errors && taskHours.invalid">Confirmar
+                  [disabled]="taskInput.errors && taskInput.invalid || taskHours.errors && taskHours.invalid">{{ 'editTask.confirmButton' | transloco }}
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
@@ -17,7 +17,8 @@
     <ion-item button="true" id="open-modal-date" slot="center">
       <ion-label class="ion-text-center ion-text-nowrap">
         <span>
-          Día {{ task.date.slice(8, 10) }} de {{ monthService.getMonth(parseInt(task.date.slice(5, 7))) }}
+<!--          Día {{ task.date.slice(8, 10) }} de {{ monthService.getMonth(parseInt(task.date.slice(5, 7))) }}-->
+          {{ 'editTask.dateLabel' | transloco: { day: day, month: month } }}
         </span>
         <ion-label color="medium">
           <small>(Pulse aqui para cambiar la fecha)</small>
@@ -68,7 +69,7 @@
   </ion-list>
 </ion-content>
 
-<ion-footer>
+<ion-footer *transloco="let t">
   <ion-toolbar color="light" mode="ios">
     <ion-buttons slot="primary">
       <ion-button *ngIf="showDelete()" fill="solid" color="danger" shape="round" (click)="handleDelete()">

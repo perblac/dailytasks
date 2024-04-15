@@ -19,6 +19,9 @@ export class EditTaskComponent implements AfterViewInit {
   private newTaskContent: string = '';
   private newHours: number = 0;
 
+  public day: number;
+  public month: string;
+
   public alertButtons = [
     {
       text: 'Cancelar',
@@ -50,6 +53,9 @@ export class EditTaskComponent implements AfterViewInit {
     public monthService: MonthService,
     public availableDaysService: AvailableDaysService,
   ) {
+    console.log('task:', this.task);
+    this.day = parseInt(this.task?.date.slice(8, 10));
+    this.month = monthService.getMonth(parseInt(this.task?.date.slice(5, 7)));
   }
 
   cancel() {
@@ -90,6 +96,10 @@ export class EditTaskComponent implements AfterViewInit {
     return this.modal.dismiss('', 'confirm');
   }
 
+  setDate(date: string = this.task.date) {
+    this.day = parseInt(date.slice(8, 10));
+    this.month = this.monthService.getMonth(parseInt(date.slice(5, 7)));
+  }
   /**
    * Handles a change of date. Checks if the new date already exists in tasks.
    * @param event Event from the ion-datetime ionChange
@@ -115,10 +125,12 @@ export class EditTaskComponent implements AfterViewInit {
           this.newDate = originalTask.date;
           this.newTaskContent = originalTask.taskcontent;
           this.newHours = originalTask.hours;
+          this.setDate(this.newDate);
         }
       });
     } else {
       this.newDate = selectedDate;
+      this.setDate(selectedDate);
     }
   }
 
