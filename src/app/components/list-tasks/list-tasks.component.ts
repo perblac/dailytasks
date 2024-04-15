@@ -12,6 +12,8 @@ import {DataService} from "../../services/data.service";
 import {AuthService} from "../../services/auth.service";
 import {UserService} from "../../services/user.service";
 import {MonthService} from "../../services/month.service";
+import {getBrowserLang, TranslocoService} from "@jsverse/transloco";
+import {OptionsComponent} from "../options/options.component";
 
 interface WeekGroup {
   weekNumber?: number,
@@ -34,6 +36,8 @@ export class ListTasksComponent implements OnDestroy {
 
   private sortList = 1;
 
+  selectedLang = 'en';
+
   protected readonly parseInt = parseInt;
 
   constructor(
@@ -44,12 +48,14 @@ export class ListTasksComponent implements OnDestroy {
     private userService: UserService,
     private router: Router,
     private platform: Platform,
+    private translocoService: TranslocoService,
   ) {
     this.authStateSubscription = this.authService.authState$.subscribe((aUser: User | null) => {
       this.authorized = !!aUser;
       if (this.authorized) {
         this.sortList = this.dataService.getOptions()?.sortList ?? 1;
-        console.log('data:',this.dataService.getOptions()?.sortList,'sortList:', this.sortList);
+        this.selectedLang = this.dataService.getOptions()?.lang ?? this.translocoService.getActiveLang();
+        this.selectedLang =  (['en','es','fr','de','ru'].includes(this.selectedLang)) ? this.selectedLang : 'en';
         this.dataSubscription.unsubscribe();
         this.dataSubscription = this.dataService.data$.subscribe(() => {
           this.updateTasksArray();
@@ -81,7 +87,7 @@ export class ListTasksComponent implements OnDestroy {
       this.updateTasksArray();
     });
     console.log(id);
-    await modal.present();
+    return await modal.present();
   }
 
   /**
@@ -105,7 +111,7 @@ export class ListTasksComponent implements OnDestroy {
     const modal = await this.modalCtrl.create({
       component: ExportToPdfComponent,
     });
-    await modal.present();
+    return await modal.present();
   }
 
   /**
@@ -115,7 +121,14 @@ export class ListTasksComponent implements OnDestroy {
     const modal = await this.modalCtrl.create({
       component: FormComponent,
     });
-    await modal.present();
+    return await modal.present();
+  }
+
+  async openModalOptions() {
+    const modal = await this.modalCtrl.create({
+      component: OptionsComponent,
+    });
+    return await modal.present();
   }
 
   /**

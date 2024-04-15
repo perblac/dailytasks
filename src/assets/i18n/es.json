@@ -1,0 +1,50 @@
+{
+  "emailPlaceholder": "email",
+  "passwordPlaceholder": "contraseña",
+  "password2Placeholder": "confirmar contraseña",
+  "login": {
+    "title": "Acceso",
+    "loginButton": "Acceder",
+    "or": "o",
+    "loginGoogleButton": "Acceder con Google",
+    "registerButton": "Registro",
+    "failMessage": "email/contraseña incorrectos"
+  },
+  "register": {
+    "title": "Registro",
+    "errorMatch": "Las contraseñas deben coincidir",
+    "errorValidMail": "Se requiere un email válido",
+    "errorPassRequired": "Se requiere una contraseña",
+    "errorPass2Required": "Es necesario repetir la contraseña",
+    "errorPassShort": "Contraseña demasiado corta. Mínimo 6 caracteres",
+    "errorPassLong": "Contraseña demasiado larga. Máximo 30 caracteres",
+    "errorEmailInUse": "Email ya registrado",
+    "registerButton": "Registrarse",
+    "cancelButton": "Cancelar"
+  },
+  "list": {
+    "title": "Diario de tareas",
+    "logoutButton": "cerrar sesión",
+    "day": "Día",
+    "month": "Mes",
+    "task": "Tarea realizada",
+    "hours": "Horas",
+    "week": "Semana",
+    "noTasks": "Aún no registró ninguna tarea.",
+    "advice": "Puede añadir una nueva tarea pulsando el icono inferior derecho."
+  },
+  "month": {
+    "jan": "Enero",
+    "feb": "Febrero",
+    "mar": "Marzo",
+    "apr": "Abril",
+    "may": "Mayo",
+    "jun": "Junio",
+    "jul": "Julio",
+    "aug": "Agosto",
+    "sep": "Septiembre",
+    "oct": "Octubre",
+    "nov": "Noviembre",
+    "dec": "Diciembre"
+  }
+}

@@ -1,15 +1,15 @@
-<ion-content>
+<ion-content *transloco="let t">
   <ion-grid>
     <ion-row>
       <ion-col class="ion-padding ion-text-center">
-        <h1>Register</h1>
+        <h1>{{ t('register.title') }}</h1>
       </ion-col>
     </ion-row>
     <form [formGroup]="formSignIn" (ngSubmit)="onSubmit()">
       <ion-row>
         <ion-col sizeSm="6" offsetSm="3" sizeLg="4" offsetLg="4">
           <ion-item lines="none" color="light">
-            <ion-input type="email" placeholder="email" required formControlName="email" [clearInput]="true">
+            <ion-input type="email" [placeholder]=" t('emailPlaceholder') " required formControlName="email" [clearInput]="true">
             </ion-input>
           </ion-item>
           <ng-container *ngFor="let error of error_messages.email">
@@ -23,7 +23,7 @@
       <ion-row>
         <ion-col sizeSm="6" offsetSm="3" sizeLg="4" offsetLg="4">
           <ion-item lines="none" color="light">
-            <ion-input type="password" placeholder="password" required formControlName="password" [clearInput]="true">
+            <ion-input type="password" [placeholder]=" t('passwordPlaceholder') " required formControlName="password" [clearInput]="true">
             </ion-input>
           </ion-item>
           <ng-container *ngFor="let error of error_messages.password">
@@ -37,7 +37,7 @@
       <ion-row>
         <ion-col sizeSm="6" offsetSm="3" sizeLg="4" offsetLg="4">
           <ion-item lines="none" color="light">
-            <ion-input type="password" placeholder="confirm password" required formControlName="password2"
+            <ion-input type="password" [placeholder]=" t('password2Placeholder') " required formControlName="password2"
                        [clearInput]="true">
             </ion-input>
           </ion-item>
@@ -49,18 +49,18 @@
           </ng-container>
           <div
             *ngIf="!formSignIn.get('password2')?.errors && formSignIn.hasError('passwordNotMatch') && (formSignIn.get('password2')?.dirty || formSignIn.get('password2')?.touched)">
-            <small style="color: red">Passwords must match.</small>
+            <small style="color: red">{{ t('register.errorMatch') }}</small>
           </div>
         </ion-col>
       </ion-row>
       <ion-row>
         <ion-col sizeSm="6" offsetSm="3" sizeLg="4" offsetLg="4">
-          <ion-button type="submit" expand="block" [disabled]="!formSignIn.valid">Register</ion-button>
+          <ion-button type="submit" expand="block" [disabled]="!formSignIn.valid">{{ t('register.registerButton') }}</ion-button>
         </ion-col>
       </ion-row>
       <ion-row>
         <ion-col sizeSm="6" offsetSm="3" sizeLg="4" offsetLg="4">
-          <ion-button expand="block" (click)="handleCancel()">Cancel</ion-button>
+          <ion-button expand="block" (click)="handleCancel()">{{  t('register.cancelButton') }}</ion-button>
         </ion-col>
       </ion-row>
     </form>

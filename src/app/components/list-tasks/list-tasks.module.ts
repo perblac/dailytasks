@@ -8,13 +8,15 @@ import {ExportToPdfComponent} from "../export-to-pdf/export-to-pdf.component";
 import {FormComponent} from "../form/form.component";
 import {ListTasksComponent} from "./list-tasks.component";
 import {NewTaskComponent} from "../new-task/new-task.component";
+import {TranslocoDirective} from "@jsverse/transloco";
+import {OptionsComponent} from "../options/options.component";
 
 @NgModule({
-  imports: [RouterModule.forChild([{
-    path: '',
-    component: ListTasksComponent
-  }]), IonicModule, NgForOf, FormsModule, NgIf, ReactiveFormsModule],
-  declarations: [ListTasksComponent, NewTaskComponent, EditTaskComponent, ExportToPdfComponent, FormComponent],
+    imports: [RouterModule.forChild([{
+        path: '',
+        component: ListTasksComponent
+    }]), IonicModule, NgForOf, FormsModule, NgIf, ReactiveFormsModule, TranslocoDirective],
+  declarations: [ListTasksComponent, NewTaskComponent, EditTaskComponent, ExportToPdfComponent, FormComponent, OptionsComponent],
   exports: [ListTasksComponent],
 })
 
