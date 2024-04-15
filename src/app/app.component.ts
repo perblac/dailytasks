@@ -22,6 +22,8 @@ export class AppComponent {
           .catch(err => console.error(err));
       }
     });
+    // Initialize dark mode according to system preferences
+    document.body.classList.toggle('dark', window.matchMedia('(prefers-color-scheme: dark)').matches);
   }
 
   async showConfirm() {

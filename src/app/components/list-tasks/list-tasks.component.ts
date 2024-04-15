@@ -35,7 +35,7 @@ export class ListTasksComponent implements OnDestroy {
   public authorized = false;
 
   private sortList = 1;
-
+  private darkMode: boolean = false;
   selectedLang = 'en';
 
   protected readonly parseInt = parseInt;
@@ -54,7 +54,9 @@ export class ListTasksComponent implements OnDestroy {
       this.authorized = !!aUser;
       if (this.authorized) {
         this.sortList = this.dataService.getOptions()?.sortList ?? 1;
-        this.selectedLang = this.dataService.getOptions()?.lang ?? this.translocoService.getActiveLang();
+        this.darkMode = this.dataService.getOptions()?.darkMode ?? window.matchMedia('(prefers-color-scheme: dark)').matches;
+        document.body.classList.toggle('dark', this.darkMode);
+        this.selectedLang = this.dataService.getOptions()?.selectedLang ?? this.translocoService.getActiveLang();
         this.selectedLang =  (['en','es','fr','de','ru'].includes(this.selectedLang)) ? this.selectedLang : 'en';
         this.dataSubscription.unsubscribe();
         this.dataSubscription = this.dataService.data$.subscribe(() => {
