@@ -13,7 +13,7 @@
       <ion-col>
         <ion-item>
           Modo oscuro
-          <ion-toggle [(ngModel)]="lightMode" (ionChange)="changeMode()"></ion-toggle>
+          <ion-toggle [(ngModel)]="darkMode" (ionChange)="changeMode()"></ion-toggle>
         </ion-item>
       </ion-col>
     </ion-row>
@@ -34,7 +34,7 @@
     <ion-row>
       <ion-col>
         <ion-item>
-          <ion-toggle [(ngModel)]="sortList" (ionChange)="changeSortOrder()">Lista en orden temporal inverso</ion-toggle>
+          <ion-toggle [(ngModel)]="toggleSortList" (ionChange)="changeSortOrder()">Lista en orden temporal inverso</ion-toggle>
         </ion-item>
       </ion-col>
     </ion-row>

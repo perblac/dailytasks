@@ -12,7 +12,7 @@ import {DataService} from "../../services/data.service";
 import {AuthService} from "../../services/auth.service";
 import {UserService} from "../../services/user.service";
 import {MonthService} from "../../services/month.service";
-import {getBrowserLang, TranslocoService} from "@jsverse/transloco";
+import {TranslocoService} from "@jsverse/transloco";
 import {OptionsComponent} from "../options/options.component";
 
 interface WeekGroup {
@@ -32,11 +32,11 @@ export class ListTasksComponent implements OnDestroy {
   public tasksArray: Task[] = [];
   public groupedArray: WeekGroup[] = [];
 
-  public authorized = false;
+  public authorized: boolean = false;
 
-  private sortList = 1;
+  private sortList: number = 1;
   private darkMode: boolean = false;
-  selectedLang = 'en';
+  selectedLang: string = 'en';
 
   protected readonly parseInt = parseInt;
 
@@ -53,20 +53,26 @@ export class ListTasksComponent implements OnDestroy {
     this.authStateSubscription = this.authService.authState$.subscribe((aUser: User | null) => {
       this.authorized = !!aUser;
       if (this.authorized) {
-        this.sortList = this.dataService.getOptions()?.sortList ?? 1;
-        this.darkMode = this.dataService.getOptions()?.darkMode ?? window.matchMedia('(prefers-color-scheme: dark)').matches;
-        document.body.classList.toggle('dark', this.darkMode);
-        this.selectedLang = this.dataService.getOptions()?.selectedLang ?? this.translocoService.getActiveLang();
-        this.selectedLang =  (['en','es','fr','de','ru'].includes(this.selectedLang)) ? this.selectedLang : 'en';
+        this.loadOptions();
+        this.translocoService.setActiveLang(this.selectedLang);
+        // redo data subscription
         this.dataSubscription.unsubscribe();
-        this.dataSubscription = this.dataService.data$.subscribe(() => {
-          this.updateTasksArray();
+        this.dataSubscription = this.dataService.data$.subscribe((data) => {
+          if (data) {
+            this.loadOptions();
+            this.translocoService.setActiveLang(this.selectedLang);
+            this.updateTasksArray();
+          }
         });
       }
     });
     this.dataSubscription = this.dataService.data$.subscribe(data => {
-      console.log('list data', data);
+      // console.log('list data', data);
     });
+    // const options = this.dataService.getOptions();
+    // this.sortList = options.sortList;
+    // this.selectedLang = options.selectedLang;
+    // this.darkMode = options.darkMode;
   }
 
   /**
@@ -126,11 +132,53 @@ export class ListTasksComponent implements OnDestroy {
     return await modal.present();
   }
 
+  /**
+   * Opens options modal
+   */
   async openModalOptions() {
+    const options = {
+      sortList: this.sortList,
+      selectedLang: this.selectedLang,
+      darkMode: this.darkMode,
+    }
     const modal = await this.modalCtrl.create({
       component: OptionsComponent,
+      componentProps: {
+        'options': options,
+      }
     });
+    modal.backdropDismiss = false;
+    modal.onWillDismiss().then((res) => {
+      console.log('res:',res);
+      this.sortList = res.data.sortList;
+      // if sort order changed, reorder the list
+      if (this.sortList != options.sortList) this.updateTasksArray();
+      this.selectedLang = res.data.selectedLang;
+      this.darkMode = res.data.darkMode;
+      // if something changed, save options
+      if (
+        this.sortList != options.sortList ||
+        this.selectedLang != options.selectedLang ||
+        this.darkMode != options.darkMode
+      ) this.dataService.setOptions(res.data);
+    })
     return await modal.present();
+  }
+
+  /**
+   * Gets options from data service
+   */
+  loadOptions() {
+    const options = this.dataService.getOptions();
+    // set sort order from options, or default
+    this.sortList = options.sortList ?? 1;
+    // set dark mode from options, or system pref
+    this.darkMode = options.darkMode ?? window.matchMedia('(prefers-color-scheme: dark)').matches;
+    document.body.classList.toggle('dark', this.darkMode);
+    // set language from options, or active language
+    this.selectedLang = options.selectedLang ?? this.translocoService.getActiveLang();
+    this.selectedLang = (['en', 'es', 'fr', 'de', 'ru'].includes(this.selectedLang)) ? this.selectedLang : 'en';
+    // this.translocoService.setActiveLang(this.selectedLang);
   }
 
   /**
@@ -149,7 +197,12 @@ export class ListTasksComponent implements OnDestroy {
    */
   public toggleDateOrder() {
     this.sortList = -1 * this.sortList;
-    this.dataService.setOptions({sortList: this.sortList});
+    const options = {
+      sortList: this.sortList,
+      selectedLang: this.selectedLang,
+      darkMode: this.darkMode,
+    }
+    this.dataService.setOptions(options);
     this.updateTasksArray();
   }
 
@@ -196,12 +249,14 @@ export class ListTasksComponent implements OnDestroy {
     if (this.platform.is('hybrid')) {
       this.userService.logoutMobile()
         .then(() => {
+          // document.body.classList.toggle('dark', window.matchMedia('(prefers-color-scheme: dark)').matches);
           this.router.navigate(['/login']);
         })
         .catch(err => console.log(err));
     } else {
       this.userService.logout()
         .then(() => {
+          // document.body.classList.toggle('dark', window.matchMedia('(prefers-color-scheme: dark)').matches);
           this.router.navigate(['/login']);
         })
         .catch(err => console.log(err));
@@ -210,6 +265,11 @@ export class ListTasksComponent implements OnDestroy {
 
   onClickNavigateToLogin() {
     this.router.navigate(['/login']);
+  }
+
+  ionViewWillEnter() {
+    this.loadOptions();
+    this.updateTasksArray();
   }
 
   ngOnDestroy() {

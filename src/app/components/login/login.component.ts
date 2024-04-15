@@ -13,7 +13,7 @@ import {getBrowserLang, TranslocoService} from "@jsverse/transloco";
 export class LoginComponent {
   formLogIn: FormGroup;
 
-  selectedLang = 'en';
+  selectedLang: string;
 
   constructor(
     private userService: UserService,
@@ -85,5 +85,11 @@ export class LoginComponent {
 
   ionViewWillEnter() {
     this.formLogIn.get('password')?.setValue('');
+    const darkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    document.body.classList.toggle('dark', darkMode);
+    this.selectedLang = this.translocoService.getActiveLang();
+    this.translocoService.setActiveLang(this.selectedLang);
+    console.log('darkMode:',darkMode,'lang:', this.selectedLang);
+    this.toggleLang();
   }
 }

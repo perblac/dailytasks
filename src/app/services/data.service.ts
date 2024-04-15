@@ -6,6 +6,7 @@ import {collection, doc, docData, Firestore, setDoc} from "@angular/fire/firesto
 import {Task} from "../interfaces/task.interface";
 import {FormObject} from "../interfaces/form-object.interface";
 import {AuthService} from "./auth.service";
+import {TranslocoService} from "@jsverse/transloco";
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +15,7 @@ export class DataService {
   private tasksArray: Task[] = [];
   private formData: FormObject = {};
   private options: any;
-  private defaultOptions = { sortList: 1 }
+  private defaultOptions;
 
   data$: Observable<DocumentData | DocumentData[] | undefined>;
   dataSubscription: Subscription;
@@ -25,7 +26,16 @@ export class DataService {
 
   private logged = false;
 
-  constructor(private authService: AuthService) {
+  constructor(
+    private authService: AuthService,
+    private translocoService: TranslocoService,
+  ) {
+    this.defaultOptions = {
+      sortList: 1,
+      selectedLang: this.translocoService.getActiveLang(),
+      darkMode: window.matchMedia('(prefers-color-scheme: dark)').matches,
+    };
+    this.options = this.defaultOptions;
     this.userSubscription = this.authService.user$.subscribe((aUser: User | null) => {
       if (aUser) {
         this.logged = true;
@@ -38,7 +48,7 @@ export class DataService {
           if (data) {
             this.tasksArray = data.tasksArray;
             this.formData = data.formData;
-            this.options = data.options;
+            this.options = {...this.defaultOptions, ...data.options};
           } else {
             this.tasksArray = [];
             this.formData = {};
@@ -48,15 +58,22 @@ export class DataService {
       } else {
         this.logged = false;
         this.options = this.defaultOptions;
+        this.dataSubscription.unsubscribe();
       }
-      console.log('docRef:', this.userDataDocRef);
+      this.defaultOptions = {
+        sortList: 1,
+        selectedLang: this.translocoService.getActiveLang(),
+        darkMode: window.matchMedia('(prefers-color-scheme: dark)').matches,
+      };
+      console.log('defOpt:',this.defaultOptions,'docRef:', this.userDataDocRef);
     })
+
     // no data if no user logged
     this.data$ = this.logged ? docData(doc(this.usersCollection, this.authService.getUserUid())) : of(undefined);
     this.userDataDocRef = this.logged ? doc(this.usersCollection, this.authService.getUserUid()) : undefined;
     // initialize data subscription
     this.dataSubscription = this.data$.subscribe((data) => {
-      console.log('initialize data:', data);
+      // console.log('initialize data:', data);
     })
   }
 
