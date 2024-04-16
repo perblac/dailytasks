@@ -32,20 +32,19 @@ export class MonthService {
    * @param lang language for name of the month
    */
   getMonth(index: number, lang: string = "en"): string {
-    this.translocoService.setActiveLang(lang);
     this.months= [
-      this.translocoService.translate('month.jan'),
-      this.translocoService.translate('month.feb'),
-      this.translocoService.translate('month.mar'),
-      this.translocoService.translate('month.apr'),
-      this.translocoService.translate('month.may'),
-      this.translocoService.translate('month.jun'),
-      this.translocoService.translate('month.jul'),
-      this.translocoService.translate('month.aug'),
-      this.translocoService.translate('month.sep'),
-      this.translocoService.translate('month.oct'),
-      this.translocoService.translate('month.nov'),
-      this.translocoService.translate('month.dec'),
+      this.translocoService.translate('month.jan',{}, lang),
+      this.translocoService.translate('month.feb',{}, lang),
+      this.translocoService.translate('month.mar',{}, lang),
+      this.translocoService.translate('month.apr',{}, lang),
+      this.translocoService.translate('month.may',{}, lang),
+      this.translocoService.translate('month.jun',{}, lang),
+      this.translocoService.translate('month.jul',{}, lang),
+      this.translocoService.translate('month.aug',{}, lang),
+      this.translocoService.translate('month.sep',{}, lang),
+      this.translocoService.translate('month.oct',{}, lang),
+      this.translocoService.translate('month.nov',{}, lang),
+      this.translocoService.translate('month.dec',{}, lang),
     ]
     // Months from Date.getMonth() start at 0, but in a
     // date string they start at 1. We use this second case
