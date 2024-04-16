@@ -29,11 +29,11 @@
           <ion-header>
             <ion-toolbar>
               <ion-buttons slot="start">
-                <ion-button color="medium" (click)="cancelDate()">{{ 'editTask.cancelButton' | transloco }}</ion-button>
+                <ion-button color="medium" fill="solid" shape="round"  (click)="cancelDate()">{{ 'editTask.cancelButton' | transloco }}</ion-button>
               </ion-buttons>
               <ion-title class="ion-text-center">{{ 'editTask.newDateTitle' | transloco }}</ion-title>
               <ion-buttons slot="end">
-                <ion-button (click)="confirmDate()" [strong]="true">{{ 'editTask.confirmButton' | transloco }}</ion-button>
+                <ion-button color="primary" fill="solid" shape="round" (click)="confirmDate()" [strong]="true">{{ 'editTask.confirmButton' | transloco }}</ion-button>
               </ion-buttons>
             </ion-toolbar>
           </ion-header>
@@ -57,13 +57,13 @@
     <div *ngIf="taskInput.errors && taskInput.invalid">
       <small style="color: red">{{ 'editTask.errorInputTask' | transloco }}</small>
     </div>
-    <ion-input [(ngModel)]="task.taskcontent" type="text" label="Tarea" #taskInput="ngModel" labelPlacement="stacked"
+    <ion-input [(ngModel)]="task.taskcontent" type="text" [label]="'editTask.labelInputTask' | transloco" #taskInput="ngModel" labelPlacement="stacked"
                fill="outline" [helperText]="'editTask.helperInputTask' | transloco" class="ion-margin-vertical" required></ion-input>
 
     <div *ngIf="taskHours.errors && taskHours.invalid" class="ion-margin-vertical">
       <small style="color: red">{{ 'editTask.errorInputHours' | transloco }}</small>
     </div>
-    <ion-input [(ngModel)]="task.hours" type="number" label="Horas" #taskHours="ngModel" labelPlacement="stacked"
+    <ion-input [(ngModel)]="task.hours" type="number" [label]="'editTask.labelInputHours' | transloco" #taskHours="ngModel" labelPlacement="stacked"
                fill="outline" [helperText]="'editTask.helperInputHours' | transloco" class="ion-margin-bottom" min="1" max="24"
                pattern="\b\d{1,2}\b" required></ion-input>
   </ion-list>
