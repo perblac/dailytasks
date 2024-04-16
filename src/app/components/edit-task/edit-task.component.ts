@@ -5,7 +5,6 @@ import {DataService} from "../../services/data.service";
 import {MonthService} from "../../services/month.service";
 import {AvailableDaysService} from "../../services/available-days.service";
 import {TranslocoService} from "@jsverse/transloco";
-import {setDoc} from "@angular/fire/firestore";
 
 @Component({
   selector: 'app-edit-task',
@@ -56,8 +55,6 @@ export class EditTaskComponent implements OnInit, AfterViewInit {
     public availableDaysService: AvailableDaysService,
     private translocoService: TranslocoService,
   ) {
-    console.log('task:', this.task);
-    // this.setDate();
   }
 
   cancel() {
@@ -102,7 +99,7 @@ export class EditTaskComponent implements OnInit, AfterViewInit {
     this.day = parseInt(date.slice(8, 10));
     switch (this.translocoService.getActiveLang()) {
       case 'en':
-        let suffix = (this.day === 1) ? 'st':(this.day === 2) ? 'nd':(this.day === 3) ? 'rd': 'th';
+        let suffix = (this.day === 1) ? 'st' : (this.day === 2) ? 'nd' : (this.day === 3) ? 'rd' : 'th';
         this.day = this.day + suffix;
         break;
       case 'fr':
@@ -111,7 +108,7 @@ export class EditTaskComponent implements OnInit, AfterViewInit {
       default:
         break;
     }
-    this.month = this.monthService.getMonth(parseInt(date.slice(5, 7)), this.translocoService.getActiveLang());
+    this.month = this.monthService.getMonth(parseInt(date.slice(5, 7)));
   }
 
   /**
@@ -168,12 +165,12 @@ export class EditTaskComponent implements OnInit, AfterViewInit {
     const dateToDelete = new Date(this.task.date);
     const day = dateToDelete.getDate();
     const monthNumber = dateToDelete.getMonth();
-    const month = this.monthService.getMonth(1 + monthNumber, this.translocoService.getActiveLang());
+    const month = this.monthService.getMonth(1 + monthNumber);
 
     const alert = await this.alertController.create(
       {
         header: this.translocoService.translate('editTask.alertDeleteHeader'),
-        message: this.translocoService.translate('editTask.alertDeleteMessage', { day: day, month: month}),
+        message: this.translocoService.translate('editTask.alertDeleteMessage', {day: day, month: month}),
         subHeader: `${this.translocoService.translate('editTask.alertDeleteSubHeader')}: ${this.task.taskcontent} (${this.task.hours} h.)`,
         buttons: this.deleteAlertButtons,
       }
@@ -193,5 +190,6 @@ export class EditTaskComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     this.cdr.detectChanges();
+    console.log('task:', this.task);
   }
 }

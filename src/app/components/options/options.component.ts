@@ -45,10 +45,7 @@ export class OptionsComponent implements OnInit {
     this.sortList = this.toggleSortList ? -1 : 1;
   }
 
-  handleButton(lang:string) {
-    this.translocoService.setActiveLang(lang);
-    this.selectedLang = lang;
-  }
+
   ngOnInit() {
     this.darkMode = this.options.darkMode;
     this.selectedLang = this.options.selectedLang;

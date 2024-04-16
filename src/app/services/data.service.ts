@@ -6,7 +6,7 @@ import {collection, doc, docData, Firestore, setDoc} from "@angular/fire/firesto
 import {Task} from "../interfaces/task.interface";
 import {FormObject} from "../interfaces/form-object.interface";
 import {AuthService} from "./auth.service";
-import {TranslocoService} from "@jsverse/transloco";
+import {getBrowserLang, TranslocoService} from "@jsverse/transloco";
 
 @Injectable({
   providedIn: 'root'
@@ -30,12 +30,17 @@ export class DataService {
     private authService: AuthService,
     private translocoService: TranslocoService,
   ) {
+    // initialize default options
+    let defaultLang = getBrowserLang() || 'en';
+    defaultLang = (['en', 'es', 'fr', 'de', 'ru'].includes(defaultLang)) ? defaultLang : 'en';
     this.defaultOptions = {
       sortList: 1,
-      selectedLang: this.translocoService.getActiveLang(),
+      selectedLang: defaultLang,
       darkMode: window.matchMedia('(prefers-color-scheme: dark)').matches,
     };
+
     this.options = this.defaultOptions;
+
     this.userSubscription = this.authService.user$.subscribe((aUser: User | null) => {
       if (aUser) {
         this.logged = true;
@@ -46,10 +51,14 @@ export class DataService {
         this.dataSubscription = this.data$.subscribe((data: any) => {
           console.log('data w/user:', data);
           if (data) {
+            // load data
             this.tasksArray = data.tasksArray;
             this.formData = data.formData;
             this.options = {...this.defaultOptions, ...data.options};
+            // set language
+            this.translocoService.setActiveLang(this.options.selectedLang);
           } else {
+            // clear data
             this.tasksArray = [];
             this.formData = {};
             this.options = this.defaultOptions;
@@ -60,11 +69,6 @@ export class DataService {
         this.options = this.defaultOptions;
         this.dataSubscription.unsubscribe();
       }
-      this.defaultOptions = {
-        sortList: 1,
-        selectedLang: this.translocoService.getActiveLang(),
-        darkMode: window.matchMedia('(prefers-color-scheme: dark)').matches,
-      };
       console.log('defOpt:',this.defaultOptions,'docRef:', this.userDataDocRef);
     })
 
@@ -72,9 +76,7 @@ export class DataService {
     this.data$ = this.logged ? docData(doc(this.usersCollection, this.authService.getUserUid())) : of(undefined);
     this.userDataDocRef = this.logged ? doc(this.usersCollection, this.authService.getUserUid()) : undefined;
     // initialize data subscription
-    this.dataSubscription = this.data$.subscribe((data) => {
-      // console.log('initialize data:', data);
-    })
+    this.dataSubscription = this.data$.subscribe();
   }
 
   /**

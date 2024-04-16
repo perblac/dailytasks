@@ -56,10 +56,8 @@
 <ion-footer>
   <ion-toolbar>
     <ion-buttons slot="end">
-<!--      <ion-button (click)="toggleLang()">-->
-<!--        <ion-icon name="globe-outline"></ion-icon>-->
-<!--      </ion-button>-->
-      <ion-select [(ngModel)]="selectedLang" interface="popover" (ionChange)="toggleLang()" placeholder="Seleccionar idioma">
+      <ion-icon name="globe-outline"></ion-icon>
+      <ion-select [(ngModel)]="selectedLang" interface="popover" (ionChange)="toggleLang($event)" placeholder="Seleccionar idioma">
         <ion-select-option value="en"><ion-img src="assets/imgs/en.png" alt="english"></ion-img> English</ion-select-option>
         <ion-select-option value="es"><ion-img src="assets/imgs/es.png" alt="español"></ion-img> Español</ion-select-option>
         <ion-select-option value="fr"><ion-img src="assets/imgs/fr.png" alt="français"></ion-img> Français</ion-select-option>

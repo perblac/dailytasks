@@ -47,7 +47,7 @@
         <ion-item button="true" *ngFor="let task of week.items" (click)="handleClick(task.id)" lines="full">
           <ion-col size="1" class="ion-text-nowrap ion-text-center">{{ task.date.slice(8, 10) }}</ion-col>
           <ion-col size="2"
-                   class="ion-text-nowrap ion-text-center">{{ this.monthService.getMonth(parseInt(task.date.slice(5, 7)), this.selectedLang) }}</ion-col>
+                   class="ion-text-nowrap ion-text-center">{{ this.monthService.getMonth(parseInt(task.date.slice(5, 7))) }}</ion-col>
           <ion-col size="8">
             <ion-label class="ion-text-nowrap">
               {{ task.taskcontent }}
@@ -77,13 +77,6 @@
       <ion-button fill="solid" color="primary" shape="round" (click)="openModalOptions()">
         <ion-icon name="options"></ion-icon>
       </ion-button>
-<!--      <ion-select [value]="selectedLang" (ionChange)="openModalOptions($event)" interface="popover">-->
-<!--        <ion-select-option value="en"><ion-img src="assets/imgs/en.png" alt="english"></ion-img> English</ion-select-option>-->
-<!--        <ion-select-option value="es"><ion-img src="assets/imgs/es.png" alt="español"></ion-img> Español</ion-select-option>-->
-<!--        <ion-select-option value="fr"><ion-img src="assets/imgs/fr.png" alt="français"></ion-img> Français</ion-select-option>-->
-<!--        <ion-select-option value="de"><ion-img src="assets/imgs/de.png" alt="deutsch"></ion-img> Deutsch</ion-select-option>-->
-<!--        <ion-select-option value="ru"><ion-img src="assets/imgs/ru.png" alt="русский"></ion-img> Pусский</ion-select-option>-->
-<!--      </ion-select>-->
     </ion-buttons>
   </ion-toolbar>
 </ion-footer>

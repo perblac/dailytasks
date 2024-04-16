@@ -14,7 +14,8 @@ export class AppComponent {
     @Optional() private routerOutlet?: IonRouterOutlet
   ) {
     this.platform.backButton.subscribe(() => {
-      if (!this.routerOutlet?.canGoBack()) {
+      console.log('url:',this.routerOutlet?.getLastUrl());
+      if (this.routerOutlet?.getLastUrl() === '/list-tasks' ) {
         this.showConfirm()
           .then(res => {
             if (res) App.exitApp();

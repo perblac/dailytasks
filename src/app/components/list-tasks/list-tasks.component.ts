@@ -53,26 +53,16 @@ export class ListTasksComponent implements OnDestroy {
     this.authStateSubscription = this.authService.authState$.subscribe((aUser: User | null) => {
       this.authorized = !!aUser;
       if (this.authorized) {
-        this.loadOptions();
-        this.translocoService.setActiveLang(this.selectedLang);
-        // redo data subscription
         this.dataSubscription.unsubscribe();
         this.dataSubscription = this.dataService.data$.subscribe((data) => {
           if (data) {
             this.loadOptions();
-            this.translocoService.setActiveLang(this.selectedLang);
             this.updateTasksArray();
           }
         });
       }
     });
-    this.dataSubscription = this.dataService.data$.subscribe(data => {
-      // console.log('list data', data);
-    });
-    // const options = this.dataService.getOptions();
-    // this.sortList = options.sortList;
-    // this.selectedLang = options.selectedLang;
-    // this.darkMode = options.darkMode;
+    this.dataSubscription = this.dataService.data$.subscribe();
   }
 
   /**
@@ -136,13 +126,6 @@ export class ListTasksComponent implements OnDestroy {
    * Opens options modal
    */
   async openModalOptions() {
-  // async openModalOptions(event: any) {
-  //   console.log(event);
-  //   this.translocoService.setActiveLang('es');
-  //   this.selectedLang = event.detail.value;
-  //   this.translocoService.setActiveLang(this.selectedLang);
-  //   console.log('lang:',this.selectedLang);
-
     const options = {
       sortList: this.sortList,
       selectedLang: this.selectedLang,
@@ -256,14 +239,12 @@ export class ListTasksComponent implements OnDestroy {
     if (this.platform.is('hybrid')) {
       this.userService.logoutMobile()
         .then(() => {
-          // document.body.classList.toggle('dark', window.matchMedia('(prefers-color-scheme: dark)').matches);
           this.router.navigate(['/login']);
         })
         .catch(err => console.log(err));
     } else {
       this.userService.logout()
         .then(() => {
-          // document.body.classList.toggle('dark', window.matchMedia('(prefers-color-scheme: dark)').matches);
           this.router.navigate(['/login']);
         })
         .catch(err => console.log(err));
@@ -272,11 +253,6 @@ export class ListTasksComponent implements OnDestroy {
 
   onClickNavigateToLogin() {
     this.router.navigate(['/login']);
-  }
-
-  ionViewWillEnter() {
-    this.loadOptions();
-    this.updateTasksArray();
   }
 
   ngOnDestroy() {

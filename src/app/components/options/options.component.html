@@ -12,28 +12,22 @@
     <ion-row>
       <ion-col>
         <ion-item>
-          {{ t('options.darkMode') }}
-          <ion-toggle [(ngModel)]="darkMode" (ionChange)="changeMode()"></ion-toggle>
+          <ion-toggle [(ngModel)]="darkMode" (ionChange)="changeMode()">
+            {{ t('options.darkMode') }}
+          </ion-toggle>
         </ion-item>
       </ion-col>
     </ion-row>
     <ion-row>
       <ion-col>
         <ion-item>
-          {{ t('options.language') }}
-<!--          <ion-select [value]="selectedLang" (ionChange)="changeLang($event)" interface="popover">-->
-<!--            <ion-select-option value="en"><ion-img src="assets/imgs/en.png" alt="english"></ion-img> English</ion-select-option>-->
-<!--            <ion-select-option value="es"><ion-img src="assets/imgs/es.png" alt="español"></ion-img> Español</ion-select-option>-->
-<!--            <ion-select-option value="fr"><ion-img src="assets/imgs/fr.png" alt="français"></ion-img> Français</ion-select-option>-->
-<!--            <ion-select-option value="de"><ion-img src="assets/imgs/de.png" alt="deutsch"></ion-img> Deutsch</ion-select-option>-->
-<!--            <ion-select-option value="ru"><ion-img src="assets/imgs/ru.png" alt="русский"></ion-img> Pусский</ion-select-option>-->
-<!--          </ion-select>-->
-          {{selectedLang}}
-          <ion-button (click)="handleButton('es')">Esp</ion-button>
-          <ion-button (click)="handleButton('en')">Eng</ion-button>
-          <ion-button (click)="handleButton('fr')">Fra</ion-button>
-          <ion-button (click)="handleButton('de')">Deu</ion-button>
-          <ion-button (click)="handleButton('ru')">Rus</ion-button>
+          <ion-select [label]="t('options.language')" [value]="selectedLang" (ionChange)="changeLang($event)">
+            <ion-select-option value="en"><ion-img src="assets/imgs/en.png" alt="english"></ion-img> English</ion-select-option>
+            <ion-select-option value="es"><ion-img src="assets/imgs/es.png" alt="español"></ion-img> Español</ion-select-option>
+            <ion-select-option value="fr"><ion-img src="assets/imgs/fr.png" alt="français"></ion-img> Français</ion-select-option>
+            <ion-select-option value="de"><ion-img src="assets/imgs/de.png" alt="deutsch"></ion-img> Deutsch</ion-select-option>
+            <ion-select-option value="ru"><ion-img src="assets/imgs/ru.png" alt="русский"></ion-img> Pусский</ion-select-option>
+          </ion-select>
         </ion-item>
       </ion-col>
     </ion-row>

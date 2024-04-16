@@ -1,5 +1,5 @@
 import {Router} from "@angular/router";
-import {Platform} from "@ionic/angular";
+import {IonRouterOutlet, Platform} from "@ionic/angular";
 import {Component} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {UserService} from "../../services/user.service";
@@ -13,11 +13,12 @@ import {getBrowserLang, TranslocoService} from "@jsverse/transloco";
 export class LoginComponent {
   formLogIn: FormGroup;
 
-  selectedLang: string;
+  selectedLang: string = 'en';
 
   constructor(
     private userService: UserService,
     private router: Router,
+    private routerOutlet: IonRouterOutlet,
     private platform: Platform,
     private translocoService: TranslocoService,
   ) {
@@ -31,11 +32,21 @@ export class LoginComponent {
         Validators.minLength(6)
       ]),
     });
-    let defaultLang = getBrowserLang() || 'en';
-    console.log('browser lang:', getBrowserLang());
-    defaultLang =  (['en','es','fr','de','ru'].includes(defaultLang)) ? defaultLang : 'en';
-    this.translocoService.setActiveLang(defaultLang);
-    this.selectedLang = defaultLang;
+
+    // When loading to login, get default language from browser
+    if (this.routerOutlet.getLastUrl() !== '/list-tasks') {
+      let defaultLang = getBrowserLang() || 'en';
+      defaultLang = (['en', 'es', 'fr', 'de', 'ru'].includes(defaultLang)) ? defaultLang : 'en';
+      console.log('browser lang:', getBrowserLang(), 'defLang:', defaultLang);
+      this.translocoService.setActiveLang(defaultLang);
+      this.selectedLang = defaultLang;
+    }
+    // When loading from logout, get active language
+    if (this.routerOutlet.getLastUrl() === '/list-tasks') {
+      const lang: string = this.translocoService.getActiveLang();
+      this.translocoService.setActiveLang(lang);
+      this.selectedLang = lang;
+    }
   }
 
   /**
@@ -43,13 +54,10 @@ export class LoginComponent {
    */
   onSubmit() {
     this.userService.login(this.formLogIn.value)
-      .then(res => {
-        console.log(res.user);
-        this.router.navigate(['/']);
-      })
+      .then(() => this.router.navigate(['/']))
       .catch(err => {
         if (err.code === 'auth/invalid-credential') alert(this.translocoService.translate('login.failMessage'));
-        console.log('Error en login:',err);
+        console.log('Error en login:', err);
       });
   }
 
@@ -63,33 +71,28 @@ export class LoginComponent {
   onClickLoginWithGoogle() {
     if (this.platform.is('hybrid')) {
       this.userService.loginWithGoogleMobile()
-        .then(res => {
-          console.log('res:', res);
-          this.router.navigate(['/']);
-        })
+        .then(() => this.router.navigate(['/']))
         .catch(err => console.log(err));
     } else {
       this.userService.loginWithGoogle()
-        .then(res => {
-          console.log('res:', res);
-          this.router.navigate(['/']);
-        })
+        .then(() => this.router.navigate(['/']))
         .catch(err => console.log(err));
     }
   }
 
-  toggleLang() {
-    this.translocoService.setActiveLang(this.selectedLang);
-    console.log('lang:', this.translocoService.getActiveLang());
+  toggleLang(event: any = null) {
+    if (event) {
+      const lang = event.detail.value;
+      this.translocoService.setActiveLang(lang);
+      this.selectedLang = lang;
+      console.log('lang:', lang);
+    }
   }
 
   ionViewWillEnter() {
+    // Reset password field and get dark mode from browser
     this.formLogIn.get('password')?.setValue('');
     const darkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
     document.body.classList.toggle('dark', darkMode);
-    this.selectedLang = this.translocoService.getActiveLang();
-    this.translocoService.setActiveLang(this.selectedLang);
-    console.log('darkMode:',darkMode,'lang:', this.selectedLang);
-    this.toggleLang();
   }
 }

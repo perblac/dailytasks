@@ -1,10 +1,11 @@
-import {Injectable} from '@angular/core';
+import {Injectable, OnDestroy} from '@angular/core';
 import {TranslocoService} from "@jsverse/transloco";
+import {Subscription} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
 })
-export class MonthService {
+export class MonthService implements OnDestroy{
 
   private months = [
     'Enero',
@@ -21,17 +22,27 @@ export class MonthService {
     'Diciembre'
   ];
 
+  private translationSubscription: Subscription;
+
   constructor(
     private translocoService:TranslocoService,
   ) {
+    this.translationSubscription = this.translocoService.selectTranslation()
+      .subscribe(() => {
+        const lang = this.translocoService.getActiveLang();
+        this.translateMonths(lang);
+      });
   }
 
   /**
    * Returns the month name corresponding to the number
    * @param index number of the month, between 1 and 12
-   * @param lang language for name of the month
    */
-  getMonth(index: number, lang: string = "en"): string {
+  getMonth(index: number): string {
+    return this.months[index - 1];
+  }
+
+  translateMonths(lang:string) {
     this.months= [
       this.translocoService.translate('month.jan',{}, lang),
       this.translocoService.translate('month.feb',{}, lang),
@@ -45,9 +56,10 @@ export class MonthService {
       this.translocoService.translate('month.oct',{}, lang),
       this.translocoService.translate('month.nov',{}, lang),
       this.translocoService.translate('month.dec',{}, lang),
-    ]
-    // Months from Date.getMonth() start at 0, but in a
-    // date string they start at 1. We use this second case
-    return this.months[index - 1];
+    ];
+  }
+
+  ngOnDestroy() {
+    this.translationSubscription.unsubscribe();
   }
 }

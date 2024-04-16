@@ -1,24 +1,21 @@
 import {PDFDocument} from 'pdf-lib';
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {ModalController, Platform} from "@ionic/angular";
 import {FileSharer} from '@byteowls/capacitor-filesharer';
 import {Task} from "../../interfaces/task.interface";
 import {DataService} from "../../services/data.service";
 import {MonthService} from "../../services/month.service";
 import {AvailableDaysService} from "../../services/available-days.service";
-import {TranslocoService} from "@jsverse/transloco";
 
 @Component({
   selector: 'app-export-to-pdf',
   templateUrl: './export-to-pdf.component.html',
   styleUrls: ['./export-to-pdf.component.scss'],
 })
-export class ExportToPdfComponent implements OnInit {
+export class ExportToPdfComponent {
 
   public week: string[] = [];
   public tasks: Task[] = [];
-
-  public lang = this.translocoService.getActiveLang();
 
   protected readonly parseInt = parseInt;
 
@@ -28,7 +25,6 @@ export class ExportToPdfComponent implements OnInit {
     private modalCtrl: ModalController,
     public monthService: MonthService,
     public availableDaysService: AvailableDaysService,
-    private translocoService: TranslocoService,
   ) {
   }
 
@@ -68,8 +64,8 @@ export class ExportToPdfComponent implements OnInit {
     const lastDate = new Date(this.week[4]);
     const firstDay = firstDate.getDate().toString();
     const lastDay = lastDate.getDate().toString();
-    const firstMonth = this.monthService.getMonth(1 + firstDate.getMonth(), this.lang);
-    const lastMonth = this.monthService.getMonth(1 + lastDate.getMonth(), this.lang);
+    const firstMonth = this.monthService.getMonth(1 + firstDate.getMonth());
+    const lastMonth = this.monthService.getMonth(1 + lastDate.getMonth());
     const month = (firstMonth != lastMonth) ? `${firstMonth}/${lastMonth}` : firstMonth;
     const year = firstDate.getFullYear().toString().slice(2, 4);
 
@@ -181,9 +177,5 @@ export class ExportToPdfComponent implements OnInit {
 
   cancel() {
     return this.modalCtrl.dismiss(null, 'cancel');
-  }
-
-  ngOnInit() {
-    this.lang = this.translocoService.getActiveLang();
   }
 }
