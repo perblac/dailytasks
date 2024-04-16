@@ -50,7 +50,21 @@
     "title": "Editar tarea",
     "cancelButton": "Cancelar",
     "confirmButton": "Confirmar",
-    "dateLabel": "Dia {{day}} de {{month}}"
+    "deleteButton": "Eliminar",
+    "acceptButton": "Aceptar",
+    "yesDeleteButton": "Sí, Eliminar",
+    "dateLabel": "Dia {{day}} de {{month}}",
+    "dateHelp": "(Pulse aqui para cambiar la fecha)",
+    "newDateTitle": "Escoja nueva fecha",
+    "errorInputTask": "Por favor rellene este campo",
+    "helperInputTask": "Tarea realizada en la fecha",
+    "errorInputHours": "Introduzca un número de horas entre 1 y 24",
+    "helperInputHours": "Número de horas utilizadas",
+    "alertDateHeader": "¡Atención!",
+    "alertDateMessage": "Ya existe una entrada para esa fecha. La información se sobreescribirá.",
+    "alertDeleteHeader": "Esta acción es irreversible",
+    "alertDeleteMessage": "¿Está seguro de que desea eliminar la entrada del día {{day}} de {{month}}?",
+    "alertDeleteSubHeader": "Tarea"
   },
   "month": {
     "jan": "Enero",

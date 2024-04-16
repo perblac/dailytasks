@@ -46,6 +46,26 @@
     "backButton": "Back",
     "datetimeTitle": "Choose day"
   },
+  "editTask": {
+    "title": "Edit task",
+    "cancelButton": "Cancel",
+    "confirmButton": "Confirm",
+    "deleteButton": "Delete",
+    "acceptButton": "Accept",
+    "yesDeleteButton": "Yes, Delete",
+    "dateLabel": "{{month}} {{day}}",
+    "dateHelp": "(Click here to change the date)",
+    "newDateTitle": "Pick new date",
+    "errorInputTask": "Please fill out this field",
+    "helperInputTask": "Task performed on date",
+    "errorInputHours": "Enter a number of hours between 1 and 24",
+    "helperInputHours": "Number of hours used",
+    "alertDateHeader": "Attention!",
+    "alertDateMessage": "An entry already exists for that date. The information will be overwritten.",
+    "alertDeleteHeader": "This action is irreversible",
+    "alertDeleteMessage": "Are you sure you want to delete the entry for day {{day}} from {{month}}?",
+    "alertDeleteSubHeader": "Task"
+  },
   "month": {
     "jan": "January",
     "feb": "February",

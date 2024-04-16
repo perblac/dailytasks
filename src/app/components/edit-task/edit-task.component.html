@@ -21,7 +21,7 @@
           {{ 'editTask.dateLabel' | transloco: { day: day, month: month } }}
         </span>
         <ion-label color="medium">
-          <small>(Pulse aqui para cambiar la fecha)</small>
+          <small>{{ 'editTask.dateHelp' | transloco }}</small>
         </ion-label>
       </ion-label>
       <ion-modal trigger="open-modal-date">
@@ -29,11 +29,11 @@
           <ion-header>
             <ion-toolbar>
               <ion-buttons slot="start">
-                <ion-button color="medium" (click)="cancelDate()">Cancel</ion-button>
+                <ion-button color="medium" (click)="cancelDate()">{{ 'editTask.cancelButton' | transloco }}</ion-button>
               </ion-buttons>
-              <ion-title class="ion-text-center">Escoja nueva fecha</ion-title>
+              <ion-title class="ion-text-center">{{ 'editTask.newDateTitle' | transloco }}</ion-title>
               <ion-buttons slot="end">
-                <ion-button (click)="confirmDate()" [strong]="true">Confirm</ion-button>
+                <ion-button (click)="confirmDate()" [strong]="true">{{ 'editTask.confirmButton' | transloco }}</ion-button>
               </ion-buttons>
             </ion-toolbar>
           </ion-header>
@@ -55,16 +55,16 @@
       </ion-modal>
     </ion-item>
     <div *ngIf="taskInput.errors && taskInput.invalid">
-      <small style="color: red">Por favor rellene este campo</small>
+      <small style="color: red">{{ 'editTask.errorInputTask' | transloco }}</small>
     </div>
     <ion-input [(ngModel)]="task.taskcontent" type="text" label="Tarea" #taskInput="ngModel" labelPlacement="stacked"
-               fill="outline" helperText="Tarea realizada en la fecha" class="ion-margin-vertical" required></ion-input>
+               fill="outline" [helperText]="'editTask.helperInputTask' | transloco" class="ion-margin-vertical" required></ion-input>
 
     <div *ngIf="taskHours.errors && taskHours.invalid" class="ion-margin-vertical">
-      <small style="color: red">Introduzca un número de horas entre 1 y 24</small>
+      <small style="color: red">{{ 'editTask.errorInputHours' | transloco }}</small>
     </div>
     <ion-input [(ngModel)]="task.hours" type="number" label="Horas" #taskHours="ngModel" labelPlacement="stacked"
-               fill="outline" helperText="Número de horas utilizadas" class="ion-margin-bottom" min="1" max="24"
+               fill="outline" [helperText]="'editTask.helperInputHours' | transloco" class="ion-margin-bottom" min="1" max="24"
                pattern="\b\d{1,2}\b" required></ion-input>
   </ion-list>
 </ion-content>
@@ -72,8 +72,8 @@
 <ion-footer *transloco="let t">
   <ion-toolbar color="light" mode="ios">
     <ion-buttons slot="primary">
-      <ion-button *ngIf="showDelete()" fill="solid" color="danger" shape="round" (click)="handleDelete()">
-        Eliminar
+      <ion-button *ngIf="showDelete()" fill="solid" color="danger" shape="round" [strong]="true" (click)="handleDelete()">
+        {{ 'editTask.deleteButton' | transloco }}
         <ion-icon name="close"></ion-icon>
       </ion-button>
     </ion-buttons>

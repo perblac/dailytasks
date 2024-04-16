@@ -20,7 +20,7 @@
         {{ task.date.slice(8, 10) }}
       </ion-col>
       <ion-col size="2" class="ion-text-nowrap ion-text-center">
-        {{ monthService.getMonth(parseInt(task.date.slice(5, 7))) }}
+        {{ monthService.getMonth(parseInt(task.date.slice(5, 7)), this.lang) }}
       </ion-col>
       <ion-col size="8" class="ion-text-center">
         {{ task.taskcontent }}

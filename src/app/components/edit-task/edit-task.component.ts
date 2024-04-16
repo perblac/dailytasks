@@ -1,16 +1,18 @@
 import {AlertController, IonModal, ModalController} from "@ionic/angular";
-import {Component, Input, ViewChild, ChangeDetectorRef, AfterViewInit} from '@angular/core';
+import {Component, Input, ViewChild, ChangeDetectorRef, AfterViewInit, OnInit} from '@angular/core';
 import {Task} from "../../interfaces/task.interface";
 import {DataService} from "../../services/data.service";
 import {MonthService} from "../../services/month.service";
 import {AvailableDaysService} from "../../services/available-days.service";
+import {TranslocoService} from "@jsverse/transloco";
+import {setDoc} from "@angular/fire/firestore";
 
 @Component({
   selector: 'app-edit-task',
   templateUrl: './edit-task.component.html',
   styleUrls: ['./edit-task.component.scss'],
 })
-export class EditTaskComponent implements AfterViewInit {
+export class EditTaskComponent implements OnInit, AfterViewInit {
   @ViewChild(IonModal) modal!: IonModal;
   @Input() task!: Task;
 
@@ -19,26 +21,26 @@ export class EditTaskComponent implements AfterViewInit {
   private newTaskContent: string = '';
   private newHours: number = 0;
 
-  public day: number;
-  public month: string;
+  public day: any = 0;
+  public month: string = '-';
 
   public alertButtons = [
     {
-      text: 'Cancelar',
+      text: this.translocoService.translate('editTask.cancelButton'),
       role: 'cancel',
     },
     {
-      text: 'Aceptar',
+      text: this.translocoService.translate('editTask.acceptButton'),
       role: 'confirm',
     }
   ];
   public deleteAlertButtons = [
     {
-      text: 'Cancelar',
+      text: this.translocoService.translate('editTask.cancelButton'),
       role: 'cancel',
     },
     {
-      text: 'Sí, Eliminar',
+      text: this.translocoService.translate('editTask.yesDeleteButton'),
       role: 'confirm',
     }
   ];
@@ -52,10 +54,10 @@ export class EditTaskComponent implements AfterViewInit {
     private alertController: AlertController,
     public monthService: MonthService,
     public availableDaysService: AvailableDaysService,
+    private translocoService: TranslocoService,
   ) {
     console.log('task:', this.task);
-    this.day = parseInt(this.task?.date.slice(8, 10));
-    this.month = monthService.getMonth(parseInt(this.task?.date.slice(5, 7)));
+    // this.setDate();
   }
 
   cancel() {
@@ -98,8 +100,20 @@ export class EditTaskComponent implements AfterViewInit {
 
   setDate(date: string = this.task.date) {
     this.day = parseInt(date.slice(8, 10));
-    this.month = this.monthService.getMonth(parseInt(date.slice(5, 7)));
+    switch (this.translocoService.getActiveLang()) {
+      case 'en':
+        let suffix = (this.day === 1) ? 'st':(this.day === 2) ? 'nd':(this.day === 3) ? 'rd': 'th';
+        this.day = this.day + suffix;
+        break;
+      case 'fr':
+        this.day = (this.day === 1) ? this.day + 'er' : this.day;
+        break;
+      default:
+        break;
+    }
+    this.month = this.monthService.getMonth(parseInt(date.slice(5, 7)), this.translocoService.getActiveLang());
   }
+
   /**
    * Handles a change of date. Checks if the new date already exists in tasks.
    * @param event Event from the ion-datetime ionChange
@@ -112,13 +126,14 @@ export class EditTaskComponent implements AfterViewInit {
     if (originalTask) {
       const alert = await this.alertController.create(
         {
-          header: '¡Atención!',
-          message: 'Ya existe una entrada para esa fecha. La información se sobreescribirá.',
+          header: this.translocoService.translate('editTask.alertDateHeader'),
+          message: this.translocoService.translate('editTask.alertDateMessage'),
           buttons: this.alertButtons,
         }
       );
       await alert.present();
       alert.onWillDismiss().then(async (res) => {
+        console.log(res);
         // if user confirms, we take the original values as ours
         if (res.role === 'confirm') {
           this.newId = originalTask.id;
@@ -153,13 +168,13 @@ export class EditTaskComponent implements AfterViewInit {
     const dateToDelete = new Date(this.task.date);
     const day = dateToDelete.getDate();
     const monthNumber = dateToDelete.getMonth();
-    const month = this.monthService.getMonth(1 + monthNumber);
+    const month = this.monthService.getMonth(1 + monthNumber, this.translocoService.getActiveLang());
 
     const alert = await this.alertController.create(
       {
-        header: 'Esta acción es irreversible',
-        message: `¿Está seguro de que desea eliminar la entrada del día ${day} de ${month}?`,
-        subHeader: `Tarea: ${this.task.taskcontent} (${this.task.hours} h.)`,
+        header: this.translocoService.translate('editTask.alertDeleteHeader'),
+        message: this.translocoService.translate('editTask.alertDeleteMessage', { day: day, month: month}),
+        subHeader: `${this.translocoService.translate('editTask.alertDeleteSubHeader')}: ${this.task.taskcontent} (${this.task.hours} h.)`,
         buttons: this.deleteAlertButtons,
       }
     );
@@ -170,6 +185,10 @@ export class EditTaskComponent implements AfterViewInit {
       }
     });
     await alert.present();
+  }
+
+  ngOnInit() {
+    this.setDate(this.task.date);
   }
 
   ngAfterViewInit() {
