@@ -44,7 +44,11 @@
   "newTask": {
     "title": "Add task",
     "backButton": "Back",
-    "datetimeTitle": "Choose day"
+    "cancelAlertButton": "Cancel",
+    "acceptAlertButton": "Accept",
+    "datetimeTitle": "Choose day",
+    "alertHeader": "Attention!",
+    "alertMessage": "An entry already exists for that date. The information will be overwritten."
   },
   "editTask": {
     "title": "Edit task",
@@ -65,7 +69,7 @@
     "alertDateHeader": "Attention!",
     "alertDateMessage": "An entry already exists for that date. The information will be overwritten.",
     "alertDeleteHeader": "This action is irreversible",
-    "alertDeleteMessage": "Are you sure you want to delete the entry for day {{day}} from {{month}}?",
+    "alertDeleteMessage": "Are you sure you want to delete the entry for {{month}} {{day}}?",
     "alertDeleteSubHeader": "Task"
   },
   "form": {

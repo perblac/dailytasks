@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "334552631074",
+    "project_id": "diariopracticasgrado",
+    "storage_bucket": "diariopracticasgrado.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:334552631074:android:32dd2a918578e7d40f477b",
+        "android_client_info": {
+          "package_name": "io.ionic.starter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "334552631074-ho59ttptrqjo192isk8qn8kt3d4g7gqi.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "io.ionic.starter",
+            "certificate_hash": "efd07f024ac3cf83eb33093f013fc5fc46c9aa05"
+          }
+        },
+        {
+          "client_id": "334552631074-p1ek35mnsjaa3ptq524od78rnq0vqhe5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAIo0C57cLTYBmww-DZXA_hH_BqG7tXnFk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "334552631074-p1ek35mnsjaa3ptq524od78rnq0vqhe5.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "334552631074-26thlrv58vbo6gmt26b8lkqgbmghi520.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "io.ionic.starter"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

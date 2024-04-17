@@ -4,6 +4,7 @@ import {EditTaskComponent} from "../edit-task/edit-task.component";
 import {Task} from "../../interfaces/task.interface";
 import {DataService} from "../../services/data.service";
 import {AvailableDaysService} from "../../services/available-days.service";
+import {TranslocoService} from "@jsverse/transloco";
 
 @Component({
   selector: 'app-new-task',
@@ -18,11 +19,11 @@ export class NewTaskComponent {
 
   public alertButtonsDateExists = [
     {
-      text: 'Cancelar',
+      text: this.translocoService.translate('newTask.cancelAlertButton'),
       role: 'cancel',
     },
     {
-      text: 'Aceptar',
+      text: this.translocoService.translate('newTask.acceptAlertButton'),
       role: 'confirm',
     }
   ]
@@ -32,6 +33,7 @@ export class NewTaskComponent {
     private alertController: AlertController,
     private modalCtrl: ModalController,
     public availableDaysService: AvailableDaysService,
+    private translocoService: TranslocoService,
   ) {
   }
 
@@ -59,8 +61,8 @@ export class NewTaskComponent {
     if (originalTask) {
       const alert = await this.alertController.create(
         {
-          header: '¡Atención!',
-          message: 'Ya existe una entrada para esa fecha. La información se sobreescribirá.',
+          header: this.translocoService.translate('newTask.alertHeader'),
+          message: this.translocoService.translate('newTask.alertMessage'),
           buttons: this.alertButtonsDateExists,
         }
       );

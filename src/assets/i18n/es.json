@@ -44,7 +44,11 @@
   "newTask": {
     "title": "Añadir tarea",
     "backButton": "Volver",
-    "datetimeTitle": "Escoja día"
+    "cancelAlertButton": "Cancelar",
+    "acceptAlertButton": "Aceptar",
+    "datetimeTitle": "Escoja día",
+    "alertHeader": "¡Atención!",
+    "alertMessage": "Ya existe una entrada para esa fecha. La información se sobreescribirá."
   },
   "editTask": {
     "title": "Editar tarea",

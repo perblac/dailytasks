@@ -96,19 +96,23 @@ export class EditTaskComponent implements OnInit, AfterViewInit {
   }
 
   setDate(date: string = this.task.date) {
-    this.day = parseInt(date.slice(8, 10));
+    this.day = this.formatDayLang(parseInt(date.slice(8, 10)));
+    this.month = this.monthService.getMonth(parseInt(date.slice(5, 7)));
+  }
+
+  formatDayLang(day:any): string {
     switch (this.translocoService.getActiveLang()) {
       case 'en':
-        let suffix = (this.day === 1) ? 'st' : (this.day === 2) ? 'nd' : (this.day === 3) ? 'rd' : 'th';
-        this.day = this.day + suffix;
+        let suffix = (day === 1) ? 'st' : (day === 2) ? 'nd' : (day === 3) ? 'rd' : 'th';
+        day = day + suffix;
         break;
       case 'fr':
-        this.day = (this.day === 1) ? this.day + 'er' : this.day;
+        day = (day === 1) ? day + 'er' : day;
         break;
       default:
         break;
     }
-    this.month = this.monthService.getMonth(parseInt(date.slice(5, 7)));
+    return day;
   }
 
   /**
@@ -170,7 +174,7 @@ export class EditTaskComponent implements OnInit, AfterViewInit {
     const alert = await this.alertController.create(
       {
         header: this.translocoService.translate('editTask.alertDeleteHeader'),
-        message: this.translocoService.translate('editTask.alertDeleteMessage', {day: day, month: month}),
+        message: this.translocoService.translate('editTask.alertDeleteMessage', {day: this.formatDayLang(day), month: month}),
         subHeader: `${this.translocoService.translate('editTask.alertDeleteSubHeader')}: ${this.task.taskcontent} (${this.task.hours} h.)`,
         buttons: this.deleteAlertButtons,
       }
