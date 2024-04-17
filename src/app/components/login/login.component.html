@@ -31,7 +31,9 @@
       </ion-row>
       <ion-row>
         <ion-col sizeSm="6" offsetSm="3" sizeLg="4" offsetLg="4">
-          <ion-button type="submit" expand="block" [disabled]="!formLogIn.valid">{{ t('login.loginButton') }}</ion-button>
+          <ion-button type="submit" color="light" shape="round" expand="block" class="ion-padding" [disabled]="!formLogIn.valid">
+            {{ t('login.loginButton') }}
+          </ion-button>
         </ion-col>
       </ion-row>
     </form>
@@ -48,7 +50,10 @@
     </ion-row>
     <ion-row>
       <ion-col sizeSm="6" offsetSm="3" sizeLg="4" offsetLg="4">
-        <ion-button (click)="onClickLoginWithGoogle()" expand="block">{{ t('login.loginGoogleButton') }}</ion-button>
+        <ion-button (click)="onClickLoginWithGoogle()" color="light" shape="round" expand="block" class="ion-padding">
+          <ion-icon [src]="googleIcon" slot="start"></ion-icon>
+          {{ t('login.loginGoogleButton') }}
+        </ion-button>
       </ion-col>
     </ion-row>
   </ion-grid>

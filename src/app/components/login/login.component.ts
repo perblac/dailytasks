@@ -15,6 +15,8 @@ export class LoginComponent {
 
   selectedLang: string = 'en';
 
+  googleIcon = 'assets/icon/googleicon.svg';
+
   constructor(
     private userService: UserService,
     private router: Router,
