@@ -128,4 +128,9 @@ export class NewTaskComponent {
   cancel() {
     return this.modalCtrl.dismiss(null, 'cancel');
   }
+
+  getLocale() {
+    const lang = this.translocoService.getActiveLang();
+    return (lang === 'en') ? 'en-GB' : `${lang}-${lang.toUpperCase()}`;
+  }
 }

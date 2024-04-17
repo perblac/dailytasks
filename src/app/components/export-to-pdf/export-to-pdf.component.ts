@@ -6,6 +6,7 @@ import {Task} from "../../interfaces/task.interface";
 import {DataService} from "../../services/data.service";
 import {MonthService} from "../../services/month.service";
 import {AvailableDaysService} from "../../services/available-days.service";
+import {TranslocoService} from "@jsverse/transloco";
 
 @Component({
   selector: 'app-export-to-pdf',
@@ -25,6 +26,7 @@ export class ExportToPdfComponent {
     private modalCtrl: ModalController,
     public monthService: MonthService,
     public availableDaysService: AvailableDaysService,
+    private translocoService: TranslocoService,
   ) {
   }
 
@@ -177,5 +179,10 @@ export class ExportToPdfComponent {
 
   cancel() {
     return this.modalCtrl.dismiss(null, 'cancel');
+  }
+
+  getLocale() {
+    const lang = this.translocoService.getActiveLang();
+    return (lang === 'en') ? 'en-GB' : `${lang}-${lang.toUpperCase()}`;
   }
 }

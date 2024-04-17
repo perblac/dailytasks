@@ -35,7 +35,6 @@ export class OptionsComponent implements OnInit {
   }
 
   changeLang(event: any) {
-    console.log(event);
     this.selectedLang = event.detail.value;
     this.translocoService.setActiveLang(this.selectedLang);
     console.log('lang:',this.selectedLang);

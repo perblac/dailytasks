@@ -188,6 +188,11 @@ export class EditTaskComponent implements OnInit, AfterViewInit {
     await alert.present();
   }
 
+  getLocale() {
+    const lang = this.translocoService.getActiveLang();
+    return (lang === 'en') ? 'en-GB' : `${lang}-${lang.toUpperCase()}`;
+  }
+
   ngOnInit() {
     this.setDate(this.task.date);
   }
