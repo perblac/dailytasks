@@ -1,5 +1,3 @@
-import {App} from '@capacitor/app';
-import {Dialog} from '@capacitor/dialog';
 import {Component, Optional} from '@angular/core';
 import {IonRouterOutlet, Platform} from "@ionic/angular"
 
@@ -13,27 +11,7 @@ export class AppComponent {
     private platform: Platform,
     @Optional() private routerOutlet?: IonRouterOutlet
   ) {
-    this.platform.backButton.subscribe(() => {
-      console.log('url:',this.routerOutlet?.getLastUrl());
-      if (this.routerOutlet?.getLastUrl() === '/list-tasks' ) {
-        this.showConfirm()
-          .then(res => {
-            if (res) App.exitApp();
-          })
-          .catch(err => console.error(err));
-      }
-    });
     // Initialize dark mode according to system preferences
     document.body.classList.toggle('dark', window.matchMedia('(prefers-color-scheme: dark)').matches);
-  }
-
-  async showConfirm() {
-    const {value} = await Dialog.confirm({
-      title: 'Confirme salida',
-      message: '¿Está seguro de que quiere salir de la aplicación?',
-      okButtonTitle: 'Sí, salir',
-      cancelButtonTitle: 'Cancelar',
-    });
-    return value;
   }
 }

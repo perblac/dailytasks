@@ -22,6 +22,7 @@ export class AuthService implements OnDestroy {
   private userUid = '';
 
   constructor() {
+    console.log('authService created');
     this.userSubscription = this.user$.subscribe((aUser: User | null) => {
       console.log('user subscription:', aUser);
       this.userUid = aUser?.uid ?? '';

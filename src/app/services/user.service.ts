@@ -16,14 +16,16 @@ import {Capacitor} from "@capacitor/core";
 })
 export class UserService {
 
+  clientId: string = '';
+
   constructor(
     private auth: Auth
   ) {
+    console.log('userService created');
     const platform = Capacitor.getPlatform();
-    const clientId = (platform === 'android') ?
+    this.clientId = (platform === 'android') ?
       "334552631074-p1ek35mnsjaa3ptq524od78rnq0vqhe5.apps.googleusercontent.com" :
       "334552631074-26thlrv58vbo6gmt26b8lkqgbmghi520.apps.googleusercontent.com" ;
-    GoogleAuth.initialize({clientId});
   }
 
   /**
@@ -57,9 +59,18 @@ export class UserService {
    * Login using Google in mobile device
    */
   async loginWithGoogleMobile() {
-    const googleUser = await GoogleAuth.signIn();
-    const credential = GoogleAuthProvider.credential(googleUser.authentication.idToken);
-    return signInWithCredential(this.auth, credential);
+    try {
+      await GoogleAuth.initialize({clientId: this.clientId});
+      console.log('googleAuth.initialized');
+      const googleUser = await GoogleAuth.signIn();
+      console.log('googleUser:',googleUser);
+      const credential = GoogleAuthProvider.credential(googleUser.authentication.idToken);
+      console.log('google credential:', credential);
+      return signInWithCredential(this.auth, credential);
+    } catch (err) {
+      console.log('loginWithGoogleMobile error:', err);
+      throw err;
+    }
   }
 
   logout() {
@@ -67,7 +78,7 @@ export class UserService {
   }
 
   logoutMobile() {
-    return GoogleAuth.signOut();
+    return GoogleAuth.signOut().then(() => signOut(this.auth));
   }
 
 }

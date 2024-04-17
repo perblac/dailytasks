@@ -50,6 +50,7 @@ export class ListTasksComponent implements OnDestroy {
     private platform: Platform,
     private translocoService: TranslocoService,
   ) {
+    console.log('listTasks created');
     this.authStateSubscription = this.authService.authState$.subscribe((aUser: User | null) => {
       this.authorized = !!aUser;
       if (this.authorized) {

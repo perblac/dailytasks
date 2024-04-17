@@ -24,6 +24,7 @@ export class LoginComponent {
     private platform: Platform,
     private translocoService: TranslocoService,
   ) {
+    console.log('login created');
     this.formLogIn = new FormGroup({
       email: new FormControl('', [
         Validators.required,

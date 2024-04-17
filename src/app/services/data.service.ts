@@ -30,6 +30,7 @@ export class DataService {
     private authService: AuthService,
     private translocoService: TranslocoService,
   ) {
+    console.log('dataService created');
     // initialize default options
     let defaultLang = getBrowserLang() || 'en';
     defaultLang = (['en', 'es', 'fr', 'de', 'ru'].includes(defaultLang)) ? defaultLang : 'en';
