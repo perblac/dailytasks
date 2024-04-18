@@ -48,3 +48,12 @@
 ion-item {
   --transition: none;
 }
+
+/* Main header tittle dark mode shadow and subtitle text color */
+body.dark .shadow {
+  filter: drop-shadow(-1px -1px 3px #4d4d4d);
+}
+
+body.dark .subtitle {
+  color: #c4c4c4 !important;
+}

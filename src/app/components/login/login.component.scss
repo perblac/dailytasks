@@ -12,6 +12,22 @@
   filter: drop-shadow(1px 1px 3px #7d7d7d);
 }
 
+.subtitle {
+  color: #4d4d4d !important;
+}
+
 .info {
   font-size: .5rem;
+}
+
+.top-button-login {
+  margin-bottom: -4%;
+}
+
+.line {
+  border-bottom: 1px solid rgba(0,0,0,0.1);
+}
+
+.bottom-button-login {
+  margin-top: -4%;
 }
