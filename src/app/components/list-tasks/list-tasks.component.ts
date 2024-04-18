@@ -136,23 +136,9 @@ export class ListTasksComponent implements OnDestroy {
       component: OptionsComponent,
       componentProps: {
         'options': options,
+        'submitDataToParent': ((optionsModalData: any) => this.dataService.setOptions(optionsModalData)).bind(this)
       }
     });
-    modal.backdropDismiss = false;
-    modal.onWillDismiss().then((res) => {
-      console.log('res:',res);
-      this.sortList = res.data.sortList;
-      // if sort order changed, reorder the list
-      if (this.sortList != options.sortList) this.updateTasksArray();
-      this.selectedLang = res.data.selectedLang;
-      this.darkMode = res.data.darkMode;
-      // if something changed, save options
-      if (
-        this.sortList != options.sortList ||
-        this.selectedLang != options.selectedLang ||
-        this.darkMode != options.darkMode
-      ) this.dataService.setOptions(res.data);
-    })
     return await modal.present();
   }
 

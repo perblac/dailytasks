@@ -4,6 +4,7 @@ import {Component} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {UserService} from "../../services/user.service";
 import {getBrowserLang, TranslocoService} from "@jsverse/transloco";
+import {environment} from "../../../environments/environment";
 
 @Component({
   selector: 'app-login',
@@ -16,6 +17,8 @@ export class LoginComponent {
   selectedLang: string = 'en';
 
   googleIcon = 'assets/icon/googleicon.svg';
+
+  version = environment.version;
 
   constructor(
     private userService: UserService,

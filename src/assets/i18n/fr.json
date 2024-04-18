@@ -1,4 +1,6 @@
 {
+  "headTitle": "Tâches Journalières",
+  "headSubtitle": "Journal des Pratiques des Étudiants pour les Cycles de Formation de niveau Moyen et Supérieur en Andalousie",
   "emailPlaceholder": "e-mail",
   "passwordPlaceholder": "mot de passe",
   "password2Placeholder": "Confirmer mot de passe",
@@ -23,7 +25,6 @@
     "cancelButton": "Annuler"
   },
   "list": {
-    "title": "Journal des tâches",
     "logoutButton": "Fermer la session",
     "day": "Jour",
     "month": "Mois",

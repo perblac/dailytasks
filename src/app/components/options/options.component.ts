@@ -9,6 +9,7 @@ import {TranslocoService} from "@jsverse/transloco";
 })
 export class OptionsComponent implements OnInit {
   @Input() options: any;
+  @Input() submitDataToParent!: (optionsData: any) => void;
 
   darkMode: boolean = true;
   selectedLang: string = 'en';
@@ -22,28 +23,34 @@ export class OptionsComponent implements OnInit {
   }
 
   dismiss() {
-    this.modalCtrl.dismiss({
-      'sortList': this.sortList,
-      'selectedLang': this.selectedLang,
-      'darkMode': this.darkMode,
-    });
+    this.modalCtrl.dismiss();
   }
 
   changeMode() {
     // toggle light/dark mode
     document.body.classList.toggle('dark', this.darkMode);
+    this.setChanges();
   }
 
   changeLang(event: any) {
     this.selectedLang = event.detail.value;
     this.translocoService.setActiveLang(this.selectedLang);
-    console.log('lang:',this.selectedLang);
+    console.log('lang:', this.selectedLang);
+    this.setChanges();
   }
 
   changeSortOrder() {
     this.sortList = this.toggleSortList ? -1 : 1;
+    this.setChanges();
   }
 
+  setChanges() {
+    this.submitDataToParent({
+      'sortList': this.sortList,
+      'selectedLang': this.selectedLang,
+      'darkMode': this.darkMode,
+    });
+  }
 
   ngOnInit() {
     this.darkMode = this.options.darkMode;

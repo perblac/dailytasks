@@ -1,4 +1,6 @@
 {
+  "headTitle": "Daily Tasks",
+  "headSubtitle": "Student Internship Diary for Intermediate and Higher Level Training Cycles in Andalusia",
   "emailPlaceholder": "email",
   "passwordPlaceholder": "password",
   "password2Placeholder": "confirm password",
@@ -23,7 +25,6 @@
     "cancelButton": "Cancel"
   },
   "list": {
-    "title": "Task diary",
     "logoutButton": "logout",
     "day": "Day",
     "month": "Month",

@@ -1,15 +1,30 @@
 <ion-content *transloco="let t">
   <ion-grid>
     <ion-row>
+      <ion-col sizeSm="6" offsetSm="3" sizeLg="4" offsetLg="4" class="shadow">
+        <ion-item color="light" lines="none" class="head-title">
+          <ion-label>
+            <h1 class="ion-text-center padding-sm">
+              {{ t('headTitle') }}
+            </h1>
+            <p class="ion-text-center padding-sm" style="color: #4d4d4d">
+              {{ t('headSubtitle') }}
+            </p>
+          </ion-label>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row>
       <ion-col class="ion-padding ion-text-center">
-        <h1>{{ t('register.title') }}</h1>
+        <h2>{{ t('register.title') }}</h2>
       </ion-col>
     </ion-row>
     <form [formGroup]="formSignIn" (ngSubmit)="onSubmit()">
       <ion-row>
         <ion-col sizeSm="6" offsetSm="3" sizeLg="4" offsetLg="4">
           <ion-item lines="none" color="light">
-            <ion-input type="email" [placeholder]=" t('emailPlaceholder') " required formControlName="email" [clearInput]="true">
+            <ion-input type="email" [placeholder]=" t('emailPlaceholder') " required formControlName="email"
+                       [clearInput]="true">
             </ion-input>
           </ion-item>
           <ng-container *ngFor="let error of error_messages.email">
@@ -23,7 +38,8 @@
       <ion-row>
         <ion-col sizeSm="6" offsetSm="3" sizeLg="4" offsetLg="4">
           <ion-item lines="none" color="light">
-            <ion-input type="password" [placeholder]=" t('passwordPlaceholder') " required formControlName="password" [clearInput]="true">
+            <ion-input type="password" [placeholder]=" t('passwordPlaceholder') " required formControlName="password"
+                       [clearInput]="true">
             </ion-input>
           </ion-item>
           <ng-container *ngFor="let error of error_messages.password">
@@ -55,7 +71,8 @@
       </ion-row>
       <ion-row>
         <ion-col sizeSm="6" offsetSm="3" sizeLg="4" offsetLg="4">
-          <ion-button type="submit" expand="block" [disabled]="!formSignIn.valid">{{ t('register.registerButton') }}</ion-button>
+          <ion-button type="submit" expand="block"
+                      [disabled]="!formSignIn.valid">{{ t('register.registerButton') }}</ion-button>
         </ion-col>
       </ion-row>
       <ion-row>

@@ -1,4 +1,6 @@
 {
+  "headTitle": "Tägliche Aufgaben",
+  "headSubtitle": "Tagebuch der Schülerpraktiken für mittlere und höhere Ausbildungszyklen in Andalusien",
   "emailPlaceholder": "Email",
   "passwordPlaceholder": "Passwort",
   "password2Placeholder": "Bestätige das Passwort",
@@ -23,7 +25,6 @@
     "cancelButton": "Stornieren"
   },
   "list": {
-    "title": "Aufgabentagebuch",
     "logoutButton": "Ausloggen",
     "day": "Tag",
     "month": "Monat",

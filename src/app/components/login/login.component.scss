@@ -1,0 +1,17 @@
+.padding-sm {
+  @media screen and (width > 280px) {
+    padding: 1rem;
+  }
+}
+
+.head-title {
+  --border-radius: 1rem;
+}
+
+.shadow {
+  filter: drop-shadow(1px 1px 3px #7d7d7d);
+}
+
+.info {
+  font-size: .5rem;
+}

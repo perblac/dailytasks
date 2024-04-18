@@ -1,4 +1,6 @@
 {
+  "headTitle": "Tareas Diarias",
+  "headSubtitle": "Diario de Prácticas de Alumno para Ciclos Formativos de Grado Medio y Superior en Andalucía",
   "emailPlaceholder": "email",
   "passwordPlaceholder": "contraseña",
   "password2Placeholder": "confirmar contraseña",
@@ -23,7 +25,6 @@
     "cancelButton": "Cancelar"
   },
   "list": {
-    "title": "Diario de tareas",
     "logoutButton": "cerrar sesión",
     "day": "Día",
     "month": "Mes",

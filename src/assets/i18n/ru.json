@@ -1,4 +1,6 @@
 {
+  "headTitle": "Ежедневные Задачи",
+  "headSubtitle": "Дневник Студенческой Практики для Циклов Обучения Среднего и Высшего Уровняв Андалусии",
   "emailPlaceholder": "электронная почта",
   "passwordPlaceholder": "пароль",
   "password2Placeholder": "Подтвердите пароль",
@@ -23,7 +25,6 @@
     "cancelButton": "Отмена"
   },
   "list": {
-    "title": "Дневник задач",
     "logoutButton": "выйти",
     "day": "День",
     "month": "Месяц",
