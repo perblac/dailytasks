@@ -1,6 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {ModalController} from "@ionic/angular";
 import {TranslocoService} from "@jsverse/transloco";
+import {environment} from "../../../environments/environment";
 
 @Component({
   selector: 'app-options',
@@ -35,7 +36,7 @@ export class OptionsComponent implements OnInit {
   changeLang(event: any) {
     this.selectedLang = event.detail.value;
     this.translocoService.setActiveLang(this.selectedLang);
-    console.log('lang:', this.selectedLang);
+    if (!environment.production) console.log('lang:', this.selectedLang);
     this.setChanges();
   }
 

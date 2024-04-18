@@ -5,6 +5,7 @@ import {Task} from "../../interfaces/task.interface";
 import {DataService} from "../../services/data.service";
 import {AvailableDaysService} from "../../services/available-days.service";
 import {TranslocoService} from "@jsverse/transloco";
+import {environment} from "../../../environments/environment";
 
 @Component({
   selector: 'app-new-task',
@@ -55,7 +56,7 @@ export class NewTaskComponent {
    */
   async handleSelectDay(event: CustomEvent) {
     const selectedDate = event.detail.value;
-    console.log(selectedDate, this.dataService.getTaskByDate(selectedDate));
+    if (!environment.production) console.log(selectedDate, this.dataService.getTaskByDate(selectedDate));
     // check if date already exists
     const originalTask: Task | undefined = this.dataService.getTaskByDate(selectedDate);
     if (originalTask) {
@@ -113,7 +114,7 @@ export class NewTaskComponent {
         } else {
           this.dataService.addTask(res.data);
         }
-        console.log('added task');
+        if (!environment.production) console.log('added task');
         this.resetFields();
         // close top modal after saving
         this.modalCtrl.dismiss('', 'confirm', modalId!);

@@ -27,7 +27,7 @@ export class LoginComponent {
     private platform: Platform,
     private translocoService: TranslocoService,
   ) {
-    console.log('login created');
+    if (!environment.production) console.log('login created');
     this.formLogIn = new FormGroup({
       email: new FormControl('', [
         Validators.required,
@@ -43,7 +43,7 @@ export class LoginComponent {
     if (this.routerOutlet.getLastUrl() !== '/list-tasks') {
       let defaultLang = getBrowserLang() || 'en';
       defaultLang = (['en', 'es', 'fr', 'de', 'ru'].includes(defaultLang)) ? defaultLang : 'en';
-      console.log('browser lang:', getBrowserLang(), 'defLang:', defaultLang);
+      if (!environment.production) console.log('browser lang:', getBrowserLang(), 'defLang:', defaultLang);
       this.translocoService.setActiveLang(defaultLang);
       this.selectedLang = defaultLang;
     }
@@ -91,7 +91,7 @@ export class LoginComponent {
       const lang = event.detail.value;
       this.translocoService.setActiveLang(lang);
       this.selectedLang = lang;
-      console.log('lang:', lang);
+      if (!environment.production) console.log('lang:', lang);
     }
   }
 

@@ -3,6 +3,7 @@ import {Component} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {UserService} from "../../services/user.service";
 import {TranslocoService} from "@jsverse/transloco";
+import {environment} from "../../../environments/environment";
 
 @Component({
   selector: 'app-register',
@@ -61,7 +62,7 @@ export class RegisterComponent {
   onSubmit() {
     this.userService.register(this.formSignIn.value)
       .then(res => {
-        console.log('user cred:', res);
+        if (!environment.production) console.log('user cred:', res);
         this.router.navigate(['/login']);
       })
       .catch(err => {

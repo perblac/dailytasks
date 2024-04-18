@@ -5,6 +5,7 @@ import {DataService} from "../../services/data.service";
 import {MonthService} from "../../services/month.service";
 import {AvailableDaysService} from "../../services/available-days.service";
 import {TranslocoService} from "@jsverse/transloco";
+import {environment} from "../../../environments/environment";
 
 @Component({
   selector: 'app-edit-task',
@@ -75,15 +76,15 @@ export class EditTaskComponent implements OnInit, AfterViewInit {
   confirmDate() {
     if (this.newDate.substring(0, 10) === this.task.date.substring(0, 10)) {
       // no change in date, so nothing to do
-      console.log('same date');
+      if (!environment.production) console.log('same date');
     } else {
       if (this.newId === '') {
         // only a date change (no previous task in this date)
-        console.log('date change');
+        if (!environment.production) console.log('date change');
         this.task.date = this.newDate;
       } else {
         // existing task overwrite
-        console.log('task overwrite');
+        if (!environment.production) console.log('task overwrite');
         this.task = {
           id: this.newId,
           date: this.newDate,
@@ -121,7 +122,7 @@ export class EditTaskComponent implements OnInit, AfterViewInit {
    */
   async handleChangeDate(event: CustomEvent) {
     const selectedDate = event.detail.value;
-    console.log(selectedDate, this.dataService.getTaskByDate(selectedDate));
+    if (!environment.production) console.log(selectedDate, this.dataService.getTaskByDate(selectedDate));
     // check if date already exists
     const originalTask: Task | undefined = this.dataService.getTaskByDate(selectedDate);
     if (originalTask) {
@@ -134,7 +135,7 @@ export class EditTaskComponent implements OnInit, AfterViewInit {
       );
       await alert.present();
       alert.onWillDismiss().then(async (res) => {
-        console.log(res);
+        if (!environment.production) console.log(res);
         // if user confirms, we take the original values as ours
         if (res.role === 'confirm') {
           this.newId = originalTask.id;
@@ -199,6 +200,6 @@ export class EditTaskComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     this.cdr.detectChanges();
-    console.log('task:', this.task);
+    if (!environment.production) console.log('task:', this.task);
   }
 }

@@ -8,6 +8,7 @@ import {
   idToken,
 } from "@angular/fire/auth";
 import {Subscription} from "rxjs";
+import {environment} from "../../environments/environment";
 
 @Injectable({
   providedIn: 'root'
@@ -22,11 +23,11 @@ export class AuthService implements OnDestroy {
   private userUid = '';
 
   constructor() {
-    console.log('authService created');
+    if (!environment.production) console.log('authService created');
     this.userSubscription = this.user$.subscribe((aUser: User | null) => {
-      console.log('user subscription:', aUser);
+      if (!environment.production) console.log('user subscription:', aUser);
       this.userUid = aUser?.uid ?? '';
-      console.log('uid:', this.userUid);
+      if (!environment.production) console.log('uid:', this.userUid);
     });
   }
 

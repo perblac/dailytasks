@@ -10,6 +10,7 @@ import {
 } from "@angular/fire/auth";
 import {GoogleAuth} from "@codetrix-studio/capacitor-google-auth";
 import {Capacitor} from "@capacitor/core";
+import {environment} from "../../environments/environment";
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +22,7 @@ export class UserService {
   constructor(
     private auth: Auth
   ) {
-    console.log('userService created');
+    if (!environment.production) console.log('userService created');
     const platform = Capacitor.getPlatform();
     this.clientId = (platform === 'android') ?
       "334552631074-p1ek35mnsjaa3ptq524od78rnq0vqhe5.apps.googleusercontent.com" :
@@ -61,14 +62,14 @@ export class UserService {
   async loginWithGoogleMobile() {
     try {
       await GoogleAuth.initialize({clientId: this.clientId});
-      console.log('googleAuth.initialized');
+      if (!environment.production) console.log('googleAuth.initialized');
       const googleUser = await GoogleAuth.signIn();
-      console.log('googleUser:',googleUser);
+      if (!environment.production) console.log('googleUser:',googleUser);
       const credential = GoogleAuthProvider.credential(googleUser.authentication.idToken);
-      console.log('google credential:', credential);
+      if (!environment.production) console.log('google credential:', credential);
       return signInWithCredential(this.auth, credential);
     } catch (err) {
-      console.log('loginWithGoogleMobile error:', err);
+      if (!environment.production) console.log('loginWithGoogleMobile error:', err);
       throw err;
     }
   }

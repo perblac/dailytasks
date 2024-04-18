@@ -7,6 +7,7 @@ import {Task} from "../interfaces/task.interface";
 import {FormObject} from "../interfaces/form-object.interface";
 import {AuthService} from "./auth.service";
 import {getBrowserLang, TranslocoService} from "@jsverse/transloco";
+import {environment} from "../../environments/environment";
 
 @Injectable({
   providedIn: 'root'
@@ -30,7 +31,7 @@ export class DataService {
     private authService: AuthService,
     private translocoService: TranslocoService,
   ) {
-    console.log('dataService created');
+    if (!environment.production) console.log('dataService created');
     // initialize default options
     let defaultLang = getBrowserLang() || 'en';
     defaultLang = (['en', 'es', 'fr', 'de', 'ru'].includes(defaultLang)) ? defaultLang : 'en';
@@ -50,7 +51,7 @@ export class DataService {
         this.userDataDocRef = doc(this.usersCollection, this.authService.getUserUid());
         this.data$ = docData(this.userDataDocRef);
         this.dataSubscription = this.data$.subscribe((data: any) => {
-          console.log('data w/user:', data);
+          if (!environment.production) console.log('data w/user:', data);
           if (data) {
             // load data
             this.tasksArray = data.tasksArray;
@@ -70,7 +71,7 @@ export class DataService {
         this.options = this.defaultOptions;
         this.dataSubscription.unsubscribe();
       }
-      console.log('defOpt:',this.defaultOptions,'docRef:', this.userDataDocRef);
+      if (!environment.production) console.log('defOpt:',this.defaultOptions,'docRef:', this.userDataDocRef);
     })
 
     // no data if no user logged
@@ -98,7 +99,7 @@ export class DataService {
       if (originalTask.id === task.id) return task;
       return originalTask;
     });
-    console.log('update:', this.tasksArray);
+    if (!environment.production) console.log('update:', this.tasksArray);
     this.saveState();
   }
 

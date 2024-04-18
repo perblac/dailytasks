@@ -14,6 +14,7 @@ import {UserService} from "../../services/user.service";
 import {MonthService} from "../../services/month.service";
 import {TranslocoService} from "@jsverse/transloco";
 import {OptionsComponent} from "../options/options.component";
+import {environment} from "../../../environments/environment";
 
 interface WeekGroup {
   weekNumber?: number,
@@ -50,7 +51,7 @@ export class ListTasksComponent implements OnDestroy {
     private platform: Platform,
     private translocoService: TranslocoService,
   ) {
-    console.log('listTasks created');
+    if (!environment.production) console.log('listTasks created');
     this.authStateSubscription = this.authService.authState$.subscribe((aUser: User | null) => {
       this.authorized = !!aUser;
       if (this.authorized) {
@@ -79,13 +80,13 @@ export class ListTasksComponent implements OnDestroy {
       }
     });
     modal.onWillDismiss().then((res) => {
-      console.log(res);
+      if (!environment.production) console.log(res);
       if (res.role === 'confirm') {
         this.dataService.updateTask(res.data);
       }
       this.updateTasksArray();
     });
-    console.log(id);
+    if (!environment.production) console.log(id);
     return await modal.present();
   }
 
@@ -97,7 +98,7 @@ export class ListTasksComponent implements OnDestroy {
       component: NewTaskComponent,
     });
     modal.onWillDismiss().then((res) => {
-      console.log(res);
+      if (!environment.production) console.log(res);
       this.updateTasksArray();
     });
     await modal.present();
