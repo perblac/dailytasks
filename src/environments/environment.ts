@@ -3,7 +3,7 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  version: "0.1dev",
+  version: "0.2dev",
   firebase: {
     "projectId":"diariopracticasgrado",
     "appId":"1:334552631074:web:16273521f063a04a0f477b",
