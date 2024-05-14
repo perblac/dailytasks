@@ -36,7 +36,7 @@
     <ion-row class="ion-justify-content-center">
       <ion-col size="auto">
         <ion-datetime [locale]="getLocale()" [firstDayOfWeek]="1" [showDefaultTitle]="true" presentation="date"
-                      min="2024-03-01T00:00:00" max="2024-05-31T00:00:00"
+                      min="2024-03-01T00:00:00" max="2024-06-30T00:00:00"
                       [isDateEnabled]="availableDaysService.availableDays" (ionChange)="selectedWeek($event)">
           <span slot="title">{{ 'pdf.datetimeTitle' | transloco }}</span>
         </ion-datetime>
