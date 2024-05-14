@@ -63,9 +63,9 @@
     <div *ngIf="taskHours.errors && taskHours.invalid" class="ion-margin-vertical">
       <small style="color: red">{{ 'editTask.errorInputHours' | transloco }}</small>
     </div>
-    <ion-input [(ngModel)]="task.hours" type="number" [label]="'editTask.labelInputHours' | transloco" #taskHours="ngModel" labelPlacement="stacked"
-               fill="outline" [helperText]="'editTask.helperInputHours' | transloco" class="ion-margin-bottom" min="1" max="24"
-               pattern="\b\d{1,2}\b" required></ion-input>
+    <ion-input [(ngModel)]="task.hours" type="number" inputmode="decimal" [label]="'editTask.labelInputHours' | transloco" #taskHours="ngModel" labelPlacement="stacked"
+               fill="outline" [helperText]="'editTask.helperInputHours' | transloco" class="ion-margin-bottom" min="1" max="24" step=".01"
+               pattern="\b\d{1,2}(\.\d{1,2})?\b" required></ion-input>
   </ion-list>
 </ion-content>
 
