@@ -1,0 +1,85 @@
+<ion-content *transloco="let t">
+  <ion-grid>
+    <ion-row>
+      <ion-col sizeSm="6" offsetSm="3" sizeLg="4" offsetLg="4" class="shadow">
+        <ion-item color="light" lines="none" class="head-title">
+          <ion-label>
+            <h1 class="ion-text-center padding-sm">
+              {{ t('headTitle') }}
+            </h1>
+            <p class="ion-text-center padding-sm subtitle">
+              {{ t('headSubtitle') }}
+            </p>
+          </ion-label>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col class="ion-padding ion-text-center">
+        <h2>{{ t('register.title') }}</h2>
+      </ion-col>
+    </ion-row>
+    <form [formGroup]="formSignIn" (ngSubmit)="onSubmit()">
+      <ion-row>
+        <ion-col sizeSm="6" offsetSm="3" sizeLg="4" offsetLg="4">
+          <ion-item lines="none" color="light">
+            <ion-input type="email" [placeholder]=" t('emailPlaceholder') " required formControlName="email"
+                       [clearInput]="true">
+            </ion-input>
+          </ion-item>
+          <ng-container *ngFor="let error of error_messages.email">
+            <div
+              *ngIf="formSignIn.get('email')?.hasError(error.type) && (formSignIn.get('email')?.dirty || formSignIn.get('email')?.touched)">
+              <small style="color: red">{{ error.message }}</small>
+            </div>
+          </ng-container>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col sizeSm="6" offsetSm="3" sizeLg="4" offsetLg="4">
+          <ion-item lines="none" color="light">
+            <ion-input type="password" [placeholder]=" t('passwordPlaceholder') " required formControlName="password"
+                       [clearInput]="true">
+            </ion-input>
+          </ion-item>
+          <ng-container *ngFor="let error of error_messages.password">
+            <div
+              *ngIf="formSignIn.get('password')?.hasError(error.type) && (formSignIn.get('password')?.dirty || formSignIn.get('password')?.touched)">
+              <small style="color: red">{{ error.message }}</small>
+            </div>
+          </ng-container>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col sizeSm="6" offsetSm="3" sizeLg="4" offsetLg="4">
+          <ion-item lines="none" color="light">
+            <ion-input type="password" [placeholder]=" t('password2Placeholder') " required formControlName="password2"
+                       [clearInput]="true">
+            </ion-input>
+          </ion-item>
+          <ng-container *ngFor="let error of error_messages.password2">
+            <div
+              *ngIf="formSignIn.get('password2')?.hasError(error.type) && (formSignIn.get('password2')?.dirty || formSignIn.get('password2')?.touched)">
+              <small style="color: red">{{ error.message }}</small>
+            </div>
+          </ng-container>
+          <div
+            *ngIf="!formSignIn.get('password2')?.errors && formSignIn.hasError('passwordNotMatch') && (formSignIn.get('password2')?.dirty || formSignIn.get('password2')?.touched)">
+            <small style="color: red">{{ t('register.errorMatch') }}</small>
+          </div>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col sizeSm="6" offsetSm="3" sizeLg="4" offsetLg="4">
+          <ion-button type="submit" expand="block"
+                      [disabled]="!formSignIn.valid">{{ t('register.registerButton') }}</ion-button>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col sizeSm="6" offsetSm="3" sizeLg="4" offsetLg="4">
+          <ion-button expand="block" (click)="handleCancel()">{{  t('register.cancelButton') }}</ion-button>
+        </ion-col>
+      </ion-row>
+    </form>
+  </ion-grid>
+</ion-content>

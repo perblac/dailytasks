@@ -1,0 +1,81 @@
+<ion-header>
+  <ion-toolbar color="light">
+    <ion-buttons slot="start">
+      <ion-button color="medium" fill="solid" shape="round" (click)="cancel()">{{ 'editTask.cancelButton' | transloco }}</ion-button>
+    </ion-buttons>
+    <ion-title class="ion-text-center">{{ 'editTask.title' | transloco }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button color="primary" fill="solid" shape="round" (click)="confirm()" [strong]="true"
+                  [disabled]="taskInput.errors && taskInput.invalid || taskHours.errors && taskHours.invalid">{{ 'editTask.confirmButton' | transloco }}
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list class="ion-padding">
+    <ion-item button="true" id="open-modal-date" slot="center">
+      <ion-label class="ion-text-center ion-text-nowrap">
+        <span>
+<!--          Día {{ task.date.slice(8, 10) }} de {{ monthService.getMonth(parseInt(task.date.slice(5, 7))) }}-->
+          {{ 'editTask.dateLabel' | transloco: { day: day, month: month } }}
+        </span>
+        <ion-label color="medium">
+          <small>{{ 'editTask.dateHelp' | transloco }}</small>
+        </ion-label>
+      </ion-label>
+      <ion-modal trigger="open-modal-date">
+        <ng-template>
+          <ion-header>
+            <ion-toolbar>
+              <ion-buttons slot="start">
+                <ion-button color="medium" fill="solid" shape="round"  (click)="cancelDate()">{{ 'editTask.cancelButton' | transloco }}</ion-button>
+              </ion-buttons>
+              <ion-title class="ion-text-center">{{ 'editTask.newDateTitle' | transloco }}</ion-title>
+              <ion-buttons slot="end">
+                <ion-button color="primary" fill="solid" shape="round" (click)="confirmDate()" [strong]="true">{{ 'editTask.confirmButton' | transloco }}</ion-button>
+              </ion-buttons>
+            </ion-toolbar>
+          </ion-header>
+          <ion-content class="ion-padding">
+            <ion-grid class="ion-padding">
+              <ion-row class="ion-justify-content-center">
+                <ion-col size="auto">
+                  <ion-datetime [locale]="getLocale()" [firstDayOfWeek]="1" [showDefaultTitle]="true" presentation="date"
+                                min="2024-03-01T00:00:00" max="2024-06-30T00:00:00"
+                                [isDateEnabled]="availableDaysService.availableDays" [value]="task.date"
+                                (ionChange)="handleChangeDate($event)">
+                    <span slot="title"></span>
+                  </ion-datetime>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </ion-content>
+        </ng-template>
+      </ion-modal>
+    </ion-item>
+    <div *ngIf="taskInput.errors && taskInput.invalid">
+      <small style="color: red">{{ 'editTask.errorInputTask' | transloco }}</small>
+    </div>
+    <ion-input [(ngModel)]="task.taskcontent" type="text" [label]="'editTask.labelInputTask' | transloco" #taskInput="ngModel" labelPlacement="stacked"
+               fill="outline" [helperText]="'editTask.helperInputTask' | transloco" class="ion-margin-vertical" required></ion-input>
+
+    <div *ngIf="taskHours.errors && taskHours.invalid" class="ion-margin-vertical">
+      <small style="color: red">{{ 'editTask.errorInputHours' | transloco }}</small>
+    </div>
+    <ion-input [(ngModel)]="task.hours" type="number" inputmode="decimal" [label]="'editTask.labelInputHours' | transloco" #taskHours="ngModel" labelPlacement="stacked"
+               fill="outline" [helperText]="'editTask.helperInputHours' | transloco" class="ion-margin-bottom" min="1" max="24" step=".01"
+               pattern="\b\d{1,2}(\.\d{1,2})?\b" required></ion-input>
+  </ion-list>
+</ion-content>
+
+<ion-footer *transloco="let t">
+  <ion-toolbar color="light" mode="ios">
+    <ion-buttons slot="primary">
+      <ion-button *ngIf="showDelete()" fill="solid" color="danger" shape="round" [strong]="true" (click)="handleDelete()">
+        {{ 'editTask.deleteButton' | transloco }}
+        <ion-icon name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-footer>

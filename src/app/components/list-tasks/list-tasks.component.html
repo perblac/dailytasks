@@ -1,0 +1,82 @@
+<ion-header *transloco="let t">
+  <ion-toolbar color="light">
+    <ion-buttons slot="start">
+      <ion-button *ngIf="!authorized" color="primary" fill="solid" shape="round" (click)="onClickNavigateToLogin()">
+        {{ t('login.loginButton') }}
+      </ion-button>
+      <ion-button *ngIf="authorized" color="primary" fill="solid" shape="round" (click)="onClickLogOut()">
+        {{ t('list.logoutButton') }}
+      </ion-button>
+    </ion-buttons>
+    <ion-title class="ion-text-center">{{ t('headTitle') }}</ion-title>
+  </ion-toolbar>
+  <ion-item button="true" (click)="toggleDateOrder()" color="light" lines="full">
+    <ion-col size="1" class="ion-text-nowrap ion-text-center">{{ t('list.day') }}</ion-col>
+    <ion-col size="2" class="ion-text-nowrap ion-text-center">{{ t('list.month') }}</ion-col>
+    <ion-col size="8" pull-xs="1" pull-sm="0" class="ion-text-nowrap ion-text-center">{{ t('list.task') }}</ion-col>
+    <ion-col size="1" pull-xs="1" pull-sm="0" class="ion-text-nowrap ion-text-center">{{ t('list.hours') }}</ion-col>
+  </ion-item>
+</ion-header>
+
+<ion-content *ngIf="authorized">
+  <ion-grid *ngIf="groupedArray.length === 0" class="ion-padding ion-margin ion-text-center">
+    <ion-row *transloco="let t">
+      <ion-col size="8" offset="2" class="ion-margin-vertical">
+        {{ t('list.noTasks') }}
+      </ion-col>
+    </ion-row>
+    <ion-row *transloco="let t">
+      <ion-col size="8" offset="2">
+        {{ t('list.advice') }}
+      </ion-col>
+    </ion-row>
+    <ion-row class="ion-justify-content-center">
+      <ion-col>
+        <ion-button fill="solid" color="primary" shape="circle" (click)="openModalNewTask()">
+          <ion-icon slot="icon-only" name="add"></ion-icon>
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <ion-list *ngIf="groupedArray.length > 0">
+    <ng-container *ngFor="let week of groupedArray">
+      <ion-item-group *transloco="let t">
+        <ion-item-divider>
+          {{ t('list.week') }} {{ week.weekNumber }}
+        </ion-item-divider>
+        <ion-item button="true" *ngFor="let task of week.items" (click)="handleClick(task.id)" lines="full">
+          <ion-col size="1" class="ion-text-nowrap ion-text-center">{{ task.date.slice(8, 10) }}</ion-col>
+          <ion-col size="2"
+                   class="ion-text-nowrap ion-text-center">{{ this.monthService.getMonth(parseInt(task.date.slice(5, 7))) }}</ion-col>
+          <ion-col size="8">
+            <ion-label class="ion-text-nowrap">
+              {{ task.taskcontent }}
+            </ion-label>
+          </ion-col>
+          <ion-col size="1" class="ion-text-nowrap ion-text-center">{{ task.hours }} h.</ion-col>
+        </ion-item>
+      </ion-item-group>
+    </ng-container>
+  </ion-list>
+</ion-content>
+
+<ion-footer *ngIf="authorized">
+  <ion-toolbar color="light" mode="ios">
+    <ion-buttons slot="primary">
+      <ion-button fill="solid" color="primary" shape="round" (click)="openModalNewTask()">
+        <ion-icon name="add"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-buttons slot="secondary">
+      <ion-button fill="solid" color="primary" shape="round" (click)="openModalExportToPdf()">
+        <ion-icon name="receipt"></ion-icon>
+      </ion-button>
+      <ion-button fill="solid" color="primary" shape="round" (click)="openModalDataForm()">
+        <ion-icon name="school"></ion-icon>
+      </ion-button>
+      <ion-button fill="solid" color="primary" shape="round" (click)="openModalOptions()">
+        <ion-icon name="options"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-footer>
