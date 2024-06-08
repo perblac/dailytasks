@@ -7,7 +7,7 @@
 </p>
 
 Desplegada en [diariopracticasgrado.web.app](https://diariopracticasgrado.web.app)
-
+***
 ## Getting Started
 ¡Bienvenido a nuestra aplicación para llevar el diario de actividades de las prácticas del ciclo! Con esta herramienta, podrás registrar y editar fácilmente tus actividades diarias, el número de horas empleadas y toda la información relevante sobre tus prácticas.
 
@@ -28,24 +28,20 @@ Para **desplegar** DailyTasks, se han de seguir los siguientes pasos:
 - Clonar repositorio
 
 `git clone https://perblac@bitbucket.org/learning-ionic/dailytasks.git`
-
 - Entrar en el directorio
 
 `cd dailytasks`
-
 - Cambiar a la rama 'angular-fire'
 
 `git checkout angular-fire`
 
 - Instalar paquetes npm
-
 `npm install`
 
 - Hacer build para producción
-
 `ionic build --prod`
 
-  Esto generará la carpeta www que contiene la web lista para su despliegue, por ejemplo en Apache copiándola a htdocs/www con un VirtualHost semejante a este:
+> Esto generará la carpeta www que contiene la web lista para su despliegue, por ejemplo en Apache copiándola a htdocs/www con un VirtualHost semejante a este:
 
 ```
 <VirtualHost *:80>
@@ -66,7 +62,6 @@ Para **desplegar** DailyTasks, se han de seguir los siguientes pasos:
 - Sincronizar los proyectos android e ios
 
 `ionic capacitor sync`
-
 - Cargar el proyecto en la IDE nativa (Android Studio/ Xcode)
 
 `ionic capacitor build android`
