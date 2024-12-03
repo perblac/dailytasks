@@ -72,3 +72,6 @@ Thumbs.db
 *-debug.log
 .runtimeconfig.json
 firebase-config.ts
+
+# Push script
+push.sh
