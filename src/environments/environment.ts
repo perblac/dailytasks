@@ -5,7 +5,7 @@
 import {firebaseConfig} from "../../firebase-config";
 
 export const environment = {
-  version: "0.2dev",
+  version: "0.3dev",
   firebase: firebaseConfig,
   production: false
 };
